@@ -1,6 +1,6 @@
 import react from 'react'
 
-const FormUpdate = ({ handleSubmit, handleModalCancel, handleChange, setFileName, setImage, image, fileName,positionEdit }) => {
+const FormUpdate = ({ positionList,handleSubmit, handleModalCancel, handleChange, setFileName, setImage, image, fileName,positionEdit }) => {
     return (
         <form onSubmit={handleSubmit}>
             <div className="modal-input">
@@ -15,6 +15,15 @@ const FormUpdate = ({ handleSubmit, handleModalCancel, handleChange, setFileName
                             }
                         }}
                     />
+                    <div className="input-group-position" style={{marginTop : '4px'}}>
+                        <label htmlFor="">ເງຶອນໄຂຂຶ້ນຕຳແໜ່ງ:</label>
+                        <select className="form-select-position" value={positionEdit && positionEdit._id} onChange={handleChange} name="position">
+                            <option selected>ກະລຸນາເລຶອກ</option>
+                            {positionList && positionList.map((item, idx) =>
+                                <option value={item._id} key={idx}>{item.title}</option>
+                            )}
+                        </select>
+                    </div>
                 </div>
                 <div className="modal-position-input">
                     <div className="modal-position-form-group">
@@ -29,6 +38,10 @@ const FormUpdate = ({ handleSubmit, handleModalCancel, handleChange, setFileName
                         <div className="input-group-position">
                             <label htmlFor="">ເງືອນໄຂລູກທີມ</label>
                             <input type="text" name="conditionChildren" value={positionEdit && positionEdit.conditionChildren} className="form-modal-control-position" onChange={handleChange} />
+                        </div>
+                        <div className="input-group-position">
+                            <label htmlFor="">ລູກທີມ</label>
+                            <input type="text" name="condiPosChildrenNumber" value={positionEdit && positionEdit.conditionChildrenPosition.childrenNumber} className="form-modal-control-position" onChange={handleChange} />
                         </div>
                     </div>
                 </div>

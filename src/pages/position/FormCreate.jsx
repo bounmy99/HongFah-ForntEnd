@@ -1,6 +1,8 @@
 import react from 'react'
 import previewIMG from "../../assets/image/upload.png"
-const FormCreate = ({ handleSubmit, handleModalCancel, handleChange, setFileName, setImage, image, fileName }) => {
+const FormCreate = ({ handleSubmit, handleModalCancel, handleChange, setFileName, setImage, image, fileName, positionList }) => {
+
+    console.log("Positions List in Create Form", positionList)
     return (
         <form onSubmit={handleSubmit}>
             <div className="modal-input">
@@ -15,13 +17,13 @@ const FormCreate = ({ handleSubmit, handleModalCancel, handleChange, setFileName
                             }
                         }}
                     />
-                    <div className="input-group-position" style={{marginTop : '5.4rem'}}>
+                    <div className="input-group-position" style={{marginTop : '4px'}}>
                         <label htmlFor="">ເງຶອນໄຂຂຶ້ນຕຳແໜ່ງ:</label>
                         <select className="form-select-position" onChange={handleChange} name="position">
-                            <option value="1">2 Platinum</option>
-                            <option value="2">2 Gold</option>
-                            <option value="3">2 Silver</option>
-                            <option value="4">2 Diamond</option>
+                            <option selected>ກະລຸນາເລຶອກ</option>
+                            {positionList && positionList.map((item, idx) =>
+                                <option value={item._id} key={idx}>{item.title}</option>
+                            )}
                         </select>
                     </div>
                 </div>
@@ -37,11 +39,11 @@ const FormCreate = ({ handleSubmit, handleModalCancel, handleChange, setFileName
                         </div>
                         <div className="input-group-position">
                             <label htmlFor="">ເງືອນໄຂລູກທີມ</label>
-                            <input type="text" name="conditionChildren" className="form-modal-control-position" onChange={handleChange} />
+                            <input type="text"  name="conditionChildren" className="form-modal-control-position" onChange={handleChange} />
                         </div>
                         <div className="input-group-position">
                             <label htmlFor="">ລູກທີມ</label>
-                            <input type="text" name="childrenNumber" className="form-modal-control-position" onChange={handleChange} />
+                            <input type="text"  name="condiPosChildrenNumber" className="form-modal-control-position" onChange={handleChange} />
                         </div>
                     </div>
                 </div>

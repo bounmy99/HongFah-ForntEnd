@@ -422,7 +422,7 @@ body {
 
 .modal-position-card {
   width: 28rem;
-  height: 35rem;
+  height: 38rem;
   flex-shrink: 0;
   align-items: center;
   animation: DropTopPosition .3s linear;
@@ -508,12 +508,10 @@ body {
   img {
     border: 2px dotted #008BCB;
     border-radius: 5px;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    -ms-border-radius: 5px;
-    -o-border-radius: 5px;
     cursor: pointer;
-    width: 150px;
+    width: 210px;
+    height: 200px;
+    /* object-fit: cover; */
   }
 }
 
@@ -543,7 +541,6 @@ body {
   outline: none;
   font-size: 14px;
   padding-left: 25px;
-  color: rgba(0, 0, 0, 0.50);
 }
 
 .modal-position-textarea {
@@ -5317,8 +5314,8 @@ body {
 
 @media(max-width: 1024px) {
   .package-card {
-    width: 22rem;
-    height: 17rem
+    width: 15rem;
+    height: 17rem;
   }
 
   .load-more .btn {

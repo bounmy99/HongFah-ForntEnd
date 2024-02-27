@@ -19,11 +19,11 @@ const styles = {
 }
 
 const detailStyle = {
-    resize :'none',
-    width : '100%',
-    height : '3.5rem',
-    borderRadius : '1px solid gray',
-    outline : 'none',
+    resize: 'none',
+    width: '100%',
+    height: '3.5rem',
+    borderRadius: '1px solid gray',
+    outline: 'none',
     padding: '5px'
 }
 
@@ -40,6 +40,7 @@ const ListPosition = () => {
     const [positionList, setPositionList] = useState([]);
     const [positionEdit, setPositionEdit] = useState([]);
     const [visible, setVisible] = useState(7);
+    const [positionSelect, setPositionSelect] = useState([]);
 
     // const {_id} = positionList
     // const { title, details, conditionPv, icon ,conditionChildren} = CurrentPosition
@@ -61,7 +62,7 @@ const ListPosition = () => {
         GetAllPosition(users.token).then(res => {
             setLoading(false);
             setPositionList(res.data.data)
-            // console.log(res.data.data)
+            setPositionSelect(res.data.data)
         }).catch(err => {
             setLoading(false);
             console.log(err)
@@ -118,6 +119,8 @@ const ListPosition = () => {
 
             }).catch(err => {
                 console.log(err)
+                setOpenModal(false);
+                setLoadSave(false);
             })
             // dispatch(updateData(users.token, Data, CurrentPosition._id))
 
@@ -138,6 +141,8 @@ const ListPosition = () => {
 
             }).catch(err => {
                 console.log(err)
+                setOpenModal(false);
+                setLoadSave(false);
             })
         // dispatch(createData(users.token, Data));
 
@@ -362,7 +367,9 @@ const ListPosition = () => {
                                 setFileName={setFileName}
                                 setImage={setImage}
                                 image={image}
-                                fileName={fileName} />
+                                fileName={fileName} 
+                                positionList={positionSelect}
+                                />
                         </div>
                     </div>
                     :
@@ -397,7 +404,9 @@ const ListPosition = () => {
                                 setFileName={setFileName}
                                 setImage={setImage}
                                 image={image}
-                                fileName={fileName} />
+                                fileName={fileName}
+                                positionList={positionSelect}
+                            />
                         </div>
                     </div>
                 }

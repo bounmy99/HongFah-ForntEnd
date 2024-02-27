@@ -211,34 +211,7 @@ const EditProduct = () => {
                         <div className="content-left">
 
                             <Carusel  images = {product.images} handleChangeImage={handleChangeImage}  image={newPreviewimage}/>
-
-                            {/* <div className="image-add-multiple" onClick={() => document.querySelector(".input-file").click()}>
-                                <input type="file" multiple accept="images/*" className="input-file" hidden
-                                    onChange={handleChangeImage}
-                                />
-                               
-
-                                {image[0] ?
-                                    // image prviews
-                                    <Carousel autoPlay infiniteLoop showArrows={true}>
-                                        {image && image.map((img, index) => (
-                                            <div key={index}>
-                                                <img src={img} alt={img} />
-                                            </div>
-                                        ))}
-                                    </Carousel>
-
-                                    : <Carousel autoPlay infiniteLoop showArrows={true}>
-                                        {product.images && product.images.map((img, index) => (
-                                            <div key={index}>
-                                                <img src={img} alt={img} />
-                                            </div>
-                                        ))}
-                                    </Carousel>
-                                }
-
-
-                            </div> */}
+                            
                             <div className="btn-button">
                                 <button type="button" className="btn-info-outline" onClick={handleReset}>ຍົກເລິກ</button>
                                 <button type="submit" className="btn-info btn" >ອັບເດດ</button>

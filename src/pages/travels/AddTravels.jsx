@@ -1,0 +1,136 @@
+import React, { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
+import { useSelector } from 'react-redux';
+import { CreateTrip } from '../../functions/Trip';
+import ImagePreviews from '../../assets/image/upload.png';
+const AddTravels = () => {
+  const { users } = useSelector((state) => ({...state}));
+  const [image, setImage] = useState(null)
+  const [fileName, setFileName] = useState("");
+  const [value, setValue] = useState([])
+  const navigate = useNavigate()
+
+  const handleChange = (e) => {
+    setValue({...value, [e.target.name] : e.target.value})
+  }
+  console.log(value);
+
+  const handleSubmit = (e) =>{
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const values = [...formData.values()];
+    const isEmpty = values.includes('');
+    if(isEmpty) {
+      Swal.fire({
+        position : "center",
+        icon : "error",
+        title : "ກະລຸນາປ້ອນຂໍ້ມູນໃຫ້ຄົບຖ້ວນ",
+        showCancelButton: false,
+        timer : 3500
+      });
+      return;
+    }
+    const Data = Object.fromEntries(formData);
+    e.currentTarget.reset();
+    console.log("Data from Input", Data)
+
+    CreateTrip(Data,users.token).then(res=>{
+      if(res.status === 200){
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "ບັນທຶກສິນຄ້າສຳເລັດ",
+          showConfirmButton: false,
+          timer: 2500
+        });
+        navigate("/travels");
+        setImage("");
+        setFileName("");
+      }
+    }).catch(err=>{
+      console.log(err.response.data);
+      Swal.fire({
+        position : "center",
+        icon : "error",
+        title : err.response.data.message,
+        showCancelButton: false,
+        timer : 3500
+      });
+      setImage("");
+      setFileName("");
+      return;
+    })
+  }
+  return (
+    <div className="card-main">
+      <div className="card-add-detail">
+        <div className="card-detail-header" id="add-detail">
+          <div className="text-tilte">
+            <Link to={'/travels'} className="text-link">
+              <i class='bx bx-chevron-left'></i>
+              ກັບໄປໜ້າກ່ອນ
+            </Link>
+          </div>
+        </div>
+        <form onSubmit={handleSubmit}  encType="multipart/form-data" >
+        <div className="card-detail-add-title">
+          <div className="title-text">
+            <h3>ລາຍລະອຽດ ແລະ ຜູ້ໂຊກດີ</h3>
+          </div>
+          <div className="save-btn">
+            <button type="submit" className="btn-info"> ເພີ່ມ </button>
+          </div>
+        </div>
+        <div className="card-detail-add-content">
+          <div className="detail-add-img">
+            <div className="img-add">
+              <div className="border-img" onClick={() => document.querySelector(".input-file").click()}>
+
+                {image 
+                 ? <img src={image} alt={fileName} className="img-fluid" /> 
+                 : <><img src={ImagePreviews} className="img-fluid" /> <h3>ຮູບພາບສະຖານທີ</h3></>}
+
+                <input type="file" name=""  className="input-file" hidden
+                  onChange={({ target: { files } }) => {
+                    files[0] && setFileName(files[0].name)
+                    if (files) {
+                      setImage(URL.createObjectURL(files[0]))
+                    }
+                  }} />
+              </div>
+            </div>
+          </div>
+          <div className="detail-add-form">
+            <div className="form-group">
+              <div className="input-group">
+                <label htmlFor="">ຊື່ສະຖານທີ່</label>
+                <input type="text" name="name"  className="form-controls-md" onChange={handleChange}  />
+              </div>
+              <div className="input-group">
+                <label htmlFor="">ມື້ເດີນທາງ</label>
+                <input type="date" name=""  className="form-controls-md" onChange={handleChange}  />
+              </div>
+              <div className="input-group">
+                <label htmlFor="">ໄລຍະເວລາ</label>
+                <input type="text" name=""  className="form-controls-md" onChange={handleChange}  />
+              </div>
+              <div className="input-group">
+                <label htmlFor="">ຈຳນວນຜູ້ເດີນທາງ</label>
+                <input type="text" name="limit"  className="form-controls-md" onChange={handleChange}  />
+              </div>
+              <div className="input-group">
+                <label htmlFor="">ເງຶ່ອນໄຂຜຸ້ເຂົ້າຮ່ວມ</label>
+                <textarea name="details"  cols="30" rows="10" onChange={handleChange}>
+                </textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+        </form>
+      </div>
+    </div>
+  )
+}
+
+export default AddTravels

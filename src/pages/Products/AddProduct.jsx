@@ -199,7 +199,7 @@ const AddProduct = () => {
                                 <div className="input-group">
                                     <label htmlFor="">ປະເພດ:</label>
                                     <select className="form-select" onChange={handleChangeProductType} name="productType">
-                                        <option value="">ກະລຸນາເລືອກ</option>
+                                        <option selected disabled>ກະລຸນາເລືອກ</option>
                                         {productTypes && productTypes.map((item, idx) =>
                                             <option value={item._id} key={idx}>{item.name}</option>
                                         )}

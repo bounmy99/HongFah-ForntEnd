@@ -9,8 +9,7 @@ import BtnAddPkg from '../../assets/image/btn-add-package.png'
 import previewIMG from "../../assets/image/upload.png"
 import LoadingCard from '../../components/LoadingCard';
 import FormCreate from './FormCreate';
-import FormUpdate from './FormUpdate'
-// import { fetchData, createData, editData, updateData } from '../../action/PositionAction'
+import FormUpdate from './FormUpdate';
 
 const styles = {
     width: 250,
@@ -30,8 +29,6 @@ const detailStyle = {
 const ListPosition = () => {
     const dispatch = useDispatch();
     const { users } = useSelector((state) => ({ ...state }));
-    // const  positionList  = useSelector((state) =>  state.position.Position );
-    // const  CurrentPosition  = useSelector((state) =>  state.position.CurrentPosition );
     const [loading, setLoading] = useState(false);
     const [openModal, setOpenModal] = useState(false);
     const [loadSave, setLoadSave] = useState(false);
@@ -42,20 +39,9 @@ const ListPosition = () => {
     const [visible, setVisible] = useState(7);
     const [positionSelect, setPositionSelect] = useState([]);
 
-    // const {_id} = positionList
-    // const { title, details, conditionPv, icon ,conditionChildren} = CurrentPosition
-
-
     useEffect(() => {
         loadPosition();
-        // dispatch(fetchData(users.token));
-
     }, [dispatch]);
-
-
-    // console.log('Position from redux1', position)
-    // console.log('Position from redux', positionList)
-    // console.log('Position from title', title)
 
     const loadPosition = () => {
         setLoading(true);
@@ -68,7 +54,6 @@ const ListPosition = () => {
             console.log(err)
         })
     }
-
     const handleModal = () => {
         setOpenModal(true);
     }
@@ -98,6 +83,8 @@ const ListPosition = () => {
         const Data = Object.fromEntries(formData);
         e.currentTarget.reset();
 
+        console.log("Data In form",Data)
+
         // Chaeck before Save and Update
         positionEdit && positionEdit._id
             ?
@@ -113,8 +100,6 @@ const ListPosition = () => {
                     loadPosition();
                     setLoadSave(false);
                     setOpenModal(false);
-                    // dispatch(fetchData(users.token))
-                    // window.location.reload();
                 }
 
             }).catch(err => {
@@ -122,9 +107,9 @@ const ListPosition = () => {
                 setOpenModal(false);
                 setLoadSave(false);
             })
-            // dispatch(updateData(users.token, Data, CurrentPosition._id))
 
             :
+
             CreatePosition(users.token, Data).then(res => {
                 if (res.status === 200) {
                     Swal.fire({
@@ -144,8 +129,6 @@ const ListPosition = () => {
                 setOpenModal(false);
                 setLoadSave(false);
             })
-        // dispatch(createData(users.token, Data));
-
         setImage("")
 
     }
@@ -158,7 +141,6 @@ const ListPosition = () => {
         }).catch(err => {
             console.log(err)
         })
-
     }
 
     console.log("Current Position", positionEdit)
@@ -201,7 +183,6 @@ const ListPosition = () => {
             }
         });
     }
-
     const handleShowMore = () => {
         setVisible((show) => show + 7)
     }
@@ -367,9 +348,9 @@ const ListPosition = () => {
                                 setFileName={setFileName}
                                 setImage={setImage}
                                 image={image}
-                                fileName={fileName} 
+                                fileName={fileName}
                                 positionList={positionSelect}
-                                />
+                            />
                         </div>
                     </div>
                     :

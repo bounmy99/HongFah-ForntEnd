@@ -2606,7 +2606,7 @@ body {
 }
 
 .genealogy-tree li:last-child::before {
-  border-right: 2px solid #ccc;
+  border-right: 2px solid #c7c7c7;
   border-radius: 0 5px 0 0;
   -webkit-border-radius: 0 5px 0 0;
   -moz-border-radius: 0 5px 0 0;
@@ -2638,7 +2638,6 @@ body {
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
 }
-
 .genealogy-tree li a:hover+ul li::after,
 .genealogy-tree li a:hover+ul li::before,
 .genealogy-tree li a:hover+ul::before,
@@ -4273,6 +4272,7 @@ body {
 
 .position-icon-image .image-pos {
   width: 60px;
+  height: 60px;
   mix-blend-mode: multiply;
 }
 

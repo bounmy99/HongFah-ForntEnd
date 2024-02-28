@@ -21,26 +21,20 @@ import HomeOrders from "./pages/orders/HomeOrders"
 import InfoOrders from "./pages/orders/InfoOrders"
 import InfoCancel from "./pages/orders/InfoCancel"
 import InfoHistory from "./pages/orders/InfoHistory"
-
-
-
-import ListEmployee from "./pages/employees/ListEmployee"
-import DetailsEmp from "./pages/employees/DetailsEmp"
+import ListEmployee from "./pages/lineWorks/ListEmployee"
+import DetailsEmp from "./pages/lineWorks/DetailsEmp"
 import ListPackage from "./pages/packages/ListPackage"
-
 import Travels from "./pages/travels/Travels"
 import AddTravels from "./pages/travels/AddTravels"
 import DetailTravels from "./pages/travels/DetailTravels"
-
 import Auth from "./pages/auth/Auth"
 import EditUser from "./pages/auth/EditUser"
 import AddUser from "./pages/auth/AddUser"
-
 import HomeSales from "./pages/bonus/HomeSales"
 import ListPosition from './pages/position/ListPosition';
-
 import ListWithdraw from "./pages/withdraw/ListWithdraw"
 import CreateWithDraw from "./pages/withdraw/CreateWithDraw"
+
 function App() {
   const { users } = useSelector((state) => ({ ...state }))
   const dispatch = useDispatch()

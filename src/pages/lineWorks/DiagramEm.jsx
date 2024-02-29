@@ -1,14 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { ZoomInOutlined, ZoomOutOutlined, RedoOutlined, EyeOutlined, EyeInvisibleOutlined, UserOutlined } from '@ant-design/icons';
-import { Pagination, Drawer } from 'antd';
-import dagram from '../../assets/image/Diagram.png';
-import BGdagram from '../../assets/image/LineWork.png';
+import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 import imagePreview from '../../assets/avatar/Avatar.png'
-
-import { GetAllEmployee, GetOneEmployee } from '../../functions/Employee';
-
+import { GetAllEmployee } from '../../functions/Employee';
 const DiagramEm = () => {
   const { users } = useSelector((state) => ({ ...state }));
   const [value, setValue] = useState([]);
@@ -17,13 +12,7 @@ const DiagramEm = () => {
   const [levelTwo, setLavelTwo] = useState([]);
   const [levelThree, setLavelThree] = useState([]);
   const [levelFour, setLavelFour] = useState([]);
-  const [count, setCount] = useState("");
-  const [pageSize, setPageSize] = useState(29);
-  const [pages, setPages] = useState(1);
-  const [open, setOpen] = useState(false);
-  const [detail, setDetail] = useState([]);
-  const [actived, setActived] = useState("");
-  const [lavel, setLavel] = useState("");
+ 
 
   useEffect(() => {
     GetAllEmployee(users.token).then(res => {
@@ -56,72 +45,13 @@ const DiagramEm = () => {
   // console.log("currentPages", currentPages);
   // console.log("count", count);
 
-  const showDrawer = (id, active) => {
-    console.log("Id From btn ", id)
-    setActived(active)
-    GetOneEmployee(users.token, id).then(res => {
-      setDetail(res.data.data)
-    }).catch(err => {
-      console.log(err)
-    })
-    setOpen(true);
-  };
-
-  const closeDrawer = () => {
-    setActived("")
-    setOpen(false);
-  }
-
   const [show, setShow] = useState(false);
   const handleShow = () => {
     setShow(show => !show)
   }
 
   return (
-    <div className="plan-card-emp">
-      <Drawer title="ສະແດງລາຍລະອຽດ" onClose={() => {
-        setOpen(false)
-        setActived("")
-      }} closable={false} open={open} >
-        <div className="conten-drawer">
-          {JSON.stringify(detail)}
-          <div className="text">
-            <p>title</p>
-          </div>
-          <div className="text">
-            <p>title</p>
-          </div>
-          <div className="text">
-            <p>title</p>
-          </div>
-          <div className="text">
-            <p>title</p>
-          </div>
-          <div className="text">
-            <p>title</p>
-          </div>
-          <div className="text">
-            <p>title</p>
-          </div>
-          <div className="text">
-            <p>title</p>
-          </div>
-          <div className="text">
-            <p>title</p>
-          </div>
-          <div className="text">
-            <p>title</p>
-          </div>
-          <div className="text">
-            <p>title</p>
-          </div>
-        </div>
-        <div className="btn-drawer">
-          <button className="btn" onClick={closeDrawer} >ຍ້ອນກັບ</button>
-        </div>
-      </Drawer>
-      {/* <img src={dagram} alt="test-data" className="img-diagram" /> */}
-      <div className="plan-content">
+    <div className="plan-card-emp genealogy-scroll">
         {
           <div className="icons-show-hide">
             {show ? <EyeOutlined className="btn-show" onClick={handleShow} /> : <EyeInvisibleOutlined className="btn-show" onClick={handleShow} />}
@@ -158,370 +88,54 @@ const DiagramEm = () => {
                           </div>
                         </Link>
                         <ul>
-                          <li>
-                            <a href="javascript:void(0);">
-                              <div className="member-view-box">
-                                <div className="member-image">
-                                  <img src={imagePreview} alt="Member" />
-                                  <div className="member-details">
-                                    <h3>Member 1-1</h3>
-                                  </div>
-                                </div>
-                              </div>
-                            </a>
-                          </li>
-                          <li>
-                            <a href="javascript:void(0);">
-                              <div className="member-view-box">
-                                <div className="member-image">
-                                  <img src={imagePreview} alt="Member" />
-                                  <div className="member-details">
-                                    <h3>Member 1-2</h3>
-                                  </div>
-                                </div>
-                              </div>
-                            </a>
-                          </li>
-                          <li>
-                            <a href="javascript:void(0);">
-                              <div className="member-view-box">
-                                <div className="member-image">
-                                  <img src={imagePreview} alt="Member" />
-                                  <div className="member-details">
-                                    <h3>Member 1-3</h3>
-                                  </div>
-                                </div>
-                              </div>
-                            </a>
-                            <ul>
-                              <li>
-                                <a href="javascript:void(0);">
-                                  <div className="member-view-box">
-                                    <div className="member-image">
-                                      <img src={imagePreview} alt="Member" />
-                                      <div className="member-details">
-                                        <h3>Member 1-3-1</h3>
-                                      </div>
+                          {levelTwo && levelTwo.map((level_2, index) => (
+                            <li key={index}>
+                              <Link to={`/listEmployee/DetailsEmp/${level_2._id}`}>
+                                <div className="member-view-box">
+                                  <div className="member-image">
+                                    <img src={imagePreview} alt="Member" />
+                                    <div className="member-details">
+                                      <h3>{level_2 ? `Level is ${level_2.level}` : `Name is ${level_2.lineUp}`}</h3>
                                     </div>
                                   </div>
-                                </a>
-                              </li>
-                              <li>
-                                <a href="javascript:void(0);">
-                                  <div className="member-view-box">
-                                    <div className="member-image">
-                                      <img src={imagePreview} alt="Member" />
-                                      <div className="member-details">
-                                        <h3>Member 1-3-2</h3>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </a>
-                              </li>
-                              <li>
-                                <a href="javascript:void(0);">
-                                  <div className="member-view-box">
-                                    <div className="member-image">
-                                      <img src={imagePreview} alt="Member" />
-                                      <div className="member-details">
-                                        <h3>Member 1-3-3</h3>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </a>
-                              </li>
-                            </ul>
-                          </li>
-                          <li>
-                            <a href="javascript:void(0);">
-                              <div className="member-view-box">
-                                <div className="member-image">
-                                  <img src={imagePreview} alt="Member" />
-                                  <div className="member-details">
-                                    <h3>Member 1-4</h3>
-                                  </div>
                                 </div>
-                              </div>
-                            </a>
-                          </li>
-                          <li>
-                            <a href="javascript:void(0);">
-                              <div className="member-view-box">
-                                <div className="member-image">
-                                  <img src={imagePreview} alt="Member" />
-                                  <div className="member-details">
-                                    <h3>Member 1-5</h3>
-                                  </div>
-                                </div>
-                              </div>
-                            </a>
-                          </li>
-                          <li>
-                            <a href="javascript:void(0);">
-                              <div className="member-view-box">
-                                <div className="member-image">
-                                  <img src={imagePreview} alt="Member" />
-                                  <div className="member-details">
-                                    <h3>Member 1-6</h3>
-                                  </div>
-                                </div>
-                              </div>
-                            </a>
-                          </li>
-                          <li>
-                            <a href="javascript:void(0);">
-                              <div className="member-view-box">
-                                <div className="member-image">
-                                  <img src={imagePreview} alt="Member" />
-                                  <div className="member-details">
-                                    <h3>Member 1-7</h3>
-                                  </div>
-                                </div>
-                              </div>
-                            </a>
-                            <ul>
-                              <li>
-                                <a href="javascript:void(0);">
-                                  <div className="member-view-box">
-                                    <div className="member-image">
-                                      <img src={imagePreview} alt="Member" />
-                                      <div className="member-details">
-                                        <h3>Member 1-7-1</h3>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </a>
-                              </li>
-                              <li>
-                                <a href="javascript:void(0);">
-                                  <div className="member-view-box">
-                                    <div className="member-image">
-                                      <img src={imagePreview} alt="Member" />
-                                      <div className="member-details">
-                                        <h3>Member 1-7-2</h3>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </a>
-                                <ul>
-                                  <li>
-                                    <a href="javascript:void(0);">
+                              </Link>
+                              <ul>
+                                {levelThree && levelThree.map((level_3, index) => (
+                                  <li key={index}>
+                                    <Link to={`/listEmployee/DetailsEmp/${level_3._id}`}>
                                       <div className="member-view-box">
                                         <div className="member-image">
                                           <img src={imagePreview} alt="Member" />
                                           <div className="member-details">
-                                            <h3>Member 1-7-2-1</h3>
+                                            <h3>{level_3 ? `Level is ${level_3.level}` : `Name is ${level_3.lineUp}`}</h3>
                                           </div>
                                         </div>
                                       </div>
-                                    </a>
+                                    </Link>
+                                    <ul>
+                                      {levelFour && levelFour.map((level_4, index) => (
+                                        <li key={index}>
+                                          <Link to={`/listEmployee/DetailsEmp/${level_4._id}`}>
+                                            <div className="member-view-box">
+                                              <div className="member-image">
+                                                <img src={imagePreview} alt="Member" />
+                                                <div className="member-details">
+                                                  <h3>{level_4 ? `Level is ${level_4.level}` : `Name is ${level_4.lineUp}`}</h3>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </Link>
+                                        </li>
+                                      ))}
+                                    </ul>
                                   </li>
-                                  <li>
-                                    <a href="javascript:void(0);">
-                                      <div className="member-view-box">
-                                        <div className="member-image">
-                                          <img src={imagePreview} alt="Member" />
-                                          <div className="member-details">
-                                            <h3>Member 1-7-2-2</h3>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </a>
-                                  </li>
-                                  <li>
-                                    <a href="javascript:void(0);">
-                                      <div className="member-view-box">
-                                        <div className="member-image">
-                                          <img src={imagePreview} alt="Member" />
-                                          <div className="member-details">
-                                            <h3>Member 1-7-2-3</h3>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </a>
-                                  </li>
-                                </ul>
-                              </li>
-                              <li>
-                                <a href="javascript:void(0);">
-                                  <div className="member-view-box">
-                                    <div className="member-image">
-                                      <img src={imagePreview} alt="Member" />
-                                      <div className="member-details">
-                                        <h3>Member 1-7-3</h3>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </a>
-                              </li>
-                            </ul>
-                          </li>
+                                ))}
+                              </ul>
+                            </li>
+                          ))}
                         </ul>
                       </li>
-                      {/* <li>
-                      <a href="javascript:void(0);">
-                        <div className="member-view-box">
-                          <div className="member-image">
-                            <img src={imagePreview} alt="Member" />
-                            <div className="member-details">
-                              <h3>Member 2</h3>
-                            </div>
-                          </div>
-                        </div>
-                      </a>
-                      <ul className="active">
-                        <li>
-                          <a href="javascript:void(0);">
-                            <div className="member-view-box">
-                              <div className="member-image">
-                                <img src={imagePreview} alt="Member" />
-                                <div className="member-details">
-                                  <h3>John Doe</h3>
-                                </div>
-                              </div>
-                            </div>
-                          </a>
-                          <ul>
-                            <li>
-                              <a href="javascript:void(0);">
-                                <div className="member-view-box">
-                                  <div className="member-image">
-                                    <img src={imagePreview} alt="Member" />
-                                    <div className="member-details">
-                                      <h3>John Doe</h3>
-                                    </div>
-                                  </div>
-                                </div>
-                              </a>
-                            </li>
-                            <li>
-                              <a href="javascript:void(0);">
-                                <div className="member-view-box">
-                                  <div className="member-image">
-                                    <img src={imagePreview} alt="Member" />
-                                    <div className="member-details">
-                                      <h3>John Doe</h3>
-                                    </div>
-                                  </div>
-                                </div>
-                              </a>
-                            </li>
-                            <li>
-                              <a href="javascript:void(0);">
-                                <div className="member-view-box">
-                                  <div className="member-image">
-                                    <img src={imagePreview} alt="Member" />
-                                    <div className="member-details">
-                                      <h3>John Doe</h3>
-                                    </div>
-                                  </div>
-                                </div>
-                              </a>
-                            </li>
-                          </ul>
-                        </li>
-                        <li>
-                          <a href="javascript:void(0);">
-                            <div className="member-view-box">
-                              <div className="member-image">
-                                <img src={imagePreview} alt="Member" />
-                                <div className="member-details">
-                                  <h3>John Doe</h3>
-                                </div>
-                              </div>
-                            </div>
-                          </a>
-                          <ul>
-                            <li>
-                              <a href="javascript:void(0);">
-                                <div className="member-view-box">
-                                  <div className="member-image">
-                                    <img src={imagePreview} alt="Member" />
-                                    <div className="member-details">
-                                      <h3>John Doe</h3>
-                                    </div>
-                                  </div>
-                                </div>
-                              </a>
-                            </li>
-                            <li>
-                              <a href="javascript:void(0);">
-                                <div className="member-view-box">
-                                  <div className="member-image">
-                                    <img src={imagePreview} alt="Member" />
-                                    <div className="member-details">
-                                      <h3>John Doe</h3>
-                                    </div>
-                                  </div>
-                                </div>
-                              </a>
-                            </li>
-                            <li>
-                              <a href="javascript:void(0);">
-                                <div className="member-view-box">
-                                  <div className="member-image">
-                                    <img src={imagePreview} alt="Member" />
-                                    <div className="member-details">
-                                      <h3>John Doe</h3>
-                                    </div>
-                                  </div>
-                                </div>
-                              </a>
-                            </li>
-                          </ul>
-                        </li>
-                        <li>
-                          <a href="javascript:void(0);">
-                            <div className="member-view-box">
-                              <div className="member-image">
-                                <img src={imagePreview} alt="Member" />
-                                <div className="member-details">
-                                  <h3>John Doe</h3>
-                                </div>
-                              </div>
-                            </div>
-                          </a>
-                          <ul>
-                            <li>
-                              <a href="javascript:void(0);">
-                                <div className="member-view-box">
-                                  <div className="member-image">
-                                    <img src={imagePreview} alt="Member" />
-                                    <div className="member-details">
-                                      <h3>John Doe</h3>
-                                    </div>
-                                  </div>
-                                </div>
-                              </a>
-                            </li>
-                            <li>
-                              <a href="javascript:void(0);">
-                                <div className="member-view-box">
-                                  <div className="member-image">
-                                    <img src={imagePreview} alt="Member" />
-                                    <div className="member-details">
-                                      <h3>John Doe</h3>
-                                    </div>
-                                  </div>
-                                </div>
-                              </a>
-                            </li>
-                            <li>
-                              <a href="javascript:void(0);">
-                                <div className="member-view-box">
-                                  <div className="member-image">
-                                    <img src={imagePreview} alt="Member" />
-                                    <div className="member-details">
-                                      <h3>John Doe</h3>
-                                    </div>
-                                  </div>
-                                </div>
-                              </a>
-                            </li>
-                          </ul>
-                        </li>
-                      </ul>
-                    </li>  */}
                     </>
                   ))}
                 </ul>
@@ -529,10 +143,6 @@ const DiagramEm = () => {
             </ul>
           </div>
         </div>
-      </div>
-      {/* <div className="diagram-paginate">
-                <Pagination current={pages} total={count} pageSize={pageSize} onChange={(value) => setPages(value)} />
-            </div> */}
       {show &&
         <>
           <div className="plan-card-emp-sub-1">

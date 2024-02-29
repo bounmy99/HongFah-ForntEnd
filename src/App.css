@@ -291,7 +291,7 @@ body {
 
 .modal-midium-card {
   width: 32rem;
-  height: 28rem;
+  height: 30rem;
   flex-shrink: 0;
   padding: 10px;
   align-items: center;
@@ -421,7 +421,7 @@ body {
 }
 
 .modal-position-card {
-  width: 28rem;
+  width: 33rem;
   height: 38rem;
   flex-shrink: 0;
   align-items: center;
@@ -2439,16 +2439,13 @@ body {
 .plan-card-emp {
   position: relative;
   width: 67.8rem;
-  height: 40rem;
+  height: 30rem;
   flex-shrink: 0;
   border-radius: 0px 0px 15px 15px;
   background: #FFF;
   box-shadow: 0px 2px 8px 2px rgba(0, 0, 0, 0.25);
   padding: 20px;
-  -webkit-border-radius: 0px 0px 15px 15px;
-  -moz-border-radius: 0px 0px 15px 15px;
-  -ms-border-radius: 0px 0px 15px 15px;
-  -o-border-radius: 0px 0px 15px 15px;
+  overflow: auto;
 }
 
 .plan-card-emp-sub-1 {
@@ -2540,13 +2537,13 @@ body {
 }
 
 .genealogy-scroll::-webkit-scrollbar-thumb {
-  background: #212121;
+  background: #888888;
   border-radius: 10px;
   transition: 0.5s;
 }
 
 .genealogy-scroll::-webkit-scrollbar-thumb:hover {
-  background: #d5b14c;
+  background: #00A5E8;
   transition: 0.5s;
 }
 
@@ -2732,13 +2729,6 @@ body {
 
 .plan-title {
   font-size: 1.2rem;
-}
-
-.plan-content {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: -1000;
 }
 
 .market-member {
@@ -5184,6 +5174,7 @@ body {
   color: var(--panel-color);
   margin: 20px 0 20px 0;
   width: 90%;
+  height: 2.5rem;
   padding: 10px;
   border-radius: 0.5rem;
   outline: none;

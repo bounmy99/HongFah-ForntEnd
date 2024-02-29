@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import DataTable from "react-data-table-component";
 import { useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 import DiagramEm from './DiagramEm';
 import L from '../../assets/image/L.png'
 import M from '../../assets/image/M.png'
@@ -130,7 +131,10 @@ const ListEmployee = () => {
   const { users } = useSelector((state)=>({...state}))
   const [change, setChang] = useState('')
   const [employee, setEmployee] = useState([])
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
+  const {state} = useLocation();
+
+ 
   useEffect(() => {
     setLoading(true)
     GetAllEmployee(users.token).then(res => {
@@ -141,7 +145,10 @@ const ListEmployee = () => {
       console.log(err)
     })
     setChang(1)
-  }, [])
+    if(state) {
+      setChang(state.key)
+    }
+  }, []);
 
   console.log("List Employee",employee)
   return (

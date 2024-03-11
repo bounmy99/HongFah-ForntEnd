@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 // functions
-import { GetOneOrders } from '../../functions/Orders';
+import { GetOneOrders, ApprovedOrders, RejectOrders } from '../../functions/Orders';
 import { Link, useParams } from 'react-router-dom'
 import DataTable from 'react-data-table-component'
 import product from '../../assets/image/lotions.png'
@@ -111,7 +111,7 @@ const InfoOrders = () => {
         // }
     ];
 
-    const handleCancel = () => {
+    const handleCancel = (id) => {
         Swal.fire({
             title: "ຕ້ອງການປະຕິເສດແທ້ບໍ່",
             text: "ຖ້າທ່ານປະຕິເສັດໄປແລ້ວບໍ່ສາມາດອະນຸມັດໄດ້ອີກ!",
@@ -123,21 +123,35 @@ const InfoOrders = () => {
             cancelButtonText: "ຍົກເລິກ",
         }).then((result) => {
             if (result.isConfirmed) {
-                Swal.fire({
-                    title: "ສຳເລັດ",
-                    text: "ການປະຕິເສັດສຳເລັດແລ້ວ.",
-                    icon: "success",
-                    confirmButtonText: "ຕົກລົງ",
-                });
-                navigate("/HomeOrders", { state: { key: 2 } });
+                RejectOrders(users.token, id).then(res => {
+                    if (res.data.data) {
+                        Swal.fire({
+                            title: "ສຳເລັດ",
+                            text: "ການປະຕິເສັດສຳເລັດແລ້ວ.",
+                            icon: "success",
+                            confirmButtonText: "ຕົກລົງ",
+                        });
+                        navigate("/HomeOrders", { state: { key: 2 } });
+                    }
+
+                }).catch((err) => {
+                    if (err.response.data.message) {
+                        Swal.fire({
+                            title: "ເກີດຂໍ້ຜິດພາດ",
+                            text: err.response.data.message,
+                            icon: "error",
+                            confirmButtonText: "ຕົກລົງ",
+                        });
+                        navigate("/HomeOrders", { state: { key: 1 } });
+                    }
+                })
             }
         });
     }
-    const handleAllow = () => {
+    const handleAllow = (id) => {
         Swal.fire({
             title: "ຢືນຢັນການອະນຸມັດ",
             text: "ທ່ານຕ້ອງການຢືນຢັນການອະນຸມັດແທ້ບໍ່!",
-            description: "dadfdsfsdfa",
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
@@ -146,25 +160,42 @@ const InfoOrders = () => {
             cancelButtonText: "ຍົກເລິກ",
         }).then((result) => {
             if (result.isConfirmed) {
-                Swal.fire({
-                    title: "ສຳເລັດ",
-                    text: "ຢືນຢັນການອະນຸມັດ.",
-                    icon: "success",
-                    confirmButtonText: "ຕົກລົງ",
+                ApprovedOrders(users.token, id).then(res => {
+                    if (res.data.data) {
+                        Swal.fire({
+                            title: "ສຳເລັດ",
+                            text: "ຢືນຢັນການອະນຸມັດ.",
+                            icon: "success",
+                            confirmButtonText: "ຕົກລົງ",
+                        });
+                        navigate("/HomeOrders", { state: { key: 3 } });
+                    }
+                }).catch((err) => {
+                    if (err.response.data.message) {
+                        Swal.fire({
+                            title: "ເກີດຂໍ້ຜິດພາດ",
+                            text: err.response.data.message,
+                            icon: "error",
+                            confirmButtonText: "ຕົກລົງ",
+                        });
+                        navigate("/HomeOrders", { state: { key: 1 } });
+                    }
                 });
-                navigate("/HomeOrders", { state: { key: 3 } });
             }
         });
+
     }
     return (
         <div className="card-main">
             <div className="Card">
                 <div className="card-header">
                     <div className="text-tilte">
-                        <Link to={'/HomeOrders'} className="text-link">
+                        <button onClick={()=>{
+                            navigate("/HomeOrders", { state: { key: 1 } });
+                        }} className="text-link">
                             <i className='bx bx-chevron-left'></i>
                             ກັບໄປໜ້າກ່ອນ
-                        </Link>
+                        </button>
                     </div>
                     <div className="btn-del">
                         <button type="button" onClick={() => { alert("Delete ?") }}>
@@ -204,7 +235,7 @@ const InfoOrders = () => {
                                     <label htmlFor="name">ລະຫັດສະມາຊິກຜູ້ຮັບ:</label>
                                     <div className="flex">
                                         <i className='bx bx-user'></i>
-                                        <label>{order.orderFor && order.orderFor.userCode }</label>
+                                        <label>{order.orderFor && order.orderFor.userCode}</label>
                                     </div>
                                 </div>
                             </div>
@@ -239,8 +270,8 @@ const InfoOrders = () => {
                             </div>
                         </div>
                         <div className="btn-allow">
-                            <button type="button" className="unsuccess" onClick={handleCancel}>ປະຕິເສດ</button>
-                            <button type="button" className="success" onClick={handleAllow}>ອະນຸມັດ</button>
+                            <button type="button" className="unsuccess" onClick={() => handleCancel(order._id)}>ປະຕິເສດ</button>
+                            <button type="button" className="success" onClick={() => handleAllow(order._id)}>ອະນຸມັດ</button>
                         </div>
                     </div>
                 </div>

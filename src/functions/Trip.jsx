@@ -16,3 +16,9 @@ export const CreateTrip = async (Data,token) => await axios.post(`${import.meta.
         'Authorization' : `Bearer ${token}`
     }
 })
+export const UpdateTrip = async (Data,id,token) => await axios.put(`${import.meta.env.VITE_HONGFHA_API}/trip/update/${id}`,Data,{
+    headers :{
+        'Content-Type' : 'multipart/form-data',
+        'Authorization' : `Bearer ${token}`
+    }
+})

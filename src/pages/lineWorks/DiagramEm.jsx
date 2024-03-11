@@ -2,21 +2,21 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
-import imagePreview from '../../assets/avatar/Avatar.png'
+import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
+import imagePreview from '../../assets/avatar/image-avatar.jpeg'
 import { GetAllEmployee } from '../../functions/Employee';
 const DiagramEm = () => {
   const { users } = useSelector((state) => ({ ...state }));
-  const [value, setValue] = useState([]);
   const [levelZero, setLavelZero] = useState([]);
   const [levelOne, setLavelOne] = useState([]);
   const [levelTwo, setLavelTwo] = useState([]);
   const [levelThree, setLavelThree] = useState([]);
   const [levelFour, setLavelFour] = useState([]);
- 
+  // const [linework, setLinework] = useState([])
 
   useEffect(() => {
     GetAllEmployee(users.token).then(res => {
-      setValue(res.data.data);
+      // setLinework(res.data.data)
       setLavelZero(res.data.data.level_0);
       setLavelOne(res.data.data.level_1);
       setLavelTwo(res.data.data.level_2);
@@ -28,7 +28,6 @@ const DiagramEm = () => {
 
   }, []);
 
-  // console.log("Value", value);
   console.log("Level 0 is", levelZero);
   console.log("Level 1 is", levelOne);
   console.log("Level 2 is", levelTwo);
@@ -41,7 +40,6 @@ const DiagramEm = () => {
   // const currentPages = value.slice(indexOfFirstPages, indexOfLastPages)
   // ================ end pagination antd ===  ========
 
-  console.log("value", value);
   // console.log("currentPages", currentPages);
   // console.log("count", count);
 
@@ -52,97 +50,94 @@ const DiagramEm = () => {
 
   return (
     <div className="plan-card-emp genealogy-scroll">
-        {
-          <div className="icons-show-hide">
-            {show ? <EyeOutlined className="btn-show" onClick={handleShow} /> : <EyeInvisibleOutlined className="btn-show" onClick={handleShow} />}
-          </div>
-        }
-        <div className="body genealogy-body genealogy-scroll">
-          <div className="genealogy-tree">
-            <ul>
-              <li>
-                {levelZero && levelZero.slice(0, 1).map((level, index) => (
-                  <Link to={`/listEmployee/DetailsEmp/${level._id}`} key={index}>
-                    <div className="member-view-box">
-                      <div className="member-image">
-                        <img src={imagePreview} alt="Member" />
-                        <div className="member-details">
-                          <h3>{level ? `Level is ${level.level}` : `Name is ${level.lineUp}`}</h3>
+      {
+        <div className="icons-show-hide">
+          {show ? <EyeOutlined className="btn-show" onClick={handleShow} /> : <EyeInvisibleOutlined className="btn-show" onClick={handleShow} />}
+        </div>
+      }
+      <div className="body genealogy-body genealogy-scroll">
+        <TransformWrapper>
+          <TransformComponent>
+            <div className="genealogy-tree">
+              <ul>
+                {levelZero && levelZero.map((level_0, index) => (
+                  <li key={index}>
+                    <Link to={`/listEmployee/DetailsEmp/${level_0._id}`}>
+                      <div className="member-view-box">
+                        <div className="member-image">
+                          <img src={imagePreview} alt="Member" />
+                          <div className="member-details">
+                            <h3>Level is {level_0.level}</h3>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </Link>
-                ))}
-                <ul className="active">
-                  {levelOne && levelOne.map((level_1, index) => (
-                    <>
-                      <li key={index}>
-                        <Link to={`/listEmployee/DetailsEmp/${level_1._id}`}>
-                          <div className="member-view-box">
-                            <div className="member-image">
-                              <img src={imagePreview} alt="Member" />
-                              <div className="member-details">
-                                <h3>{level_1 ? `Level is ${level_1.level}` : `Name is ${level_1.lineUp}`}</h3>
-                              </div>
-                            </div>
-                          </div>
-                        </Link>
+                    </Link>
+                    <ul className="active">
+                      <li >
                         <ul>
-                          {levelTwo && levelTwo.map((level_2, index) => (
-                            <li key={index}>
-                              <Link to={`/listEmployee/DetailsEmp/${level_2._id}`}>
-                                <div className="member-view-box">
-                                  <div className="member-image">
-                                    <img src={imagePreview} alt="Member" />
-                                    <div className="member-details">
-                                      <h3>{level_2 ? `Level is ${level_2.level}` : `Name is ${level_2.lineUp}`}</h3>
+                          {levelOne && levelOne.slice(0, 2).map((level_1, index) => (
+                            <>
+                              <li key={index}>
+                                <Link to={`/listEmployee/DetailsEmp/${level_1._id}`}>
+                                  <div className="member-view-box">
+                                    <div className="member-image">
+                                      <img src={imagePreview} alt="Member" />
+                                      <div className="member-details">
+                                        <h3>Member {level_1.level}</h3>
+                                      </div>
                                     </div>
                                   </div>
-                                </div>
-                              </Link>
-                              <ul>
-                                {levelThree && levelThree.map((level_3, index) => (
-                                  <li key={index}>
-                                    <Link to={`/listEmployee/DetailsEmp/${level_3._id}`}>
-                                      <div className="member-view-box">
-                                        <div className="member-image">
-                                          <img src={imagePreview} alt="Member" />
-                                          <div className="member-details">
-                                            <h3>{level_3 ? `Level is ${level_3.level}` : `Name is ${level_3.lineUp}`}</h3>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </Link>
-                                    <ul>
-                                      {levelFour && levelFour.map((level_4, index) => (
-                                        <li key={index}>
-                                          <Link to={`/listEmployee/DetailsEmp/${level_4._id}`}>
-                                            <div className="member-view-box">
-                                              <div className="member-image">
-                                                <img src={imagePreview} alt="Member" />
-                                                <div className="member-details">
-                                                  <h3>{level_4 ? `Level is ${level_4.level}` : `Name is ${level_4.lineUp}`}</h3>
-                                                </div>
+                                </Link>
+                                <ul>
+                                  {levelTwo && levelTwo.slice(0, 2).map((level_2, index) => (
+                                    <>
+                                      <li key={index}>
+                                        <Link to={`/listEmployee/DetailsEmp/${level_2._id}`}>
+                                          <div className="member-view-box">
+                                            <div className="member-image">
+                                              <img src={imagePreview} alt="Member" />
+                                              <div className="member-details">
+                                                <h3>Member {level_2.level}</h3>
                                               </div>
                                             </div>
-                                          </Link>
-                                        </li>
-                                      ))}
-                                    </ul>
-                                  </li>
-                                ))}
-                              </ul>
-                            </li>
+                                          </div>
+                                        </Link>
+                                        <ul>
+                                          {levelThree && levelThree.slice(0,2).map((level_3, index) => (
+                                            <>
+                                              <li key={index}>
+                                                <Link to={`/listEmployee/DetailsEmp/${level_3._id}`}>
+                                                  <div className="member-view-box">
+                                                    <div className="member-image">
+                                                      <img src={imagePreview} alt="Member" />
+                                                      <div className="member-details">
+                                                        <h3>Member {level_3.level}</h3>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </Link>
+                                              </li>
+                                            </>
+                                          ))}
+                                        </ul>
+                                      </li>
+                                    </>
+                                  ))}
+                                </ul>
+                              </li>
+                            </>
                           ))}
                         </ul>
                       </li>
-                    </>
-                  ))}
-                </ul>
-              </li>
-            </ul>
-          </div>
-        </div>
+                    </ul>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </TransformComponent>
+        </TransformWrapper>
+      </div>
+
       {show &&
         <>
           <div className="plan-card-emp-sub-1">

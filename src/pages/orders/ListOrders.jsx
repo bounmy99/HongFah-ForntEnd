@@ -133,7 +133,7 @@ const ListOrders = () => {
 
   useEffect(()=>{
     setLoading(true)
-      GetAllOrders(users.token).then(res=>{
+      GetAllOrders(users.token,"await").then(res=>{
         setLoading(false)
         setOrders(res.data.data);
       }).catch(err=>{

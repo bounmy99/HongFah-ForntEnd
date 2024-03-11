@@ -127,7 +127,7 @@ const Headers = () => {
                     </div>
                     <div className="name-auth">
                         <h5>
-                            {users.username}
+                            {users && users.username}
                         </h5>
                     </div>
                     <div className="icon-logout" onClick={logout}>

@@ -6,7 +6,7 @@ import { GetAllProduct } from '../../functions/Products';
 import { GetAllProductType } from '../../functions/ProductType';
 import LoadingCard from '../../components/LoadingCard';
 import InputSearch from '../../components/InputSearch';
-import { useSelector } from 'react-redux';
+import { useSelector,useDispatch } from 'react-redux';
 import PaginationComponent from '../../components/PaginationComponent';
 const initialValue = {
   productType: "",
@@ -15,6 +15,7 @@ const initialValue = {
 }
 const ListProducts = () => {
   const { users } = useSelector((state) => ({ ...state }));
+  const dispatch = useDispatch();
   const [product, setProduct] = useState([]);
   const [productTypes, setProductTypes] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -64,7 +65,13 @@ const ListProducts = () => {
       setLoading(false)
     }).catch(err => {
       setLoading(false)
-      console.log(err)
+      console.log(err.response.data.message)
+      if(err.response.data.message === 'unauthorized'){
+        dispatch({
+          type: 'USER_LOGOUT',
+          payload: null
+        })
+      }
     });
   }
   const loadAllProductType = () => {
@@ -236,14 +243,14 @@ const ListProducts = () => {
               </div>
               :
               <>
-                    {/* // product && product.slice(0, visible).map((items, idx) =>
+                {/* // product && product.slice(0, visible).map((items, idx) =>
                     // product && product.filter(searched(keyword)).map((items, idx) =>
                     // thisPageItems && thisPageItems.filter(searched(keyword)).map((items, idx) => */}
                 <div className="product-card-content">
                   <div className="main-card">
                     {
-                        // currentPages && currentPages.map((items, idx) =>
-                        product && product.slice(0, visible).map((items, idx) =>
+                      // currentPages && currentPages.map((items, idx) =>
+                      product && product.slice(0, visible).map((items, idx) =>
                         <>
                           <div className="content" key={idx}>
                             <div className="point">{items.point} PV</div>
@@ -271,32 +278,41 @@ const ListProducts = () => {
                   </div>
 
                   {
-                    visible >= count ?
-                      <div className="load-more">
-                        <button className="btn" onClick={handleShowLetle}>ສະແດງນ້ອຍລົງ</button>
-                      </div>
-                      :
-                      <div className="load-more">
-                        <button className="btn" onClick={handleShowMore}>ສະແດງເພີ່ມເຕີມ</button>
-                      </div>
+                    product.length > 0 ?  
+                      <>
+                        {
+                          visible >= count ?
+                            <div className="load-more">
+                              <button className="btn" onClick={handleShowLetle}>ສະແດງນ້ອຍລົງ</button>
+                            </div>
+                            :
+                            <div className="load-more">
+                              <button className="btn" onClick={handleShowMore}>ສະແດງເພີ່ມເຕີມ</button>
+                            </div>
+                        }
+
+                      </>
+
+                      : <h1>ບໍ່ມີຂໍ້ມູນ</h1>
+
                   }
 
                 </div>
 
               </>
           }
-                <div className="product-card-footer">
-                  <div className="add-btn">
-                    <Link to={'/listProducts/AddProduct'}>
-                      <button type="button">ເພີ່ມສິນຄ້າໃໝ່</button>
-                      <img src={icons} alt="" />
-                    </Link>
-                  </div>
-                  <div className="pagination">
-                    {/* <button className="btn-show-more" onClick={handleShowMore}>ສະແດງເພີ່ມເຕີມ</button> */}
-                    {/* <PaginationComponent count={count} setPageSize={setPageSize} pageSize={pageSize} setPages={setPages} pages={pages} /> */}
-                  </div>
-                </div>
+          <div className="product-card-footer">
+            <div className="add-btn">
+              <Link to={'/listProducts/AddProduct'}>
+                <button type="button">ເພີ່ມສິນຄ້າໃໝ່</button>
+                <img src={icons} alt="" />
+              </Link>
+            </div>
+            <div className="pagination">
+              {/* <button className="btn-show-more" onClick={handleShowMore}>ສະແດງເພີ່ມເຕີມ</button> */}
+              {/* <PaginationComponent count={count} setPageSize={setPageSize} pageSize={pageSize} setPages={setPages} pages={pages} /> */}
+            </div>
+          </div>
         </div>
       </div>
     </>

@@ -95,76 +95,20 @@ const InfoOrders = () => {
             ),
             width: '162px'
         }
-        // {
-        //     name: "ສະຖານທີຈັດສົ່ງ",
-        //     sortable: true,
-        //     selector: (row) => row.address,
-        //     cell: row => (
-        //         <div className="name-product">
-        //             <div className="location">
-        //                 <h4>{row.location.company}</h4>
-        //                 <p>{row.location.address}</p>
-        //             </div>
-        //         </div>
-        //     ),
-        //     width: '162px'
-        // }
+   
     ];
 
-    const handleCancel = () => {
-        Swal.fire({
-            title: "ຕ້ອງການປະຕິເສດແທ້ບໍ່",
-            text: "ຖ້າທ່ານປະຕິເສັດໄປແລ້ວບໍ່ສາມາດອະນຸມັດໄດ້ອີກ!",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "ຢືນຢັນ",
-            cancelButtonText: "ຍົກເລິກ",
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Swal.fire({
-                    title: "ສຳເລັດ",
-                    text: "ການປະຕິເສັດສຳເລັດແລ້ວ.",
-                    icon: "success",
-                    confirmButtonText: "ຕົກລົງ",
-                });
-                navigate("/HomeOrders", { state: { key: 3 } });
-            }
-        });
-    }
-    const handleAllow = () => {
-        Swal.fire({
-            title: "ຢືນຢັນການອະນຸມັດ",
-            text: "ທ່ານຕ້ອງການຢືນຢັນການອະນຸມັດແທ້ບໍ່!",
-            description: "dadfdsfsdfa",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "ຢືນຢັນ",
-            cancelButtonText: "ຍົກເລິກ",
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Swal.fire({
-                    title: "ສຳເລັດ",
-                    text: "ຢືນຢັນການອະນຸມັດ.",
-                    icon: "success",
-                    confirmButtonText: "ຕົກລົງ",
-                });
-                navigate("/HomeOrders", { state: { key: 2 } });
-            }
-        });
-    }
     return (
         <div className="card-main">
             <div className="Card">
                 <div className="card-header">
                     <div className="text-tilte">
-                        <Link to={'/HomeOrders'} className="text-link">
+                        <button onClick={()=>{
+                             navigate("/HomeOrders", { state: { key: 3 } })
+                        }} className="text-link">
                             <i className='bx bx-chevron-left'></i>
                             ກັບໄປໜ້າກ່ອນ
-                        </Link>
+                        </button>
                     </div>
                     <div className="btn-del">
                         <button type="button" onClick={() => { alert("Delete ?") }}>
@@ -237,10 +181,6 @@ const InfoOrders = () => {
                                     customStyles={customStyles}
                                 />}
                             </div>
-                        </div>
-                        <div className="btn-allow">
-                            <button type="button" className="unsuccess" onClick={handleCancel}>ປະຕິເສດ</button>
-                            <button type="button" className="success" onClick={handleAllow}>ອະນຸມັດ</button>
                         </div>
                     </div>
                 </div>

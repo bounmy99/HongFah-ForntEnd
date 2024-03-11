@@ -45,7 +45,7 @@ const LoginPages = () => {
     }
     Login(value).then(res => {
       setLoading(false)
-      console.log(res.data.data)
+      // console.log(res.data.data)
       dispatch({
         type: "USER_LOGIN",
         payload: {
@@ -55,7 +55,8 @@ const LoginPages = () => {
           phoneNumber: res.data.data.phoneNumber,
           username: `${res.data.data.firstName} ${res.data.data.lastName}`,
           role: res.data.data.role,
-          userCode: res.data.data.userCode
+          userCode: res.data.data.userCode,
+          tokenExpiresAt : res.data.data.tokenExpiresAt
         }
       })
       const Toast = Swal.mixin({
@@ -79,9 +80,6 @@ const LoginPages = () => {
       setLoading(false)
       console.log('Error', err)
     })
-
-
-
   }
 
   const handleChange = (e) => {

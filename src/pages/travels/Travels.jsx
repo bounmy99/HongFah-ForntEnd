@@ -9,21 +9,23 @@ import LoadingCard from '../../components/LoadingCard';
 import { GetAllTrip } from './../../functions/Trip';
 const Travels = () => {
   const { users } = useSelector((state) => ({ ...state }))
-  const [product, setProduct] = useState([])
+  const [trip, setTrip] = useState([])
   const [loading, setLoading] = useState(false);
   const [startDate, setStartDate] = useState(new Date());
 
   useEffect(() => {
-    LoadData()
+    LoadData();
   }, [])
 
   const LoadData = () => {
     setLoading(true)
     GetAllTrip(users.token).then((res) => {
-      setProduct(res.data.data)
+      setTrip(res.data.data)
       setLoading(false)
     })
   }
+
+  console.log("Trips", trip)
 
   const styles = {
     margin: 5,
@@ -111,7 +113,7 @@ const Travels = () => {
           </div>
           :
           <div class="trip-cards">
-            {product && product.map((item, idx) =>
+            {trip && trip.map((item, idx) =>
               <div className="cards" key={idx}>
                 { item.images && item.images[0] 
                  ?
@@ -123,12 +125,12 @@ const Travels = () => {
                   <span className="text-right">{item.name}</span>
                 </div>
                 <div className="cards-body">
-                  <h5>{`${item.details && item.details.substring(0, 30)}.....`}</h5>
+                  <h5>{`${item.placeName && item.placeName.substring(0, 60)}`}</h5>
                   <ul>
-                    <li>7 ມື້ / 6 ຄືນ</li>
-                    <li>{item.limit}</li>
+                    <li>{item.period}</li>
+                    <li>{item.amount} ຄົນ</li>
                   </ul>
-                  <h3>ວັນທີເດີນທາງ 4.7.2024</h3>
+                  <h3>ວັນທີເດີນທາງ {new Date(item.departureDate).toLocaleDateString()}</h3>
                 </div>
                 <div className="cards-btn">
                   <div className="btn-del-ed">

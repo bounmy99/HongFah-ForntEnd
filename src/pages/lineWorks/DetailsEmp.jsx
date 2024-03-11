@@ -28,8 +28,17 @@ const DetailsEmp = () => {
             <p>PriceTotal : {detail.priceTotal}</p>
             <p>PV Total : {detail.pvTotal}</p>
             <hr />
+            <div>
+               IMAGE : <img src={detail.user_id && detail.user_id.profile} alt=""  />
+            </div>
             <p>
                 USER CODE :  {detail.user_id && detail.user_id.userCode}
+            </p>
+            <p>
+                PACKAGE ID :  {detail.user_id && detail.user_id.package_id}
+            </p>
+            <p>
+                POSITION ID :  {detail.user_id && detail.user_id.position_id}
             </p>
             <p>
                 FULL NAME :  {detail.user_id && `${detail.user_id.firstName}  ${detail.user_id.lastName}`}

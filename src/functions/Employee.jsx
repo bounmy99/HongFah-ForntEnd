@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // export const GetAllEmployee = async(token)=>{
-//     return await axios.get(`${import.meta.env.VITE_HONGFHA_API}/linework/getroot14816`,{
+//     return await axios.get(`${import.meta.env.VITE_HONGFHA_API}/linework/getroot`,{
 //         headers:{Authorization: `Bearer ${token}`}
 //     })
 // }

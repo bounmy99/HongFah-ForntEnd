@@ -9,9 +9,7 @@ import { createStore, applyMiddleware } from 'redux';
 import { thunk } from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import rootReducer from './components/redux/index.jsx';
-const store = createStore(rootReducer, applyMiddleware(thunk));
-
-import './index.css'
+const store = createStore(rootReducer, composeWithDevTools());
 import 'boxicons/css/boxicons.min.css'
 ReactDOM.createRoot(document.getElementById('root')).render(
  

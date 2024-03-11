@@ -67,10 +67,12 @@ const AddTravels = () => {
       <div className="card-add-detail">
         <div className="card-detail-header" id="add-detail">
           <div className="text-tilte">
-            <Link to={'/travels'} className="text-link">
+            <button
+            onClick={()=>navigate('/travels')}
+            className="text-link">
               <i class='bx bx-chevron-left'></i>
               ກັບໄປໜ້າກ່ອນ
-            </Link>
+            </button>
           </div>
         </div>
         <form onSubmit={handleSubmit}  encType="multipart/form-data" >
@@ -91,7 +93,7 @@ const AddTravels = () => {
                  ? <img src={image} alt={fileName} className="img-fluid" /> 
                  : <><img src={ImagePreviews} className="img-fluid" /> <h3>ຮູບພາບສະຖານທີ</h3></>}
 
-                <input type="file" name=""  className="input-file" hidden
+                <input type="file" name="images"  className="input-file" hidden
                   onChange={({ target: { files } }) => {
                     files[0] && setFileName(files[0].name)
                     if (files) {
@@ -105,23 +107,27 @@ const AddTravels = () => {
             <div className="form-group">
               <div className="input-group">
                 <label htmlFor="">ຊື່ສະຖານທີ່</label>
-                <input type="text" name="name"  className="form-controls-md" onChange={handleChange}  />
+                <input type="text" name="placeName"  className="form-controls-md" onChange={handleChange}  />
               </div>
               <div className="input-group">
                 <label htmlFor="">ມື້ເດີນທາງ</label>
-                <input type="date" name=""  className="form-controls-md" onChange={handleChange}  />
+                <input type="date" name="departureDate"  className="form-controls-md" onChange={handleChange}  />
               </div>
               <div className="input-group">
                 <label htmlFor="">ໄລຍະເວລາ</label>
-                <input type="text" name=""  className="form-controls-md" onChange={handleChange}  />
+                <input type="text" name="period"  className="form-controls-md" onChange={handleChange}  />
               </div>
               <div className="input-group">
                 <label htmlFor="">ຈຳນວນຜູ້ເດີນທາງ</label>
-                <input type="text" name="limit"  className="form-controls-md" onChange={handleChange}  />
+                <input type="text" name="amount"  className="form-controls-md" onChange={handleChange}  />
+              </div>
+              <div className="input-group">
+                <label htmlFor="">level</label>
+                <input type="text" name="level"  className="form-controls-md" onChange={handleChange}  />
               </div>
               <div className="input-group">
                 <label htmlFor="">ເງຶ່ອນໄຂຜຸ້ເຂົ້າຮ່ວມ</label>
-                <textarea name="details"  cols="30" rows="10" onChange={handleChange}>
+                <textarea name="condition"  cols="30" rows="10" onChange={handleChange}>
                 </textarea>
               </div>
             </div>

@@ -1,207 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import TableComponent from '../../components/TableComponent';
 import product from '../../assets/image/lotions.png'
-const OrderList = [
-  {
-    images: 'ຮູບພາບ',
-    name: 'Handmade Pouch',
-    amount: 1900,
-    price: '84 ລ້ານກີບ',
-    reciver: "ທ່ານ ທອງຈັນ ມະນີວົງ",
-    date: "01 jun 2023",
-    address: "ນະຄອນຫຼວງ",
-    status : "cancel",
-    more : "ເພີ່ມເຕີມ"
-  },
-  {
-    images: 'ຮູບພາບ',
-    name: 'SmartWatch',
-    amount: 2900,
-    price: '80 ລ້ານກີບ',
-    reciver: "ທ່ານ ທອງຈັນ ມະນີວົງ",
-    date: "01 jun 2023",
-    address: "ນະຄອນຫຼວງ",
-    status : "cancel",
-    more : "ເພີ່ມເຕີມ"
-  },
-  {
-    images: 'ຮູບພາບ',
-    name: 'EarPhone',
-    amount: 3900,
-    price: '50 ລ້ານກີບ',
-    reciver: "ທ່ານ ທອງຈັນ ມະນີວົງ",
-    date: "01 jun 2023",
-    address: "ນະຄອນຫຼວງ",
-    status : "cancel",
-    more : "ເພີ່ມເຕີມ"
-  },
-  {
-    images: 'ຮູບພາບ',
-    name: 'Computer',
-    amount: 5900,
-    price: '74 ລ້ານກີບ',
-    reciver: "ທ່ານ ທອງຈັນ ມະນີວົງ",
-    date: "01 jun 2023",
-    address: "ນະຄອນຫຼວງ",
-    status : "cancel",
-    more : "ເພີ່ມເຕີມ"
-  },
-  {
-    images: 'ຮູບພາບ',
-    name: 'Mobile',
-    amount: 7900,
-    price: '184 ລ້ານກີບ',
-    reciver: "ທ່ານ ທອງຈັນ ມະນີວົງ",
-    date: "01 jun 2023",
-    address: "ນະຄອນຫຼວງ",
-    status : "cancel",
-    more : "ເພີ່ມເຕີມ"
-  },
-  {
-    images: 'ຮູບພາບ',
-    name: 'Mobile',
-    amount: 7900,
-    price: '184 ລ້ານກີບ',
-    reciver: "ທ່ານ ທອງຈັນ ມະນີວົງ",
-    date: "01 jun 2023",
-    address: "ນະຄອນຫຼວງ",
-    status : "cancel",
-    more : "ເພີ່ມເຕີມ"
-  },
-  {
-    images: 'ຮູບພາບ',
-    name: 'Mobile',
-    amount: 7900,
-    price: '184 ລ້ານກີບ',
-    reciver: "ທ່ານ ທອງຈັນ ມະນີວົງ",
-    date: "01 jun 2023",
-    address: "ນະຄອນຫຼວງ",
-    status : "cancel",
-    more : "ເພີ່ມເຕີມ"
-  },
-  {
-    images: 'ຮູບພາບ',
-    name: 'Mobile',
-    amount: 7900,
-    price: '184 ລ້ານກີບ',
-    reciver: "ທ່ານ ທອງຈັນ ມະນີວົງ",
-    date: "01 jun 2023",
-    address: "ນະຄອນຫຼວງ",
-    status : "cancel",
-    more : "ເພີ່ມເຕີມ"
-  },
-  {
-    images: 'ຮູບພາບ',
-    name: 'Mobile',
-    amount: 7900,
-    price: '184 ລ້ານກີບ',
-    reciver: "ທ່ານ ທອງຈັນ ມະນີວົງ",
-    date: "01 jun 2023",
-    address: "ນະຄອນຫຼວງ",
-    status : "cancel",
-    more : "ເພີ່ມເຕີມ"
-  },
-  {
-    images: 'ຮູບພາບ',
-    name: 'Mobile',
-    amount: 7900,
-    price: '184 ລ້ານກີບ',
-    reciver: "ທ່ານ ທອງຈັນ ມະນີວົງ",
-    date: "01 jun 2023",
-    address: "ນະຄອນຫຼວງ",
-    status : "cancel",
-    more : "ເພີ່ມເຕີມ"
-  },
-  {
-    images: 'ຮູບພາບ',
-    name: 'Mobile',
-    amount: 7900,
-    price: '184 ລ້ານກີບ',
-    reciver: "ທ່ານ ທອງຈັນ ມະນີວົງ",
-    date: "01 jun 2023",
-    address: "ນະຄອນຫຼວງ",
-    status : "cancel",
-    more : "ເພີ່ມເຕີມ"
-  },
-  {
-    images: 'ຮູບພາບ',
-    name: 'Mobile',
-    amount: 7900,
-    price: '184 ລ້ານກີບ',
-    reciver: "ທ່ານ ທອງຈັນ ມະນີວົງ",
-    date: "01 jun 2023",
-    address: "ນະຄອນຫຼວງ",
-    status : "cancel",
-    more : "ເພີ່ມເຕີມ"
-  },
-  {
-    images: 'ຮູບພາບ',
-    name: 'Mobile',
-    amount: 7900,
-    price: '184 ລ້ານກີບ',
-    reciver: "ທ່ານ ທອງຈັນ ມະນີວົງ",
-    date: "01 jun 2023",
-    address: "ນະຄອນຫຼວງ",
-    status : "cancel",
-    more : "ເພີ່ມເຕີມ"
-  },
-  {
-    images: 'ຮູບພາບ',
-    name: 'Mobile',
-    amount: 7900,
-    price: '184 ລ້ານກີບ',
-    reciver: "ທ່ານ ທອງຈັນ ມະນີວົງ",
-    date: "01 jun 2023",
-    address: "ນະຄອນຫຼວງ",
-    status : "cancel",
-    more : "ເພີ່ມເຕີມ"
-  },
-  {
-    images: 'ຮູບພາບ',
-    name: 'Mobile',
-    amount: 7900,
-    price: '184 ລ້ານກີບ',
-    reciver: "ທ່ານ ທອງຈັນ ມະນີວົງ",
-    date: "01 jun 2023",
-    address: "ນະຄອນຫຼວງ",
-    status : "cancel",
-    more : "ເພີ່ມເຕີມ"
-  },
-  {
-    images: 'ຮູບພາບ',
-    name: 'Mobile',
-    amount: 7900,
-    price: '184 ລ້ານກີບ',
-    reciver: "ທ່ານ ທອງຈັນ ມະນີວົງ",
-    date: "01 jun 2023",
-    address: "ນະຄອນຫຼວງ",
-    status : "cancel",
-    more : "ເພີ່ມເຕີມ"
-  },
-  {
-    images: 'ຮູບພາບ',
-    name: 'Mobile',
-    amount: 7900,
-    price: '184 ລ້ານກີບ',
-    reciver: "ທ່ານ ທອງຈັນ ມະນີວົງ",
-    date: "01 jun 2023",
-    address: "ນະຄອນຫຼວງ",
-    status : "cancel",
-    more : "ເພີ່ມເຕີມ"
-  },
-  {
-    images: 'ຮູບພາບ',
-    name: 'Mobile',
-    amount: 7900,
-    price: '184 ລ້ານກີບ',
-    reciver: "ທ່ານ ທອງຈັນ ມະນີວົງ",
-    date: "01 jun 2023",
-    address: "ນະຄອນຫຼວງ",
-    status : "cancel",
-    more : "ເພີ່ມເຕີມ"
-  }
-];
+import { GetAllOrders } from '../../functions/Orders';
+import { useSelector } from 'react-redux';
+
 
 const customStyles = {
   rows: {
@@ -233,10 +36,10 @@ const customStyles = {
 const columns = [
   {
     name: "ຮູບພາບ",
-    selector: (row) => (row.image),
+    selector: (row) => (row.products[0].image),
     cell: row => (
       <div className="name-product">
-        <img src={product} alt={row.image} width={50} height={50} />
+        <img src={row.products[0].image} alt={row.products[0].name} width={50} height={50} />
       </div>
     ),
     sortable: true,
@@ -244,30 +47,30 @@ const columns = [
   },
   {
     name: "ໍຊື່ສິນຄ້າ",
-    selector: (row) => (row.name),
+    selector: (row) => row.products[0].name,
     sortable: true,
     width: '130px'
   },
   {
     name: "ຈຳນວນ",
-    selector: (row) => row.amount,
+    selector: (row) => row.products[0].qty,
     sortable: true,
     width: '100px'
   },
   {
     name: "ລາຄາ",
     sortable: true,
-    selector: (row) => row.price,
+    selector: (row) => row.products[0].price,
     width: '118px'
   },
   {
     name: "ຜູ້ຮັບ",
     sortable: true,
-    selector: (row) => row.reciver,
+    selector: (row) => row.orderFor.firstName,
     cell: row => (
       <div className="name-product">
         <div className="flex-name">
-          <p>{row.reciver}</p>
+          <p>{`${row.orderFor.firstName} ${row.orderFor.lastName}`}</p>
           <span>Daimonds</span>
         </div>
       </div>
@@ -277,19 +80,19 @@ const columns = [
   {
     name: "ວັນທີສັ່ງຊື້",
     sortable: true,
-    selector: (row) => row.date,
-    cell: row => (<p>{row.date}</p>),
+    selector: (row) => row.createdAt,
+    cell: row => (<p>{new Date(row.createdAt).toLocaleDateString()}</p>),
     width: '118px'
   },
   {
     name: "ຈຸດໝາຍ",
     sortable: true,
-    selector: (row) => row.address,
+    selector: (row) => row.delivery.type,
     cell: row => (
       <div className="name-product">
         <div className="flex-name">
-          <p>{row.address}</p>
-          <span>ເສດຖາ</span>
+          <p>{row.delivery.type}</p>
+          <span>{`${row.delivery.express}`}</span>
         </div>
       </div>
     ),
@@ -309,10 +112,10 @@ const columns = [
   {
     name: "ເພີ່ມເຕີມ",
     sortable: true,
-    selector: (row) => row.id,
+    selector: (row) => row._id,
     cell: row => (
       <div className="status-status">        
-        <Link to="/HomeOrders/infoCancel/01202211" style={{textDecoration : 'none'}}>
+        <Link to={`/HomeOrders/infoCancel/${row._id}`} style={{textDecoration : 'none'}}>
         <p style={{color:'#00A4CD', fontWeight: "bold"}}>ລາຍລະອຽດ</p>
         </Link>
       </div>
@@ -322,10 +125,22 @@ const columns = [
 
 ];
 const CancelOrders = () => {
+  const { users } = useSelector((state)=>({...state}))
 
+  const [cancelOrder, setCancelOrder] = useState([]);
+
+  useEffect(()=>{
+      GetAllOrders(users.token,"cancel").then(res=>{
+        setCancelOrder(res.data.data);
+      }).catch(err=>{
+        console.log(err)
+      })
+  },[]);
+
+  console.log("Cancelled Order", cancelOrder)
   return (
     <div>
-      <TableComponent columns={columns} customStyles={customStyles} data={OrderList} />
+      <TableComponent columns={columns} customStyles={customStyles} data={cancelOrder} />
     </div>
   )
 }

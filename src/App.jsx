@@ -58,10 +58,7 @@ function App() {
         }
       })
     }
-    if (users && users.tokenExpiresAt){
-      console.log('tokenExpiresAt')
-    }
-
+  
   }, [])
 
   return (
@@ -184,7 +181,7 @@ function App() {
                     </RouteProtect>
                   } />
 
-                  <Route path="/homeSales" element={
+                  <Route path="/Bonus" element={
                     <RouteProtect>
                       <HomeSales />
                     </RouteProtect>

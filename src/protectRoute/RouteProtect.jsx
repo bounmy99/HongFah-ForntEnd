@@ -9,7 +9,7 @@ const RouteProtect = ({children}) => {
       if(users && users.token && users.role === "admin"){
         setLogined(true)
       }
-    },[users]);
+    },[users.token,users.role,users.role === "admin"]);
 
   return logined && users.token && users.role === "admin" 
   ? 

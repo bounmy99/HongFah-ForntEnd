@@ -1,20 +1,22 @@
 import React, { useState, useEffect } from 'react'
-import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { useSelector,useDispatch } from 'react-redux';
+import { Link,useNavigate } from 'react-router-dom';
 // function 
 import { GetAllUser, Permission,DeleteUser } from '../../functions/Authentication';
 import LoadingInfo from '../../components/LoadingInfo';
 import Swal from 'sweetalert2';
-import { Button, Tooltip, ConfigProvider } from 'antd';
+import { Button, Tooltip, Empty } from 'antd';
 import { EyeOutlined, DeleteOutlined } from '@ant-design/icons';
 const Auth = () => {
   const { users } = useSelector((state) => ({ ...state }))
-
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [user, setUser] = useState([]);
   const [loading, setLoading] = useState(false);
   const [visible, setVisible] = useState(6);
   const [count, setCount] = useState("");
-  const [roleList, setRoleList] = useState([])
+  const [roleList, setRoleList] = useState([]);
+  const [authEmpty, setAuthEmpty] = useState('')
 
   useEffect(() => {
     setLoading(true)
@@ -31,6 +33,14 @@ const Auth = () => {
     }).catch(err => {
       setLoading(false);
       console.log(err)
+      setAuthEmpty(err.response.data.message);
+      if(err.response.data.message === 'unauthorized'){
+        dispatch({
+          type: 'USER_LOGOUT',
+          payload: null
+        })
+        navigate('/')
+      }
     })
   }
 
@@ -38,7 +48,7 @@ const Auth = () => {
     setVisible((show) => show + 3)
   }
   const handleShowLetle = () => {
-    setVisible((show) => show - 6)
+    setVisible((show) => show - 3)
   }
 
   const handleRoles = (e, id) => {
@@ -48,7 +58,8 @@ const Auth = () => {
       role: e.target.value
     }
     Permission(users.token, value.role, value.id).then(res => {
-      if (res.data.message) {
+      if (res.data.message === 'success') {
+        loadData();
         Swal.fire({
           position: "center",
           icon: "success",
@@ -56,7 +67,6 @@ const Auth = () => {
           showCancelButton: false,
           // timer : 3500
         });
-        loadData();
       }
     }).catch((err) => {
       console.log(err)
@@ -105,13 +115,29 @@ const Auth = () => {
           </Link>
         </div>
       </div>
+
       {loading ?
 
         // <Loading paragraph={15}/> 
         <LoadingInfo count={15} />
 
         :
-
+        authEmpty ?
+        <div className="empty-card">
+                            <Empty
+                                image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
+                                imageStyle={{
+                                    height: 60,
+                                }}
+                                description={
+                                    <span>
+                                        <a>{authEmpty}</a>
+                                    </span>
+                                }
+                            >
+                            </Empty>
+                        </div>
+        :
         <div className="auth-list">
           <table cellPadding={0} cellSpacing={1}>
             {user && user.slice(0, visible).map((u, i) =>

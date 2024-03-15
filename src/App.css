@@ -50,6 +50,20 @@
   background: transparent;
 }
 
+.btn-empty {
+  background-color: #028FCE;
+  border: none;
+  width: 80px;
+  height: 30px;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-empty:hover {
+  background-color: #10b0fa;
+}
+
 .load-more {
   display: flex;
   justify-content: center !important;
@@ -124,7 +138,7 @@
 }
 
 .btn-orange {
-  background: linear-gradient(180deg, #FFD663 0%, #FFBC00 100%);
+  background: linear-gradient(180deg, #f0be35 0%, #FFBC00 100%);
   color: #F3E8FF;
   cursor: pointer;
   border: none;
@@ -2977,7 +2991,7 @@ body {
 }
 
 .trip-cards .cards {
-  height: 27rem;
+  height: 26rem;
   padding: 1rem;
   border-radius: .5rem;
   background: #FFF;
@@ -2987,7 +3001,7 @@ body {
 .cards img {
   border-radius: 10px;
   width: 14.2rem;
-  height: 12rem;
+  height: 14rem;
 }
 
 
@@ -3003,6 +3017,7 @@ body {
 }
 
 .cards-body {
+  margin-top: 15px;
   color: #979797;
 
   h5 {
@@ -3100,19 +3115,7 @@ body {
 
 }
 
-.save-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: 12rem;
 
-  button {
-    width: 6rem;
-    padding: 5px;
-    font-size: 18px;
-    font-weight: bold
-  }
-}
 
 .card-detail-add-content {
   margin-top: 20px;
@@ -3123,6 +3126,23 @@ body {
 .detail-add-img {
   width: 25rem;
   height: 30rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  && .save-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 0px;
+
+    button {
+      width: 8rem;
+      padding: 5px;
+      font-size: 18px;
+      font-weight: bold
+    }
+  }
 }
 
 
@@ -3250,6 +3270,7 @@ body {
   align-items: center;
   justify-content: center;
   margin-left: 12rem;
+  gap: 1rem;
 
   button {
     width: 6rem;
@@ -3277,34 +3298,67 @@ body {
   height: 10rem;
   object-fit: cover;
   border-radius: 15px;
-  -webkit-border-radius: 15px;
-  -moz-border-radius: 15px;
-  -ms-border-radius: 15px;
-  -o-border-radius: 15px;
-}
-
-.star {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  span {
-    color: #7A7C90;
-    font-weight: bold;
-  }
-
-  span i {
-    color: rgb(252, 248, 46);
-  }
 }
 
 .form-group .input-group label {
   color: #7A7C90;
 }
+.card-add-membe-trip{
+  margin-top: 2rem;
+  display: flex;
+}
 
 .detail-table {
   width: 47rem;
+
+  && .card-table {
+    display: flex;
+    height: 20.3rem;
+    gap: 2rem;
+
+    && .table-show-member table{
+    margin-top: 15px;
+    width: 47rem;
+    background-color: var(--card-color);
+    border-radius: 10px 10px 0px 0px;
+    box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.20);
+    border: 1px solid var(#D2D5D9);
+    
+  }
+    && .table-show-member table{
+    border: none;
+  }
+    && .table-show-member table thead tr{
+    background-color: #37b4e6;
+  }
+    && .table-show-member table th{
+    color : #fff;
+    height: 3rem;
+  }
+    && .table-show-member table tr td{
+    text-align: center;
+    height: 3.5rem;
+    border-bottom: 1px solid #9c9c9c;
+  }
+    && .table-show-member table tr:last-child td{
+    text-align: center;
+    height: 3.5rem;
+    border-bottom: none;
+  }
+  }
+  .add-member-form-group{
+    display: flex;
+    justify-content: center;
+  }
+  .pagination-member{
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+  }
+  
+  
 }
+
 
 .detail-btn {
   display: flex;
@@ -3337,7 +3391,7 @@ body {
     resize: none;
     outline: none;
     padding: 10px;
-    height: 10rem;
+    height: 8.5rem;
     color: #7A7C90;
     border: 1px solid #acadb1;
   }
@@ -3414,92 +3468,101 @@ body {
   width: 100px;
   cursor: pointer;
 }
-.auth-list table{
+
+.auth-list table {
   font-size: 12px;
 }
+
 .auth-list-img {
   width: 30px;
   height: 30px;
   border-radius: 2px;
 }
-.btn-auth-action{
+
+.btn-auth-action {
   display: flex;
   gap: 5px;
 }
-.auth-list .btn-user-detail{
+
+.auth-list .btn-user-detail {
   width: 40px;
   height: 30px;
   border-radius: 15px;
   outline: none;
-  cursor : pointer;
-  border : none;
+  cursor: pointer;
+  border: none;
   background-color: #0e86b6;
-  color : #fff;
+  color: #fff;
 }
-.auth-list .btn-user-detail:hover{
+
+.auth-list .btn-user-detail:hover {
   background-color: #1eafe9;
-  color : #fff;
+  color: #fff;
 }
-.auth-list .btn-user-delete{
+
+.auth-list .btn-user-delete {
   width: 40px;
   height: 30px;
   border-radius: 15px;
   outline: none;
-  cursor : pointer;
-  border : none;
+  cursor: pointer;
+  border: none;
   background-color: #ec2424;
-  color : #fff;
+  color: #fff;
 }
-.auth-list .btn-user-delete:hover{
+
+.auth-list .btn-user-delete:hover {
   background-color: #fc5d5d;
-  color : #fff;
+  color: #fff;
 }
-.select-roles{
-  border : none;
+
+.select-roles {
+  border: none;
   background-color: transparent;
   outline: none;
   cursor: pointer;
 }
 
 /* ================= start add-user ================ */
-.card-user-add-content{
+.card-user-add-content {
   display: flex;
   justify-content: center;
   width: 100%;
-  gap : 2rem;
+  gap: 2rem;
 
-  &&
-  .user-btn{
+  && .user-btn {
     margin-top: 20px;
     display: flex;
     justify-content: center;
-    gap : 1rem;
-  
-    && .btn-add-user{
-        padding: 3px;
-        width: 6rem;
-        height: 2.5rem;
-        font-size: 17px;
-        border-radius: 5px;
-        border: none;
-        cursor: pointer;
-        outline: none;
-        background-color: #00AEEF;
-        color: white;
+    gap: 1rem;
+
+    && .btn-add-user {
+      padding: 3px;
+      width: 6rem;
+      height: 2.5rem;
+      font-size: 17px;
+      border-radius: 5px;
+      border: none;
+      cursor: pointer;
+      outline: none;
+      background-color: #00AEEF;
+      color: white;
     }
-    && .btn-cancel-user{
-        padding: 3px;
-        width: 6rem;
-        height: 2.5rem;
-        font-size: 17px;
-        border-radius: 5px;
-        border: none;
-        cursor: pointer;
-        outline: none;
-        background-color: #ef0000;
-        color: white;
+
+    && .btn-cancel-user {
+      padding: 3px;
+      width: 6rem;
+      height: 2.5rem;
+      font-size: 17px;
+      border-radius: 5px;
+      border: none;
+      cursor: pointer;
+      outline: none;
+      background-color: #ef0000;
+      color: white;
     }
-    && .btn-add-user:hover{
+
+    && .btn-add-user:hover {
       padding: 3px;
       width: 6rem;
       height: 2.5rem;
@@ -3510,8 +3573,9 @@ body {
       outline: none;
       background-color: #4dc2ec;
       color: white;
-  }
-  && .btn-cancel-user:hover{
+    }
+
+    && .btn-cancel-user:hover {
       padding: 3px;
       width: 6rem;
       height: 2.5rem;
@@ -3522,89 +3586,91 @@ body {
       outline: none;
       background-color: #fd5d5d;
       color: white;
+    }
   }
-  }
- 
-  &&
-  .user-add-form{
+
+  && .user-add-form {
     display: flex;
     flex-direction: column;
     gap: 1rem;
     width: 45rem;
   }
 }
+
 /* ================= end add-user ================ */
 /* ================= start add-update ================ */
-.card-user-update-content{
+.card-user-update-content {
   display: flex;
   width: 100%;
-  gap : 2rem;
+  gap: 2rem;
 
-  &&
-  .user-btn{
+  && .user-btn {
     margin-top: 20px;
     display: flex;
     justify-content: center;
-    gap : 1rem;
-  
-    && .btn-add-user{
-        padding: 3px;
-        width: 6rem;
-        height: 2.5rem;
-        font-size: 17px;
-        border-radius: 5px;
-        border: none;
-        cursor: pointer;
-        outline: none;
-        background-color: #00AEEF;
-        color: white;
+    gap: 1rem;
+
+    && .btn-add-user {
+      padding: 3px;
+      width: 6rem;
+      height: 2.5rem;
+      font-size: 17px;
+      border-radius: 5px;
+      border: none;
+      cursor: pointer;
+      outline: none;
+      background-color: #00AEEF;
+      color: white;
     }
-    && .btn-cancel-user{
-        padding: 3px;
-        width: 6rem;
-        height: 2.5rem;
-        font-size: 17px;
-        border-radius: 5px;
-        border: none;
-        cursor: pointer;
-        outline: none;
-        background-color: #ef0000;
-        color: white;
+
+    && .btn-cancel-user {
+      padding: 3px;
+      width: 6rem;
+      height: 2.5rem;
+      font-size: 17px;
+      border-radius: 5px;
+      border: none;
+      cursor: pointer;
+      outline: none;
+      background-color: #ef0000;
+      color: white;
     }
-    && .btn-add-user:hover{
-        padding: 3px;
-        width: 6rem;
-        height: 2.5rem;
-        font-size: 17px;
-        border-radius: 5px;
-        border: none;
-        cursor: pointer;
-        outline: none;
-        background-color: #4dc2ec;
-        color: white;
+
+    && .btn-add-user:hover {
+      padding: 3px;
+      width: 6rem;
+      height: 2.5rem;
+      font-size: 17px;
+      border-radius: 5px;
+      border: none;
+      cursor: pointer;
+      outline: none;
+      background-color: #4dc2ec;
+      color: white;
     }
-    && .btn-cancel-user:hover{
-        padding: 3px;
-        width: 6rem;
-        height: 2.5rem;
-        font-size: 17px;
-        border-radius: 5px;
-        border: none;
-        cursor: pointer;
-        outline: none;
-        background-color: #fd5d5d;
-        color: white;
+
+    && .btn-cancel-user:hover {
+      padding: 3px;
+      width: 6rem;
+      height: 2.5rem;
+      font-size: 17px;
+      border-radius: 5px;
+      border: none;
+      cursor: pointer;
+      outline: none;
+      background-color: #fd5d5d;
+      color: white;
     }
   }
- 
-  &&
-  .user-update-form{
+
+  && .user-update-form {
     display: flex;
     flex-direction: column;
     gap: 1rem;
     width: 45rem;
   }
 }
+
 /* ================= end add-update ================ */
 
 /* ================ Auth End================= */
@@ -4119,7 +4185,6 @@ body {
 
 /* ============================= Package ============================= */
 .package-container {
-  /* background-color: rgb(58, 17, 17); */
   display: flex;
   flex-wrap: wrap;
   height: 34rem;
@@ -4287,8 +4352,6 @@ body {
   /* background-color: rgb(58, 17, 17); */
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  /* justify-content: center; */
   height: 34rem;
   gap: .5rem 2.5rem
 }
@@ -4500,6 +4563,62 @@ body {
 }
 
 .withdraw-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+
+}
+
+.withdraw-btns {
+  padding: 8px;
+  width: 150px;
+  height: 45px;
+  border-radius: 5px;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn-await-withdraw {
+  border: 2px solid #f89045
+}
+
+.btn-await-monney {
+  border: 2px solid #e9c35a;
+}
+
+.btn-history {
+  border: 2px solid #3be240;
+}
+
+.btn-cancel {
+  border: 2px solid #ef0000
+}
+
+.btn-await-withdraw.active {
+  background-color: #f89045;
+  color: #fff;
+}
+
+.btn-await-monney.active {
+  background-color: #e9c35a;
+  color: #fff;
+}
+
+.btn-history.active {
+  background-color: #3be240;
+  color: #fff;
+}
+
+.btn-cancel.active {
+  background-color: #ef0000;
+  color: #fff;
+}
+
+.btn-withdraw {
   width: 130px;
   display: flex;
   align-items: center;
@@ -4507,11 +4626,8 @@ body {
   background: rgba(62, 201, 238, 0.60);
   padding: 3px;
   border-radius: 10px;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  -ms-border-radius: 10px;
-  -o-border-radius: 10px;
   cursor: pointer;
+  text-decoration: none;
 
   img {
     width: 60px;
@@ -4742,6 +4858,7 @@ body {
   background: linear-gradient(180deg, #44f72c 0%, #47d442 100%);
   box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.10);
 }
+
 .withdraw-status .status-success {
   border-radius: 0.3125rem;
   color: #fff;
@@ -5010,7 +5127,7 @@ body {
 
 .CreateWithDraw-content .CreateWithDraw-form-group .input-group-CreateWithDraw .form-modal-control-CreateWithDraw {
   position: relative;
-  width: 100%;
+  width: 25rem;
   padding: 8px;
   margin: 5px 0;
   border-radius: 5px;
@@ -5021,13 +5138,18 @@ body {
   border: 1px solid #00A4CD
 }
 
+.CreateWithDraw-content .CreateWithDraw-form-group .input-group-CreateWithDraw {
+  display: block;
+}
+
 .CreateWithDraw-content .CreateWithDraw-form-group .input-group-CreateWithDraw i.member {
   position: absolute;
   display: flex;
   align-items: center;
-  left: 19rem;
+  left: 41.5rem;
   top: 10.3rem;
   color: #00A4CD;
+  cursor: pointer;
 }
 
 .CreateWithDraw-content .CreateWithDraw-form-group .input-group-CreateWithDraw i.number-acount {
@@ -5080,6 +5202,8 @@ body {
     font-weight: bold;
   }
 }
+
+/* ===================================== ===================================== */
 
 
 
@@ -5455,7 +5579,8 @@ body {
     width: 37rem;
     padding: 10px;
   }
-  .infomation{
+
+  .infomation {
     margin-left: 35px;
   }
 
@@ -5468,63 +5593,75 @@ body {
     padding-left: 30px;
     border: none;
     outline: none;
-} 
-.dashboard .dash-content .overview .overview-left .boxes-card .card-boxes {
-      width: 24.5rem;
-      height: 15rem;
-      display: flex;
-      flex-direction: column;
-      position: relative;
   }
+
+  .dashboard .dash-content .overview .overview-left .boxes-card .card-boxes {
+    width: 24.5rem;
+    height: 15rem;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
   .dash-content .boxes {
     margin-left: 1.6rem;
-}
-.orders-dashboard {
-  flex-wrap: nowrap;
-  width: 51.6rem;
-}
-.order-boxes {
-  width: 10.8rem;
-}
-.dash-content .boxes .box {
-  width: 7.5rem;
-}
-.dash-content .boxes .box .titie-box {
+  }
 
-  font-size: 15px;
-}
-.best-seller .table-card {
-  width: 50.4rem;
-}
-.Product-card .product-card-header {
-  width: 53rem;
-}
-.select-type-menu {
-  width: 112px;
+  .orders-dashboard {
+    flex-wrap: nowrap;
+    width: 51.6rem;
+  }
 
-}
+  .order-boxes {
+    width: 10.8rem;
+  }
 
-.select-price-menu {
-  left: 9rem;
-  width: 108px;
-}
-.Product-card .product-card-header .search {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  padding: 15px;
-}
+  .dash-content .boxes .box {
+    width: 7.5rem;
+  }
 
-.Product-card .product-card-content {
-  width: 52rem;
-}
-.Product-card .product-card-content .content {
-  width: 8rem;
+  .dash-content .boxes .box .titie-box {
 
-}
-.Product-card .product-card-footer {
-  width: 52rem;
-}
+    font-size: 15px;
+  }
+
+  .best-seller .table-card {
+    width: 50.4rem;
+  }
+
+  .Product-card .product-card-header {
+    width: 53rem;
+  }
+
+  .select-type-menu {
+    width: 112px;
+
+  }
+
+  .select-price-menu {
+    left: 9rem;
+    width: 108px;
+  }
+
+  .Product-card .product-card-header .search {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 15px;
+  }
+
+  .Product-card .product-card-content {
+    width: 52rem;
+  }
+
+  .Product-card .product-card-content .content {
+    width: 8rem;
+
+  }
+
+  .Product-card .product-card-footer {
+    width: 52rem;
+  }
 }
 
 @media (max-width : 1075px) {

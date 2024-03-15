@@ -1,9 +1,12 @@
-import React,{useState,useEffect} from 'react';
-import { useSelector } from 'react-redux';
-import TableComponent from '../../components/TableComponent';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useSelector,useDispatch } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import { Empty } from 'antd';
+
 // Functions
+import TableComponent from '../../components/TableComponent';
 import { GetAllOrders } from '../../functions/Orders';
+
 const customStyles = {
   rows: {
     style: {
@@ -17,16 +20,16 @@ const customStyles = {
       fontSize: "15px",
       justifyContent: "center",
       fontWeight: "bold",
-      backgroundColor : "#00A5E8",
+      backgroundColor: "#00A5E8",
       color: "white",
-     
+
     },
   },
   cells: {
     style: {
       paddingLeft: '8px', // override the cell padding for data cells
       paddingRight: '8px',
-      justifyContent: "center", 
+      justifyContent: "center",
     },
   },
 };
@@ -35,11 +38,11 @@ const columns = [
   {
     name: "ສະຖານະ",
     selector: (row) => row.status,
-    cell : row => (
+    cell: row => (
       <div className="status-order">
-        <Link to={`/HomeOrders/InfoOrders/${row._id}`} style={{textDecoration : 'none'}}>
-            <p className="success">{`ອະນຸມັດ`}</p>
-            <p className="unsuccess">ປະຕິເສດ</p>
+        <Link to={`/HomeOrders/InfoOrders/${row._id}`} style={{ textDecoration: 'none' }}>
+          <p className="success">{`ອະນຸມັດ`}</p>
+          <p className="unsuccess">ປະຕິເສດ</p>
         </Link>
       </div>
     ),
@@ -81,10 +84,10 @@ const columns = [
     selector: (row) => row.paymentType,
     cell: row => (
       <>
-          { row.paymentType === "BCEL ONE" 
-          ?<p  style={{color:'#FF0000'}}>{row.paymentType}</p> 
-          : <p  style={{color:'#00628A'}}>{row.paymentType}</p>
-          } 
+        {row.paymentType === "BCEL ONE"
+          ? <p style={{ color: '#FF0000' }}>{row.paymentType}</p>
+          : <p style={{ color: '#00628A' }}>{row.paymentType}</p>
+        }
       </>
     ),
     width: '110px'
@@ -126,28 +129,60 @@ const columns = [
     width: '162px'
   }
 ];
-const ListOrders = () => {
-  const {users} = useSelector((state)=>({...state}))
-  const [orders,setOrders] = useState([])
-  const [loading,setLoading] = useState(false)
 
-  useEffect(()=>{
+const ListOrders = () => {
+  const { users } = useSelector((state) => ({ ...state }))
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [orderEmpty, setEmptyOrder] = useState('');
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  useEffect(() => {
     setLoading(true)
-      GetAllOrders(users.token,"await").then(res=>{
-        setLoading(false)
-        setOrders(res.data.data);
-      }).catch(err=>{
-        setLoading(false)
-        console.log(err)
-      })
-  },[]);
+    GetAllOrders(users.token, "await").then(res => {
+      setLoading(false)
+      setOrders(res.data.data);
+    }).catch(err => {
+      setLoading(false)
+      console.log(err)
+      setEmptyOrder(err.response.data.message);
+      if(err.response.data.message === 'unauthorized'){
+        dispatch({
+          type: 'USER_LOGOUT',
+          payload: null
+        })
+        navigate('/')
+      }
+    })
+  }, []);
 
   console.log(orders)
 
   return (
-    <div>
-      <TableComponent columns={columns} customStyles={customStyles} data={orders} loading={loading} />
-    </div>
+    <>
+      {orderEmpty ?
+        <div className="empty-card">
+          <Empty
+            image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
+            imageStyle={{
+              height: 60,
+            }}
+            description={
+              <span>
+                <a>{orderEmpty}</a>
+              </span>
+            }
+          >
+          </Empty>
+        </div>
+        :
+        <div>
+          <TableComponent columns={columns} customStyles={customStyles} data={orders} loading={loading} />
+        </div>
+      }
+    </>
+
   )
 }
 export default ListOrders

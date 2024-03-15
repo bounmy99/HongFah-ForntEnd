@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
 import TableComponent from '../../components/TableComponent';
-import product from '../../assets/image/lotions.png'
+import { Empty } from 'antd';
 import { GetAllOrders } from '../../functions/Orders';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 const customStyles = {
   rows: {
@@ -67,7 +67,7 @@ const columns = [
     cell: row => (
       <div className="name-product">
         <div className="flex-name">
-        <p>{`${row.orderFor.firstName} ${row.orderFor.lastName}`}</p>
+          <p>{`${row.orderFor.firstName} ${row.orderFor.lastName}`}</p>
           <span>Daimonds</span>
         </div>
       </div>
@@ -123,20 +123,53 @@ const columns = [
 const HistoryOrders = () => {
   const { users } = useSelector((state) => ({ ...state }))
   const [successOrders, setSuccessOrders] = useState([]);
+  const [successOrdersEmpty, setSuccessOrdersEmpty] = useState('');
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     GetAllOrders(users.token, "success").then(res => {
       setSuccessOrders(res.data.data);
     }).catch(err => {
       console.log(err)
+      setSuccessOrdersEmpty(err.response.data.message);
+      if(err.response.data.message === 'unauthorized'){
+        dispatch({
+          type: 'USER_LOGOUT',
+          payload: null
+        })
+        navigate('/')
+      }
     })
   }, []);
 
   console.log("Success Orders", successOrders)
   return (
-    <div>
-      <TableComponent columns={columns} customStyles={customStyles} data={successOrders} />
-    </div>
+    <>
+      {
+        successOrdersEmpty ?
+          <div className="empty-card">
+            <Empty
+              image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
+              imageStyle={{
+                height: 60,
+              }}
+              description={
+                <span>
+                  <a>{successOrdersEmpty}</a>
+                </span>
+              }
+            >
+            </Empty>
+          </div>
+          :
+          <div>
+            <TableComponent columns={columns} customStyles={customStyles} data={successOrders} />
+          </div>
+      }
+
+    </>
+
   )
 }
 

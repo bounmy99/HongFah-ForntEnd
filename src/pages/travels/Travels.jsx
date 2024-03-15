@@ -1,39 +1,54 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
-import { useSelector } from 'react-redux';
+import { Link,useNavigate } from 'react-router-dom'
+import { useSelector,useDispatch } from 'react-redux';
 import DatePicker from "react-datepicker";
 import Swal from 'sweetalert2';
 import { Empty } from 'antd';
 import ImageTravel from '../../assets/image/no-image.png'
 import LoadingCard from '../../components/LoadingCard';
-import { GetAllTrip } from './../../functions/Trip';
+import { GetAllTrip, DeleteTrip } from './../../functions/Trip';
 const Travels = () => {
-  const { users } = useSelector((state) => ({ ...state }))
+  const { users } = useSelector((state) => ({ ...state }));
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [trip, setTrip] = useState([])
   const [loading, setLoading] = useState(false);
   const [startDate, setStartDate] = useState(new Date());
-
+  const [tripEmpty, setTripEmpty] = useState('');
   useEffect(() => {
     LoadData();
   }, [])
+
+
 
   const LoadData = () => {
     setLoading(true)
     GetAllTrip(users.token).then((res) => {
       setTrip(res.data.data)
       setLoading(false)
-    })
+    }).catch((err) => {
+      setLoading(false)
+      console.log(err.response.data.message)
+      setTripEmpty(err.response.data.message)
+      if(err.response.data.message === 'unauthorized'){
+        dispatch({
+          type: 'USER_LOGOUT',
+          payload: null
+        })
+        navigate('/')
+      }
+    });
   }
 
-  console.log("Trips", trip)
+  // console.log("Trips", trip)
 
   const styles = {
     margin: 5,
-    height: 400,
+    height: 380,
     width: 250
   }
 
-  const handleDelete = () => {
+  const handleDelete = (id) => {
     Swal.fire({
       title: "ທ່ານຕ້ອງການລົບແທ້ບໍ່",
       text: "ຖ້າທ່ານລົບໄປແລ້ວບໍ່ສາມາດກູ້ຄືນໄດ້ອີກ!",
@@ -45,12 +60,19 @@ const Travels = () => {
       cancelButtonText: "ຍົກເລິກ",
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire({
-          title: "ສຳເລັດ",
-          text: "ການລົບຂໍ້ມູນສຳເລັດ.",
-          icon: "success",
-          confirmButtonText: "ຕົກລົງ",
-        });
+        DeleteTrip(users.token, id).then(res => {
+          if (res.data.message === "success") {
+            Swal.fire({
+              title: "ສຳເລັດ",
+              text: "ການລົບຂໍ້ມູນສຳເລັດ.",
+              icon: "success",
+              confirmButtonText: "ຕົກລົງ",
+            });
+            LoadData();
+          }
+        }).catch(err => {
+          console.log(err.response.data.message);
+        })
       }
     });
   }
@@ -105,55 +127,73 @@ const Travels = () => {
         <div className="trip-title">
           <h5>ຈັດການທິບທ່ອງທຽ່ວ</h5>
         </div>
-        {loading ?
-          <div class="trip-cards">
-            <div className="cards">
-              <LoadingCard count={4} styles={styles} />
-            </div>
+        {tripEmpty ?
+
+          <div className="empty-card">
+            <Empty
+              image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
+              imageStyle={{
+                height: 60,
+              }}
+              description={
+                <span>
+                  <a>{tripEmpty}</a>
+                </span>
+              }
+            >
+            </Empty>
           </div>
           :
-          <div class="trip-cards">
-            {trip && trip.map((item, idx) =>
-              <div className="cards" key={idx}>
-                { item.images && item.images[0] 
-                 ?
-                 <img src={item.images[0]} alt={item.name} />
-                 : 
-                 <img src={ImageTravel} alt={item.name} />
-                 }
-                <div className="cards-title">
-                  <span className="text-right">{item.name}</span>
-                </div>
-                <div className="cards-body">
-                  <h5>{`${item.placeName && item.placeName.substring(0, 60)}`}</h5>
-                  <ul>
-                    <li>{item.period}</li>
-                    <li>{item.amount} ຄົນ</li>
-                  </ul>
-                  <h3>ວັນທີເດີນທາງ {new Date(item.departureDate).toLocaleDateString()}</h3>
-                </div>
-                <div className="cards-btn">
-                  <div className="btn-del-ed">
-                    <button type="button" className="btn-outline danger-outline" onClick={handleDelete}>
-                      <i className='bx bxs-trash-alt' ></i> ລົບ
-                    </button>
-                    <Link to={`/travels/detailTravels/${item._id}`}>
-                      <button type="button" className="btn-outline info-outline">
-                        <i class='bx bxs-edit' ></i>  ແກ້ໄຂ
-                      </button>
-                    </Link>
-                  </div>
-                  <button type="button" className="btn-inline btn-orange">
-                    <i class='bx bx-low-vision' ></i> ປິດບໍ່ໃຫ້ສະແດງ
-                  </button>
+          <>
+            {loading ?
+              <div class="trip-cards">
+                <div className="cards">
+                  <LoadingCard count={4} styles={styles} />
                 </div>
               </div>
-            )}
-          </div>
+              :
+              <div class="trip-cards">
+                {trip && trip.map((item, idx) =>
+                  <div className="cards" key={idx}>
+                    {item.images && item.images
+                      ?
+                      <img src={item.images} alt={item.name} />
+                      :
+                      <img src={ImageTravel} alt={item.name} />
+                    }
+                    <div className="cards-title">
+                      <span className="text-right">{item.name}</span>
+                    </div>
+                    <div className="cards-body">
+                      <h5>{`${item.placeName && item.placeName.substring(0, 60)}`}</h5>
+                      <ul>
+                        <li>{item.period}</li>
+                        <li>{item.amount} ຄົນ</li>
+                      </ul>
+                      <h3>ວັນທີເດີນທາງ {new Date(item.departureDate).toLocaleDateString()}</h3>
+                    </div>
+                    <div className="cards-btn">
+                      <div className="btn-del-ed">
+                        <button type="button" className="btn-outline danger-outline" onClick={() => handleDelete(item._id)}>
+                          <i className='bx bxs-trash-alt' ></i> ລົບ
+                        </button>
+                        <Link to={`/travels/detailTravels/${item._id}`}>
+                          <button type="button" className="btn-outline info-outline">
+                            <i class='bx bxs-edit' ></i>  ແກ້ໄຂ
+                          </button>
+                        </Link>
+                      </div>
+                      {/* <button type="button" className="btn-inline btn-orange">
+                        <i class='bx bx-low-vision' ></i> ປິດບໍ່ໃຫ້ສະແດງ
+                      </button> */}
+                    </div>
+                  </div>
+                )}
+              </div>
+            }
+          </>
         }
-
       </div>
-      {/* <ModelComponet handleModal={handleModal} openModals={openModals} DataModal={DataModal} setOpenModal={setOpenModal} /> */}
     </div>
   )
 }

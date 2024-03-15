@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
@@ -7,6 +7,7 @@ import imagePreview from '../../assets/avatar/image-avatar.jpeg'
 import { GetAllEmployee } from '../../functions/Employee';
 const DiagramEm = () => {
   const { users } = useSelector((state) => ({ ...state }));
+  const dispatch = useDispatch();
   const [levelZero, setLavelZero] = useState([]);
   const [levelOne, setLavelOne] = useState([]);
   const [levelTwo, setLavelTwo] = useState([]);
@@ -23,7 +24,14 @@ const DiagramEm = () => {
       setLavelThree(res.data.data.level_3);
       setLavelFour(res.data.data.level_4);
     }).catch(err => {
-      console.log(err)
+      console.log(err);
+      if(err.response.data.message === 'unauthorized'){
+        dispatch({
+          type: 'USER_LOGOUT',
+          payload: null
+        })
+        navigate('/')
+      }
     })
 
   }, []);
@@ -55,6 +63,7 @@ const DiagramEm = () => {
           {show ? <EyeOutlined className="btn-show" onClick={handleShow} /> : <EyeInvisibleOutlined className="btn-show" onClick={handleShow} />}
         </div>
       }
+    
       <div className="body genealogy-body genealogy-scroll">
         <TransformWrapper>
           <TransformComponent>
@@ -137,6 +146,7 @@ const DiagramEm = () => {
           </TransformComponent>
         </TransformWrapper>
       </div>
+
 
       {show &&
         <>

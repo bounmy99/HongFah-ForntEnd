@@ -1,204 +1,125 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import DataTable from "react-data-table-component";
 import { read, writeFileXLSX, utils } from "xlsx";
-import Profile2 from '../../assets/image/profile-2.jpg' 
-
-const OrderList = [
-    {
-        money: '1500000',
-        date: '1/02/2023',
-        member: '25',
-        score: 98531900,
-        export: "export"
-    },
-    {
-        money: '1500000',
-        date: '1/02/2023',
-        member: '25',
-        score: 98532900,
-        export: "export"
-    },
-    {
-        money: '1500000',
-        date: '1/02/2023',
-        member: '25',
-        score: 98533900,
-        export: "export"
-    },
-    {
-        money: '1500000',
-        date: '1/02/2023',
-        member: '25',
-        score: 98535900,
-        export: "export"
-    },
-    {
-        money: '1500000',
-        date: '1/02/2023',
-        member: '25',
-        score: 98537900,
-        export: "export"
-    },
-    {
-        money: '1500000',
-        date: '1/02/2023',
-        member: '25',
-        score: 98537900,
-        export: "export"
-    },
-    {
-        money: '1500000',
-        date: '1/02/2023',
-        member: '25',
-        score: 98537900,
-        export: "export"
-    },
-    {
-        money: '1500000',
-        date: '1/02/2023',
-        member: '25',
-        score: 98537900,
-        export: "export"
-    },
-    {
-        money: '1500000',
-        date: '1/02/2023',
-        member: '25',
-        score: 98537900,
-        export: "export"
-    },
-    {
-        money: '1500000',
-        date: '1/02/2023',
-        member: '25',
-        score: 98537900,
-        export: "export"
-    },
-    {
-        money: '1500000',
-        date: '1/02/2023',
-        member: '25',
-        score: 98537900,
-        export: "export"
-    },
-    {
-        money: '1500000',
-        date: '1/02/2023',
-        member: '25',
-        score: 98537900,
-        export: "export"
-    },
-    {
-        money: '1500000',
-        date: '1/02/2023',
-        member: '25',
-        score: 98537900,
-        export: "export"
-    },
-    {
-        money: '1500000',
-        date: '1/02/2023',
-        member: '25',
-        score: 98537900,
-        export: "export"
-    },
-    {
-        money: '1500000',
-        date: '1/02/2023',
-        member: '25',
-        score: 98537900,
-        export: "export"
-    },
-    {
-        money: '1500000',
-        date: '1/02/2023',
-        member: '25',
-        score: 98537900,
-        export: "export"
-    },
-    {
-        money: '1500000',
-        date: '1/02/2023',
-        member: '25',
-        score: 98537900,
-        export: "export"
-    },
-    {
-        money: '1500000',
-        date: '1/02/2023',
-        member: '25',
-        score: 98537900,
-        export: "export"
-    }
-];
+import { GetAllBonus } from '../../functions/Bonus';
+import { useSelector} from 'react-redux'
 
 const customStyles = {
     rows: {
-        style: {
-            minHeight: '72px', // override the row height
-        },
+      style: {
+        minHeight: '72px', // override the row height
+      },
     },
     headCells: {
-        style: {
-            paddingLeft: '8px', // override the cell padding for head cells
-            paddingRight: '8px',
-            fontSize: "15px",
-            justifyContent: "center",
-            fontWeight: "bold",
-            color: "#00A5E8",
-        },
+      style: {
+        paddingLeft: '8px', // override the cell padding for head cells
+        paddingRight: '8px',
+        fontSize: "15px",
+        justifyContent: "center",
+        fontWeight: "bold",
+        color: "#00A5E8",
+      },
     },
     cells: {
-        style: {
-            paddingLeft: '8px', // override the cell padding for data cells
-            paddingRight: '8px',
-            justifyContent: "center",
-            fontSize: "18px",
-            fontWeight: "bold",
-        },
+      style: {
+        paddingLeft: '8px', // override the cell padding for data cells
+        paddingRight: '8px',
+        justifyContent: "center",
+        fontSize: "15px",
+        fontWeight: "bold",
+      },
     },
-};
-
-const columns = [
+  };
+  
+  const columns = [
     {
-        name: "ວັນທີເດືອນປີ",
-        selector: (row) => (row.date),
-        cell: row => (
-            row.date
-        ),
-        sortable: true,
-        width: '250px'
-    },
-    {
-        name: "ຈຳນວນເງິນ",
-        selector: (row) => row.money,
-        cell: row => (
-            row.money
-        ),
-        sortable: true,
-        width: '250px'
+      name: "ໂປຣຟາຍ",
+      selector: (row) => (row.profile),
+      cell: row => (
+        <div className="user-image">
+          <div className="image">
+            <img src={row.profile} alt={row.firstName} width={50} height={50} />
+          </div>
+        </div>
+      ),
+      sortable: true,
+      width: '150px'
     },
     {
-        name: "ສະມາຊິກ",
-        selector: (row) => row.member,
-        cell: row => (row.member),
-        sortable: true,
-        width: '250px'
+      name: "ຊື່ຜູ້ໃຊ້",
+      selector: (row) => row.firstName,
+      cell: row => (
+        <div className="name-product">
+          <div className="user">
+            <h5>{`${row.firstName} ${row.lastName}`}</h5>
+            <p>{row.userCode}</p>
+          </div>
+        </div>
+      ),
+      sortable: true,
+      width: '150px'
     },
     {
-        name: "ຄະແນນທັງໝົດ",
-        selector: (row) => (row.score),
-        cell: row => (<span>{row.score} PV</span>),
-        sortable: true,
-        width: '250px'
+      name: "ຕຳແໜ່ງ",
+      selector: (row) => row.positionName,
+      cell: row => (
+        <div className="position">
+          <p className="name-posit">{row.positionName}</p>
+        </div>
+      ),
+      sortable: true,
+      width: '80px'
+    },
+    {
+      name: "ສະມາຊິກທິມ",
+      selector: (row) => (row.children_count),
+      sortable: true,
+      width: '110px'
+    },
+    {
+      name: "ສະຖານະ",
+      sortable: true,
+      selector: (row) => row.isMaintainSales,
+      cell: row => (
+        <div className="score">
+          {/* {row.isMaintainSales == 'true' ? <p>ຮັກສາຍອດ</p>  : <p>ບໍ່ຮັກສາຍອດ</p>} */}
+        </div>
+      ),
+      width: '118px'
+    },
+    {
+      name: "ຄະແນນ",
+      sortable: true,
+      selector: (row) => row.PV,
+      cell: row => (
+        <p>{row.PV} point</p>
+      ),
+      width: '180px'
+    },
+    {
+      name: "Cashback",
+      sortable: true,
+      selector: (row) => row.cashback,
+      cell: row => (
+        <p>{row.cashback
+        } ₭</p>
+      ),
+      width: '180px'
     }
-];
-
+  ];
 const HistoryTransfer = () => {
-    const [data, setData] = useState([]);
+    const { users} = useSelector((state)=>({...state}))
     const [selectRows,setSelectRows] = useState([]);
+    const [maintain, setMainTain] = useState([]);
 
-    
+    useEffect(()=>{
+        GetAllBonus(users.token,"false").then(res => {
+            setMainTain(res.data.data)
+          }).catch(err => {
+            console.log(err)
+          })
+    },[])
+
     const handleImport = (e) => {
         const files = e.target.files;
         if (files.length) {
@@ -265,23 +186,15 @@ const HistoryTransfer = () => {
                         </div>
                     </div>
                 </div>
-                {data.length === 0 ? <DataTable
+                <DataTable
                     columns={columns}
-                    data={OrderList}
+                    data={maintain}
                     pagination
                     // fixedHeader
                     customStyles={customStyles}
                     selectableRows
                     onSelectedRowsChange={(row)=>setSelectRows(row.selectedRows)}
-                /> : <DataTable
-                    columns={columns}
-                    data={data}
-                    pagination
-                    // fixedHeader
-                    customStyles={customStyles}
-                    selectableRows
-                    onSelectedRowsChange={(row)=>setSelectRows(row.selectedRows)}
-                />}
+               />
 
 
             </div>

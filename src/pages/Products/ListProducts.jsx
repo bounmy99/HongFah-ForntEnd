@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Empty } from 'antd';
 import icons from '../../assets/image/icons-add.png'
 import { GetAllProduct } from '../../functions/Products';
@@ -16,6 +16,7 @@ const initialValue = {
 const ListProducts = () => {
   const { users } = useSelector((state) => ({ ...state }));
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [product, setProduct] = useState([]);
   const [productTypes, setProductTypes] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -71,6 +72,7 @@ const ListProducts = () => {
           type: 'USER_LOGOUT',
           payload: null
         })
+        navigate('/')
       }
     });
   }

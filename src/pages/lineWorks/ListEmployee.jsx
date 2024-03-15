@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import DataTable from "react-data-table-component";
-import { useSelector } from 'react-redux';
-import { useLocation } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLocation,useNavigate } from 'react-router-dom';
 import DiagramEm from './DiagramEm';
+import { Empty } from 'antd'
 import L from '../../assets/image/L.png'
 import M from '../../assets/image/M.png'
 import S from '../../assets/image/S.png'
@@ -128,13 +129,16 @@ const columns = [
   }
 ];
 const ListEmployee = () => {
-  const { users } = useSelector((state)=>({...state}))
+  const { users } = useSelector((state) => ({ ...state }))
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [change, setChang] = useState('')
   const [employee, setEmployee] = useState([])
   const [loading, setLoading] = useState(false);
-  const {state} = useLocation();
+  const [lineworkEmpty, setLineWorkEmpty] = useState('');
+  const { state } = useLocation();
 
- 
+
   useEffect(() => {
     setLoading(true)
     GetAllEmployee(users.token).then(res => {
@@ -143,14 +147,22 @@ const ListEmployee = () => {
     }).catch(err => {
       setLoading(false)
       console.log(err)
+      setLineWorkEmpty(err.response.data.message);
+      if(err.response.data.message === 'unauthorized'){
+        dispatch({
+          type: 'USER_LOGOUT',
+          payload: null
+        })
+        navigate('/')
+      }
     })
     setChang(1)
-    if(state) {
+    if (state) {
       setChang(state.key)
     }
   }, []);
 
-  console.log("List Employee",employee)
+  console.log("List Employee", employee)
   return (
     <>
       <div className="employee-card">
@@ -281,73 +293,99 @@ const ListEmployee = () => {
               </div>
             </div>
           </div>
-          
-          {loading ?
-            <Loading paragraph={30} />
-            :
-            <>
-              {change === 1 &&
 
-                <DataTable
-                  columns={columns}
-                  data={""}
-                  pagination
-                  // fixedHeader
-                  customStyles={customStyles}
-                />
-              }
-              {change === 2 &&
-                <>
-                  <DiagramEm />
-                  {/* <Test /> */}
-                  <div className="market-member">
-                    <div className="warning-box">
-                      <h5>ໝາຍເຫດ :</h5>
-                      <p>ການຈັດລະດັບສະມາຊິກແມ່ນຈະມີການຄຳນວນ ແລະ ອັບເດດທຸກໆທ້າຍເດືອນ</p>
-                    </div>
-                    <div className="member-card">
-                      <div className="icons">
-                        <img src={O} alt="" />
-                      </div>
-                      <div className="text">
-                        <h3>ສະມາຊິກ O</h3>
-                        <span>3000 ຄົນ</span>
-                      </div>
-                    </div>
-                    <div className="member-card active">
-                      <div className="icons">
-                        <img src={S} alt="" />
-                      </div>
-                      <div className="text">
-                        <h3>ສະມາຊິກ S</h3>
-                        <span>3000 ຄົນ</span>
-                      </div>
-                    </div>
-                    <div className="member-card">
-                      <div className="icons">
-                        <img src={M} alt="" />
-                      </div>
-                      <div className="text">
-                        <h3>ສະມາຊິກ M</h3>
-                        <span>3000 ຄົນ</span>
-                      </div>
-                    </div>
-                    <div className="member-card">
-                      <div className="icons">
-                        <img src={L} alt="" />
-                      </div>
-                      <div className="text">
-                        <h3>ສະມາຊິກ L</h3>
-                        <span>3000 ຄົນ</span>
-                      </div>
-                    </div>
-                  </div>
-                </>
-              }
-            </>
+          {
+            lineworkEmpty ?
+              <div className="empty-card">
+                <Empty
+                  image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
+                  imageStyle={{
+                    height: 60,
+                  }}
+                  description={
+                    <span>
+                      <a>{lineworkEmpty}</a>
+                    </span>
+                  }
+                >
+                </Empty>
+              </div>
+              :
+              <>
+                {loading ?
+                  <Loading paragraph={30} />
+                  :
+                  <>
+                    {change === 1 &&
+
+
+                      <DataTable
+                        columns={columns}
+                        data={""}
+                        pagination
+                        // fixedHeader
+                        customStyles={customStyles}
+                      />
+                    }
+                    {change === 2 &&
+
+
+
+                      <>
+                        <DiagramEm />
+                        {/* <Test /> */}
+                        <div className="market-member">
+                          <div className="warning-box">
+                            <h5>ໝາຍເຫດ :</h5>
+                            <p>ການຈັດລະດັບສະມາຊິກແມ່ນຈະມີການຄຳນວນ ແລະ ອັບເດດທຸກໆທ້າຍເດືອນ</p>
+                          </div>
+                          <div className="member-card">
+                            <div className="icons">
+                              <img src={O} alt="" />
+                            </div>
+                            <div className="text">
+                              <h3>ສະມາຊິກ O</h3>
+                              <span>3000 ຄົນ</span>
+                            </div>
+                          </div>
+                          <div className="member-card active">
+                            <div className="icons">
+                              <img src={S} alt="" />
+                            </div>
+                            <div className="text">
+                              <h3>ສະມາຊິກ S</h3>
+                              <span>3000 ຄົນ</span>
+                            </div>
+                          </div>
+                          <div className="member-card">
+                            <div className="icons">
+                              <img src={M} alt="" />
+                            </div>
+                            <div className="text">
+                              <h3>ສະມາຊິກ M</h3>
+                              <span>3000 ຄົນ</span>
+                            </div>
+                          </div>
+                          <div className="member-card">
+                            <div className="icons">
+                              <img src={L} alt="" />
+                            </div>
+                            <div className="text">
+                              <h3>ສະມາຊິກ L</h3>
+                              <span>3000 ຄົນ</span>
+                            </div>
+                          </div>
+                        </div>
+                      </>
+                    }
+                  </>
+                }
+              </>
           }
-        </div>
-      </div>
+
+
+        </div >
+      </div >
 
 
     </>

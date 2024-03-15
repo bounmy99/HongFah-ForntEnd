@@ -31,8 +31,8 @@ const LoginPages = () => {
   // console.log(isPasswordShow)
 
   const [value, setValue] = useState({
-    userCode: "A6354",
-    password: "admin1admin1"
+    userCode: "A5389",
+    password: "12345678"
   })
 
   // console.log(value)

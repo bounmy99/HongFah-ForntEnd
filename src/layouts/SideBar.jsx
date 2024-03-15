@@ -39,7 +39,7 @@ const SideBar = () => {
         },
         {
             name: "ການຈ່າຍໂບນັດ",
-            path: "/homeSales",
+            path: "/Bonus",
             icon: <i className='bx bx-select-multiple'></i>
         },
         {

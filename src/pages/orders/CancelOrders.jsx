@@ -1,9 +1,9 @@
-import React, { useState,useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link,useNavigate } from 'react-router-dom';
 import TableComponent from '../../components/TableComponent';
-import product from '../../assets/image/lotions.png'
+import { Empty } from 'antd'
 import { GetAllOrders } from '../../functions/Orders';
-import { useSelector } from 'react-redux';
+import { useSelector,useDispatch } from 'react-redux';
 
 
 const customStyles = {
@@ -19,7 +19,7 @@ const customStyles = {
       fontSize: "15px",
       justifyContent: "center",
       fontWeight: "bold",
-      backgroundColor : "#00A5E8",
+      backgroundColor: "#00A5E8",
       color: "white",
     },
   },
@@ -103,8 +103,8 @@ const columns = [
     sortable: true,
     selector: (row) => row.status,
     cell: row => (
-      <div className="status-status">        
-        <p style={{color:'#D85321', fontWeight: "bold"}}>{row.status}</p>
+      <div className="status-status">
+        <p style={{ color: '#D85321', fontWeight: "bold" }}>{row.status}</p>
       </div>
     ),
     width: '162px'
@@ -114,9 +114,9 @@ const columns = [
     sortable: true,
     selector: (row) => row._id,
     cell: row => (
-      <div className="status-status">        
-        <Link to={`/HomeOrders/infoCancel/${row._id}`} style={{textDecoration : 'none'}}>
-        <p style={{color:'#00A4CD', fontWeight: "bold"}}>ລາຍລະອຽດ</p>
+      <div className="status-status">
+        <Link to={`/HomeOrders/infoCancel/${row._id}`} style={{ textDecoration: 'none' }}>
+          <p style={{ color: '#00A4CD', fontWeight: "bold" }}>ລາຍລະອຽດ</p>
         </Link>
       </div>
     ),
@@ -125,23 +125,55 @@ const columns = [
 
 ];
 const CancelOrders = () => {
-  const { users } = useSelector((state)=>({...state}))
-
+  const { users } = useSelector((state) => ({ ...state }));
+  const navigate = useNavigate();
   const [cancelOrder, setCancelOrder] = useState([]);
+  const [cancelOrderEmpty, setCancelOrderEmpty] = useState([]);
+  const dispatch = useDispatch();
 
-  useEffect(()=>{
-      GetAllOrders(users.token,"cancel").then(res=>{
-        setCancelOrder(res.data.data);
-      }).catch(err=>{
-        console.log(err)
-      })
-  },[]);
+  useEffect(() => {
+    GetAllOrders(users.token, "cancel").then(res => {
+      setCancelOrder(res.data.data);
+    }).catch(err => {
+      console.log(err)
+      setCancelOrderEmpty(err.response.data.message);
+      if(err.response.data.message === 'unauthorized'){
+        dispatch({
+          type: 'USER_LOGOUT',
+          payload: null
+        })
+        navigate('/')
+      }
+    })
+  }, []);
 
   console.log("Cancelled Order", cancelOrder)
   return (
-    <div>
-      <TableComponent columns={columns} customStyles={customStyles} data={cancelOrder} />
-    </div>
+    <>
+      {cancelOrderEmpty ?
+        <div className="empty-card">
+          <Empty
+            image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
+            imageStyle={{
+              height: 60,
+            }}
+            description={
+              <span>
+                <a>{cancelOrderEmpty}</a>
+              </span>
+            }
+          >
+          </Empty>
+        </div>
+        :
+
+        <div>
+          <TableComponent columns={columns} customStyles={customStyles} data={cancelOrder} />
+        </div>
+      }
+
+    </>
+
   )
 }
 

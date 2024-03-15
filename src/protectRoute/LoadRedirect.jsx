@@ -20,8 +20,10 @@ function LoadRedirect() {
               icon : "success",
               title : `Token is Expire go to login page in ${count}`,
               showCancelButton: false,
-              // timer : 3500
+              timer : 3500
             });
+
+
         }
     }
 

@@ -9,78 +9,6 @@ const Headers = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const { pathname } = useLocation()
-    // const menu = [
-    //     {
-    //         name: "Dashboard",
-    //         path: "/dashboard",
-    //     },
-    //     {
-    //         name: "ຈັດການຂໍ້ມູນສິນຄ້າ",
-    //         path: "/listProducts",
-    //     },
-    //     {
-    //         name: "ແກ້ໄຂສິນຄ້າ",
-    //         path: `/editProduct/${id}`,
-    //     },
-    //     {
-    //         name: "ເພີ່ມສິນຄ້າ",
-    //         path: "/AddProduct"
-    //     },
-    //     {
-    //         name: "ຈັດການອໍເດີ",
-    //         path: "/homeOrders",
-    //     },
-    //     {
-    //         name: "ຂໍ້ມູນອໍເດີ",
-    //         path: "/InfoOrders"
-    //     },
-    //     {
-    //         name: "ຈັດການພະນັກງານ",
-    //         path: "/listEmployee",
-    //     },
-    //     {
-    //         name: "ຈັດການແພັກເກດ",
-    //         path: "/ListPackage",
-    //     }
-    //     ,
-    //     {
-    //         name: "ແກ້ໄຂຄະແນນ",
-    //         path: `/manageScore/${id}`,
-    //     },
-    //     {
-    //         name: "ການຕະຫຼາດ",
-    //         path: "/position",
-    //     },
-    //     {
-    //         path : "/withdraw",
-    //         name : "ຖອນເງິນ"
-    //     },
-    //     {
-    //         name : "ສ້າງການຖອນເງິນ",
-    //         path : `/createwithdraw`
-    //     },
-    //     {
-    //         name: "ການຮັກສາຍອດ",
-    //         path: "/homeSales",
-    //     },
-    //     {
-    //         name: "ທິບທ່ອງທ່ຽວ",
-    //         path: "/travels",
-    //     },
-    //     {
-    //         name: "ເພີ່ມທິບທ່ອງທ່ຽວ",
-    //         path: "/addtravels",
-    //     },
-    //     {
-    //         name: "ແກ້ໄຂທິບທ່ອງທ່ຽວ",
-    //         path: "/detailTravels/:id",
-    //     },
-    //     {
-    //         name: "ສິດການເຂົ້າເຖິງ",
-    //         path: "/auth",
-    //     }
-    // ]
-
     const logout = () => {
         dispatch({
             type: "USER_LOGOUT",
@@ -123,7 +51,7 @@ const Headers = () => {
                         <i className='bx bxs-bell'></i>
                     </div>
                     <div className="image-auth">
-                        <img src={UserImage} alt={`image`} />
+                        <img src={users && users.profile ? users.profile : UserImage} alt={`image`} />
                     </div>
                     <div className="name-auth">
                         <h5>

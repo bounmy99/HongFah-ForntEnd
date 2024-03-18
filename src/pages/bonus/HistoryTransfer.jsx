@@ -2,8 +2,14 @@ import React, { useState, useEffect } from 'react'
 import DataTable from "react-data-table-component";
 import { read, writeFileXLSX, utils } from "xlsx";
 import { GetAllBonus } from '../../functions/Bonus';
-import { useSelector } from 'react-redux'
-import { Empty } from 'antd'
+import { useSelector } from 'react-redux';
+import { Empty } from 'antd';
+
+const formatPrice = (value)=>{
+  let val = (value / 1).toFixed(0).replace(",", ".");
+  return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g,",");      
+ }
+
 const customStyles = {
   rows: {
     style: {
@@ -101,8 +107,7 @@ const columns = [
     sortable: true,
     selector: (row) => row.cashback,
     cell: row => (
-      <p>{row.cashback
-      } ₭</p>
+      <p>{formatPrice(row.cashback)} ₭</p>
     ),
     width: '180px'
   }

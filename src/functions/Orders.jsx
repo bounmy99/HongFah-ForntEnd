@@ -42,3 +42,10 @@ export const SalesPrices = async(token,startDate,endDate) => {
         }
     })
 }
+export const Overview = async(token,startDate,endDate) => {
+    return await axios.get(`${import.meta.env.VITE_HONGFHA_API}/order/overview?startDate=2024-03-01&endDate=2024-03-11`,{
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    })
+}

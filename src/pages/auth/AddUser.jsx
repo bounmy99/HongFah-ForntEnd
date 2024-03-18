@@ -36,12 +36,20 @@ const AddUser = () => {
     const values = [...formData.values()];
     const isEmpty = values.includes('');
     if (isEmpty) {
-      Swal.fire({
-        position: "center",
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        }
+      });
+      Toast.fire({
         icon: "error",
-        title: "ກະລຸນາປ້ອນຂໍ້ມູນໃຫ້ຄົບຖ້ວນ",
-        showCancelButton: false,
-        timer: 3500
+        title: "ກະລຸນາປ້ອນຂໍ້ມູນໃຫ້ຄົບຖ້ວນ"
       });
       return;
     }
@@ -52,12 +60,20 @@ const AddUser = () => {
 
     AdminSignStaff(users.token, Data).then(res => {
       if (res.data.data) {
-        Swal.fire({
-          position: "center",
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+          }
+        });
+        Toast.fire({
           icon: "success",
-          title: "ສ້າງຜູ້ໃຊ້ສຳເລັດ",
-          showCancelButton: false,
-          timer: 3500
+          title: "ສ້າງຜູ້ໃຊ້ສຳເລັດ"
         });
         navigate("/auth")
       }
@@ -102,7 +118,7 @@ const AddUser = () => {
                 </div>
                 <div className="input-group">
                   <label htmlFor="">ສິດເຂົ້າໃຊ້</label>
-                  <select name="role"  className="form-controls-md" onChange={handleChange} >
+                  <select name="role" className="form-controls-md" onChange={handleChange} >
                     <option selected disabled>ເລຶອກສິດ</option>
                     {roleList.map((item, i) => (
                       <option value={item} key={i}>{item}</option>
@@ -110,7 +126,7 @@ const AddUser = () => {
                   </select>
                 </div>
               </div>
-            <div className="user-btn">
+              <div className="user-btn">
                 <button type="submit" className="btn-add-user">
                   ບັນທຶກ
                 </button>

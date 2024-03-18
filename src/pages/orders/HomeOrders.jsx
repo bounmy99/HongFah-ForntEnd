@@ -1,30 +1,42 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import CancelOrders from './CancelOrders';
 import HistoryOrders from './HistoryOrders';
 import ListOrders from './ListOrders';
+import { Overview } from '../../functions/Orders';
 
 const HomeOrders = () => {
-  const {state} = useLocation()
-  console.log("State from InfoOrders",state)
+  const { state } = useLocation();
+  const { users } = useSelector((state) => ({ ...state }))
   const [orderStatus, setOrderStatus] = useState('');
+  const [orderOverview, setOrderOverview] = useState('');
 
-  useEffect(()=>{
+  useEffect(() => {
     setOrderStatus(1)
-    if(state){
+    if (state) {
       setOrderStatus(state.key);
     }
-  },[])
-  
-  const handleClick = (e)=>{
+    Overview(users.token).then(res => {
+      setOrderOverview(res.data.data)
+    })
+  }, [])
+
+  const handleClick = (e) => {
     setOrderStatus(e)
   }
+
+  const formatPrice = (value) => {
+    let val = (value / 1).toFixed(0).replace(",", ".");
+    return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
   return (
     <div className="list-order-container">
       <div className="orders-dashboard">
         <div className="order-boxes total">
           <div className="order-text">
-            <h5 className="title">1.000 ລ້ານ</h5>
+            <h5 className="title">{formatPrice(orderOverview.salsePrice)} ລ້ານ</h5>
             <h3>ມູນຄ່າລວມ</h3>
           </div>
           <div className="order-icons">
@@ -36,7 +48,7 @@ const HomeOrders = () => {
         </div>
         <div className="order-boxes order-total">
           <div className="order-text">
-            <h5 className="title">300</h5>
+            <h5 className="title">{orderOverview.countOrder}</h5>
             <h3>ອໍເດີທັງໝົດ</h3>
           </div>
           <div className="order-icons">
@@ -48,7 +60,7 @@ const HomeOrders = () => {
         </div>
         <div className="order-boxes order-approved">
           <div className="order-text">
-            <h5 className="title">250</h5>
+            <h5 className="title">{orderOverview.approved}</h5>
             <h3>ອໍເດີອະນຸມັດ</h3>
           </div>
           <div className="order-icons">
@@ -60,7 +72,7 @@ const HomeOrders = () => {
         </div>
         <div className="order-boxes order-cancel">
           <div className="order-text">
-            <h5 className="title">8</h5>
+            <h5 className="title">{orderOverview.cancel}</h5>
             <h3>ອໍເດີຍົກເລີກ</h3>
           </div>
           <div className="order-icons">
@@ -72,16 +84,16 @@ const HomeOrders = () => {
         </div>
       </div>
       <div className="orders-button">
-          <button type="button" className={`btn-order btn-waiting ${orderStatus === 1 ? 'active' : '' } `} onClick={()=>handleClick(1)}>ລໍຖ້າອະນຸມັດ</button>
-          {/* <button type="button" className={`btn-order btn-order-processing ${orderStatus === 2 ? 'active' : '' } `} onClick={()=>handleClick(2)}>ກຳລັງດຳເນີນການ</button> */}
-          <button type="button" className={`btn-order btn-order-cancel ${orderStatus === 2 ? 'active' : '' } `} onClick={()=>handleClick(2)}>ອໍເດີທີຍົກເລີກ</button>
-          <button type="button" className={`btn-order btn-order-success ${orderStatus === 3 ? 'active' : '' } `} onClick={()=>handleClick(3)}>ປະຫວັດການຂາຍ</button>
+        <button type="button" className={`btn-order btn-waiting ${orderStatus === 1 ? 'active' : ''} `} onClick={() => handleClick(1)}>ລໍຖ້າອະນຸມັດ</button>
+        {/* <button type="button" className={`btn-order btn-order-processing ${orderStatus === 2 ? 'active' : '' } `} onClick={()=>handleClick(2)}>ກຳລັງດຳເນີນການ</button> */}
+        <button type="button" className={`btn-order btn-order-cancel ${orderStatus === 2 ? 'active' : ''} `} onClick={() => handleClick(2)}>ອໍເດີທີຍົກເລີກ</button>
+        <button type="button" className={`btn-order btn-order-success ${orderStatus === 3 ? 'active' : ''} `} onClick={() => handleClick(3)}>ປະຫວັດການຂາຍ</button>
       </div>
 
-     { orderStatus === 1 &&  <ListOrders/> }
-     {/* { orderStatus === 2 && <ProcessingOrders/>} */}
-     { orderStatus === 2 && <CancelOrders/>}
-     { orderStatus === 3 && <HistoryOrders/>}
+      {orderStatus === 1 && <ListOrders />}
+      {/* { orderStatus === 2 && <ProcessingOrders/>} */}
+      {orderStatus === 2 && <CancelOrders />}
+      {orderStatus === 3 && <HistoryOrders />}
     </div>
   )
 }

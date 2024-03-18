@@ -132,12 +132,21 @@ const DetailTravels = () => {
     const values = [...formData.values()];
     const isEmpty = values.includes('');
     if (isEmpty) {
-      Swal.fire({
-        position: "center",
+
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        }
+      });
+      Toast.fire({
         icon: "error",
-        title: "ກະລຸນາປ້ອນຂໍ້ມູນໃຫ້ຄົບຖ້ວນ",
-        showCancelButton: false,
-        timer: 3500
+        title: "ກະລຸນາປ້ອນຂໍ້ມູນໃຫ້ຄົບຖ້ວນ"
       });
       return;
     }
@@ -147,12 +156,20 @@ const DetailTravels = () => {
 
     UpdateTrip(Data, id, users.token).then(res => {
       if (res.status === 200) {
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          title: "ອັບເດດສິນຄ້າສຳເລັດ",
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
           showConfirmButton: false,
-          timer: 2500
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+          }
+        });
+        Toast.fire({
+          icon: "success",
+          title: "ອັບເດດສຳເລັດແລ້ວ"
         });
         navigate("/travels");
         setImage("");
@@ -252,7 +269,6 @@ const DetailTravels = () => {
                         <th>ຊື່ສະມາຊິກ</th>
                         <th>ລະຫັດສະມາຊິກ</th>
                         <th>ຕຳແໜ່ງ</th>
-                        <th>ເພີ່ມເຕີມ</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -266,7 +282,6 @@ const DetailTravels = () => {
                           </td>
                           <td>{item.userCode}</td>
                           <td>{item.position && item.position.title}</td>
-                          <td>....</td>
                         </tr>
                       ))
                       }

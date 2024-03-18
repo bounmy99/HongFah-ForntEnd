@@ -54,6 +54,7 @@ const LoginPages = () => {
           email: res.data.data.email,
           phoneNumber: res.data.data.phoneNumber,
           username: `${res.data.data.firstName} ${res.data.data.lastName}`,
+          profile : res.data.data.profile,
           role: res.data.data.role,
           userCode: res.data.data.userCode,
           tokenExpiresAt : res.data.data.tokenExpiresAt

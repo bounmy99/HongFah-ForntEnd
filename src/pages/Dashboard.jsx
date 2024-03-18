@@ -83,6 +83,12 @@ const Dashboard = () => {
             uv: 1490,
         }
     ];
+
+    const formatPrice = (value) => {
+        let val = (value / 1).toFixed(0).replace(",", ".");
+        return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
     const columns = [
         {
             name: "ສິນຄ້າ",
@@ -108,13 +114,13 @@ const Dashboard = () => {
         {
             name: "ລາຄາ",
             sortable: true,
-            selector: (row) => row.price,
+            selector: (row) => formatPrice(row.price),
             width: '190px'
         },
         {
             name: "ລາຄາຂາຍ",
             sortable: true,
-            selector: (row) => row.salsePrice,
+            selector: (row) => formatPrice(row.salsePrice),
             width: '190px'
         },
         {
@@ -167,6 +173,13 @@ const Dashboard = () => {
             setCounterUsers(res.data.data);
         }).catch(err => {
             console.log(err);
+            if (err.response.data.message === 'unauthorized') {
+                dispatch({
+                    type: 'USER_LOGOUT',
+                    payload: null
+                })
+                navigate('/')
+            }
         })
     }
     const LoadBestSeller = () => {
@@ -174,6 +187,13 @@ const Dashboard = () => {
             setBestSell(res.data.data);
         }).catch(err => {
             console.log(err);
+            if (err.response.data.message === 'unauthorized') {
+                dispatch({
+                    type: 'USER_LOGOUT',
+                    payload: null
+                })
+                navigate('/')
+            }
         })
     }
     const LoadSalesPrices = () => {
@@ -181,6 +201,13 @@ const Dashboard = () => {
             setSalesPrices(res.data.data);
         }).catch(err => {
             console.log(err);
+            if (err.response.data.message === 'unauthorized') {
+                dispatch({
+                    type: 'USER_LOGOUT',
+                    payload: null
+                })
+                navigate('/')
+            }
         })
     }
     return (
@@ -286,7 +313,7 @@ const Dashboard = () => {
                                 <img src={Track} alt="" className="Track" />
                                 <img src={Progress} alt="" className="Progress" />
                                 <div className="text">
-                                    <p className="number">4000</p>
+                                    <p className="number">{counterUsers.countUser}.00</p>
                                     <p className="percent">+40%</p>
                                 </div>
                             </div>
@@ -341,7 +368,7 @@ const Dashboard = () => {
                                 </ResponsiveContainer>
                             </div>
                             <div className="title">
-                                <h3 className="text-purple">{salsePrices.salsePrice} ກີບ</h3>
+                                <h3 className="text-purple">{formatPrice(salsePrices.salsePrice)} ກີບ</h3>
                             </div>
                         </div>
                     </div>

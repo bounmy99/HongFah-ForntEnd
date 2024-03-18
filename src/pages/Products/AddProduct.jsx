@@ -115,12 +115,20 @@ const AddProduct = () => {
             console.log(res.data.data);
             if (res.status === 200) {
                 setLoading(false);
-                Swal.fire({
-                    position: "center",
-                    icon: "success",
-                    title: "ບັນທຶກສິນຄ້າສຳເລັດ",
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
                     showConfirmButton: false,
-                    timer: 2500
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+                Toast.fire({
+                    icon: "success",
+                    title: "ບັນທຶກສິນຄ້າສຳເລັດ"
                 });
                 navigate("/listProducts");
                 setImage([]);
@@ -150,10 +158,10 @@ const AddProduct = () => {
                                 <p>ກຳລັງບັນທຶກຂໍ້ມູນ.......</p><CircularProgress style={{ color: '#008BCB' }} />
                             </Stack>
                             :
-                            <Link to={'/ListProducts'} className="text-link">
+                            <button onClick={()=>navigate('/ListProducts')} className="text-link">
                                 <i className='bx bx-chevron-left'></i>
                                 ກັບໄປໜ້າກ່ອນ
-                            </Link>
+                            </button>
                         }
 
                     </div>

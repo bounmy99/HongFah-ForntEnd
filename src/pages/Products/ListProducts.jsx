@@ -42,6 +42,10 @@ const ListProducts = () => {
   // const ProductType = ['ປະເພດຄີມ', 'ປະເພດເຈວ', 'ປະເພດແປ້ງ', 'ປະເພດນ້ຳ'];
   const ProductPrice = [15000, 30000, 50000, 100000];
 
+  const formatPrice = (value)=>{
+    let val = (value / 1).toFixed(0).replace(",", ".");
+    return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g,",");      
+   }
 
   // ===========pagination antd =============
   const indexOfLastPages = pages + pageSize;
@@ -266,7 +270,7 @@ const ListProducts = () => {
                             </div>
                             <div className="text-bottom">
                               <div className="price-text">
-                                <h5>₭ {items.price}</h5>
+                                <h5>₭ {formatPrice(items.price)}</h5>
                               </div>
                               <div className="button">
                                 <Link to={`/listProducts/editProduct/${items._id}`}>

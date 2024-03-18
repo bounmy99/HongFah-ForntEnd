@@ -153,6 +153,12 @@ const ListWithdrawSuccess = () => {
     }
 
     let openModals = openModal ? 'open' : '';
+
+    const formatPrice = (value)=>{
+        let val = (value / 1).toFixed(0).replace(",", ".");
+        return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g,",");      
+       }
+
     const customStyles = {
         rows: {
             style: {
@@ -250,7 +256,7 @@ const ListWithdrawSuccess = () => {
             sortable: true,
             selector: (row) => row.amount,
             cell: row => (
-                <p className="posit-text-withdraw">{row.amount}.00</p>
+                <p className="posit-text-withdraw">{formatPrice(row.amount)}.00</p>
             ),
             width: '100px'
         },

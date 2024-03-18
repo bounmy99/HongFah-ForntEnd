@@ -4,7 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import previewImage from '../../assets/image/upload.png'
 import Swal from 'sweetalert2';
 // fucntion
-import { GetOneUser, GetAllUser,UpdateUser } from '../../functions/Authentication';
+import { GetOneUser, GetAllUser, UpdateUser } from '../../functions/Authentication';
 
 const EditUser = () => {
     const { id } = useParams();
@@ -47,30 +47,47 @@ const EditUser = () => {
         const values = [...formData.values()];
         const isEmpty = values.includes('');
         if (isEmpty) {
-            Swal.fire({
-                position: "center",
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+            Toast.fire({
                 icon: "error",
-                title: "ກະລຸນາປ້ອນຂໍ້ມູນໃຫ້ຄົບຖ້ວນ",
-                showCancelButton: false,
-                timer: 3500
+                title: "ກະລຸນາປ້ອນຂໍ້ມູນໃຫ້ຄົບຖ້ວນ"
             });
             return;
         }
         const Data = Object.fromEntries(formData);
         e.currentTarget.reset();
         console.log("Data from Input", Data)
-        
-        UpdateUser(users.token, Data, id).then(res=>{
+
+        UpdateUser(users.token, Data, id).then(res => {
             if (res.status === 200) {
-                Swal.fire({
-                    title: "ສຳເລັດ",
-                    text: "ອັບເດດຂໍ້ມູນສຳເລັດ",
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+                Toast.fire({
                     icon: "success",
-                    confirmButtonText: "ຕົກລົງ",
+                    title: "ອັບເດດຂໍ້ມູນສຳເລັດ"
                 });
                 navigate("/auth")
             }
-        }).catch(err=>{
+        }).catch(err => {
             console.log(err)
         });
     }

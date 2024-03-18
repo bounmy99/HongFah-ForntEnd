@@ -5,7 +5,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import Swal from "sweetalert2";
 import { read, writeFileXLSX, utils } from "xlsx";
 import { Empty } from 'antd';
-import { useSelector,useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import DataTables from '../../components/DataTable';
 import previewIMG from "../../assets/image/upload.png";
 import { GetWallet, GetOneWithDraw, ApprovedWithDraw, RejectWithDraw } from '../../functions/WithDraw';
@@ -24,7 +24,7 @@ const ListWithdrawAwait = () => {
     const [withDraw, setWithDraw] = useState([]);
     const [infoWithDraw, setinfoWithDraw] = useState([]);
     const [withdrawEmpty, setWithWrawEmpty] = useState(null);
-    
+
 
 
     const DataFilter = [15000, 30000, 50000, 100000];
@@ -35,19 +35,19 @@ const ListWithdrawAwait = () => {
     }, []);
 
     const loadData = () => {
-        GetWallet(users.token,"await","withdraw").then(res => {
+        GetWallet(users.token, "await", "withdraw").then(res => {
             setWithDraw(res.data.data)
             setLoading(false);
         }).catch(err => {
             console.log(err.response.data.message);
             setWithWrawEmpty(err.response.data.message);
-            if(err.response.data.message === 'unauthorized'){
+            if (err.response.data.message === 'unauthorized') {
                 dispatch({
-                  type: 'USER_LOGOUT',
-                  payload: null
+                    type: 'USER_LOGOUT',
+                    payload: null
                 })
                 navigate('/')
-              }
+            }
             setLoading(false);
         })
     }
@@ -76,12 +76,20 @@ const ListWithdrawAwait = () => {
         const isEmpty = values.includes('');
         if (isEmpty) {
             setOpenModal(false);
-            Swal.fire({
-                position: "center",
-                icon: "error",
-                title: "ກະລຸນາປ້ອນຂໍ້ມູນໃຫ້ຄົບຖ້ວນ",
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
                 showConfirmButton: false,
-                timer: 3500
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+            Toast.fire({
+                icon: "error",
+                title: "ກະລຸນາປ້ອນຂໍ້ມູນໃຫ້ຄົບຖ້ວນ"
             });
             return;
         }
@@ -92,26 +100,42 @@ const ListWithdrawAwait = () => {
         setOpenModal(false);
         ApprovedWithDraw(users.token, Data, infoWithDraw._id).then(res => {
             if (res.data.message === "success") {
-                Swal.fire({
-                    position: "center",
-                    icon: "success",
-                    title: "ຢືນຢັນສຳເລັດ",
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
                     showConfirmButton: false,
-                    timer: 2500
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+                Toast.fire({
+                    icon: "success",
+                    title: "ອະນຸມັດສຳເລັດແລ້ວ"
                 });
                 setImage("")
                 loadData();
-                navigate('/withdraw', { state :{ key : 3}})
+                navigate('/withdraw', { state: { key: 3 } })
             }
 
         }).catch(err => {
             if (err) {
-                Swal.fire({
-                    position: "center",
-                    icon: "warning",
-                    title: err.response.data.message,
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
                     showConfirmButton: false,
-                    timer: 2500
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+                Toast.fire({
+                    icon: "success",
+                    title: err.response.data.message
                 });
                 loadData();
             }
@@ -138,11 +162,20 @@ const ListWithdrawAwait = () => {
             if (result.isConfirmed) {
                 RejectWithDraw(users.token, id).then(res => {
                     if (res.status === 200) {
-                        Swal.fire({
-                            title: "ສຳເລັດ",
-                            text: "ປະຕິເສດສຳເລັດແລ້ວ.",
+                        const Toast = Swal.mixin({
+                            toast: true,
+                            position: "top-end",
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                                toast.onmouseenter = Swal.stopTimer;
+                                toast.onmouseleave = Swal.resumeTimer;
+                            }
+                        });
+                        Toast.fire({
                             icon: "success",
-                            confirmButtonText: "ຕົກລົງ",
+                            title: "ປະຕິເສດສຳເລັດແລ້ວ"
                         });
                         loadData();
                     }
@@ -156,7 +189,11 @@ const ListWithdrawAwait = () => {
 
     let openModals = openModal ? 'open' : '';
 
- 
+    const formatPrice = (value) => {
+        let val = (value / 1).toFixed(0).replace(",", ".");
+        return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
     const customStyles = {
         rows: {
             style: {
@@ -254,7 +291,7 @@ const ListWithdrawAwait = () => {
             sortable: true,
             selector: (row) => row.amount,
             cell: row => (
-                <p className="posit-text-withdraw">{row.amount}.00</p>
+                <p className="posit-text-withdraw">{formatPrice(row.amount)}.00</p>
             ),
             width: '100px'
         },
@@ -290,6 +327,7 @@ const ListWithdrawAwait = () => {
             width: '180px'
         }
     ];
+
     const handleExport = () => {
         const heading = [["ລະຫັດສະມາຊິກ", "ຕຳແໜ່ງ", "ບັນຊີ", "ຊື່ບັນຊີ", "ເລກບັນຊີທະນາຄານ", "ເງິນທີ່ຖອນ", "ວັນທີຮ້ອງຂໍ", "ສະຖານະ"]];
         const wb = utils.book_new();

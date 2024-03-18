@@ -23,7 +23,7 @@ const ListWithdrawCancel = () => {
     const [fileName, setFileName] = useState("");
     const [withDraw, setWithDraw] = useState([]);
     const [infoWithDraw, setinfoWithDraw] = useState([]);
-    const [withdrawEmpty, setWithWrawEmpty] = useState(null);
+    const [withdrawEmpty, setWithWrawEmpty] = useState("");
 
 
 
@@ -51,6 +51,8 @@ const ListWithdrawCancel = () => {
             setLoading(false);
         })
     }
+
+    
 
     const handleClickOpenDrop = () => {
         setIsActiveDropdownFilter(isActiveDropdownFilter => !isActiveDropdownFilter);
@@ -123,41 +125,14 @@ const ListWithdrawCancel = () => {
         setImage("")
         setinfoWithDraw([]);
     }
-    const handleReject = (id) => {
-        Swal.fire({
-            title: "ຢືນຢັນການປະຕິເສດ",
-            text: "ທ່ານຕ້ອງການປະຕິເສດແທ້ບໍ່ ?",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "ຢືນຢັນ",
-            cancelButtonText: "ຍົກເລິກ",
-        }).then((result) => {
-            if (result.isConfirmed) {
-                RejectWithDraw(users.token, id).then(res => {
-                    if (res.status === 200) {
-                        Swal.fire({
-                            title: "ສຳເລັດ",
-                            text: "ປະຕິເສດສຳເລັດແລ້ວ.",
-                            icon: "success",
-                            confirmButtonText: "ຕົກລົງ",
-                        });
-                        loadData();
-                    }
-                }).catch(err => {
-                    console.log(err)
-                })
-
-            }
-        });
-    }
 
     let openModals = openModal ? 'open' : '';
 
-    const CreatWithdraw = () => {
-        navigate('/withdraw/createwithdraw')
-    }
+
+    const formatPrice = (value)=>{
+        let val = (value / 1).toFixed(0).replace(",", ".");
+        return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g,",");      
+       }
     const customStyles = {
         rows: {
             style: {
@@ -186,30 +161,6 @@ const ListWithdrawCancel = () => {
     };
 
     const columns = [
-        // {
-        //     name: "ສະຖານະ",
-        //     cell: row => (
-        //         <div className="withdraw-status">
-        //             {row.status === "success" ?
-        //                 <div className="status-approved">
-        //                     <p>ຢືນຢັນສຳເລັດ</p>
-        //                 </div>
-        //                 :
-        //                 <>
-        //                     <div className="status-success" onClick={() => handleModal(row._id)}>
-        //                         <p>ເບີກຈ່າຍ</p>
-        //                     </div>
-        //                     <div className="status-danger" onClick={() => handleReject(row._id)}>
-        //                         <p>ປະຕິເສດ</p>
-        //                     </div>
-        //                 </>
-        //             }
-
-        //         </div>
-        //     ),
-        //     sortable: true,
-        //     width: '150px'
-        // },
         {
             name: "ລະຫັດສະມາຊິກ",
             selector: (row) => row.userCode,
@@ -255,7 +206,7 @@ const ListWithdrawCancel = () => {
             sortable: true,
             selector: (row) => row.amount,
             cell: row => (
-                <p className="posit-text-withdraw">{row.amount}.00</p>
+                <p className="posit-text-withdraw">{formatPrice(row.amount)}.00</p>
             ),
             width: '100px'
         },
@@ -304,7 +255,7 @@ const ListWithdrawCancel = () => {
     const handleChange = (e) => {
         setinfoWithDraw({ ...infoWithDraw, [e.target.name]: e.target.value });
     }
-    // console.log("file", infoWithDraw)
+
     return (
         <div className="card-main">
             {loading ? <h1>ກຳລັງໂຫຼດຂໍ້ມູນ........</h1> : <>

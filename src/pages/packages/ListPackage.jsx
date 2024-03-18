@@ -42,7 +42,7 @@ const ListPackage = () => {
       setLoading(false);
       console.log(err)
       setPackageEmpty(err.response.data.message)
-      if(err.response.data.message === 'unauthorized'){
+      if (err.response.data.message === 'unauthorized') {
         dispatch({
           type: 'USER_LOGOUT',
           payload: null
@@ -98,12 +98,21 @@ const ListPackage = () => {
       UpdatePackage(users.token, Data, packageEdit._id).then(res => {
         console.log("Data Edit From Database", res.data)
         if (res.status === 200) {
-          Swal.fire({
-            position: "center",
-            icon: "success",
-            title: "ອັບເດດແພັກເກດສຳເລັດ",
+
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
             showConfirmButton: false,
-            timer: 2500
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.onmouseenter = Swal.stopTimer;
+              toast.onmouseleave = Swal.resumeTimer;
+            }
+          });
+          Toast.fire({
+            icon: "success",
+            title: "ອັບເດດແພັກເກດສຳເລັດ"
           });
           setLoadingSave(false);
           LoadAllPackage();
@@ -121,12 +130,21 @@ const ListPackage = () => {
         try {
           if (res.status === 200) {
             setLoadingSave(false);
-            Swal.fire({
-              position: "center",
-              icon: "success",
-              title: "ເພີ່ມແພັກເກດສຳເລັດ",
+
+            const Toast = Swal.mixin({
+              toast: true,
+              position: "top-end",
               showConfirmButton: false,
-              timer: 2500
+              timer: 3000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+              }
+            });
+            Toast.fire({
+              icon: "success",
+              title: "ເພີ່ມແພັກເກດສຳເລັດ"
             });
             LoadAllPackage();
             setLoadingSave(false);
@@ -182,11 +200,21 @@ const ListPackage = () => {
       if (result.isConfirmed) {
         DeletePackage(users.token, id).then(res => {
           if (res.status === 200) {
-            Swal.fire({
-              title: "ສຳເລັດ",
-              text: "ລົບສຳເລັດແລ້ວ.",
+
+            const Toast = Swal.mixin({
+              toast: true,
+              position: "top-end",
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+              }
+            });
+            Toast.fire({
               icon: "success",
-              confirmButtonText: "ຕົກລົງ",
+              title: "ລົບສຳເລັດແລ້ວ"
             });
             LoadAllPackage();
           }
@@ -205,6 +233,11 @@ const ListPackage = () => {
 
   const handleShowMore = () => {
     setVisible((show) => show + 7)
+  }
+
+  const formatPrice = (value) => {
+    let val = (value / 1).toFixed(0).replace(",", ".");
+    return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
   return (
@@ -322,7 +355,7 @@ const ListPackage = () => {
                         <h3>ລາຄາການຊື້ :</h3>
                       </div>
                       <div className="text-sub-right">
-                        <h3>{item.price} ₭</h3>
+                        <h3>{formatPrice(item.price)} ₭</h3>
                       </div>
                     </div>
                     <div className="text-sub">
@@ -330,7 +363,7 @@ const ListPackage = () => {
                         <h3>ຄ່າແນະນຳ :</h3>
                       </div>
                       <div className="text-sub-right">
-                        <h3>{item.recommendedFee} ₭</h3>
+                        <h3>{formatPrice(item.recommendedFee)} ₭</h3>
                       </div>
                     </div>
                   </div>

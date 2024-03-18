@@ -22,12 +22,20 @@ const AddTravels = () => {
     const values = [...formData.values()];
     const isEmpty = values.includes('');
     if (isEmpty) {
-      Swal.fire({
-        position: "center",
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        }
+      });
+      Toast.fire({
         icon: "error",
-        title: "ກະລຸນາປ້ອນຂໍ້ມູນໃຫ້ຄົບຖ້ວນ",
-        showCancelButton: false,
-        timer: 3500
+        title: "ກະລຸນາປ້ອນຂໍ້ມູນໃຫ້ຄົບຖ້ວນ"
       });
       return;
     }
@@ -37,12 +45,20 @@ const AddTravels = () => {
 
     CreateTrip(Data, users.token).then(res => {
       if (res.status === 200) {
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          title: "ບັນທຶກສິນຄ້າສຳເລັດ",
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
           showConfirmButton: false,
-          timer: 2500
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+          }
+        });
+        Toast.fire({
+          icon: "success",
+          title: "ບັນທຶກສຳເລັດແລ້ວ"
         });
         navigate("/travels");
         setImage("");

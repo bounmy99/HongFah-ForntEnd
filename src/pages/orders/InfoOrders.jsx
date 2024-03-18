@@ -4,8 +4,6 @@ import { useSelector } from 'react-redux';
 import { GetOneOrders, ApprovedOrders, RejectOrders } from '../../functions/Orders';
 import { Link, useParams } from 'react-router-dom'
 import DataTable from 'react-data-table-component'
-import product from '../../assets/image/lotions.png'
-import bill from '../../assets/image/bcel-one.png'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 const InfoOrders = () => {
@@ -125,22 +123,40 @@ const InfoOrders = () => {
             if (result.isConfirmed) {
                 RejectOrders(users.token, id).then(res => {
                     if (res.data.data) {
-                        Swal.fire({
-                            title: "ສຳເລັດ",
-                            text: "ການປະຕິເສັດສຳເລັດແລ້ວ.",
+                        const Toast = Swal.mixin({
+                            toast: true,
+                            position: "top-end",
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                                toast.onmouseenter = Swal.stopTimer;
+                                toast.onmouseleave = Swal.resumeTimer;
+                            }
+                        });
+                        Toast.fire({
                             icon: "success",
-                            confirmButtonText: "ຕົກລົງ",
+                            title: "ການປະຕິເສັດສຳເລັດແລ້ວ"
                         });
                         navigate("/HomeOrders", { state: { key: 2 } });
                     }
 
                 }).catch((err) => {
                     if (err.response.data.message) {
-                        Swal.fire({
-                            title: "ເກີດຂໍ້ຜິດພາດ",
-                            text: err.response.data.message,
+                        const Toast = Swal.mixin({
+                            toast: true,
+                            position: "top-end",
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                                toast.onmouseenter = Swal.stopTimer;
+                                toast.onmouseleave = Swal.resumeTimer;
+                            }
+                        });
+                        Toast.fire({
                             icon: "error",
-                            confirmButtonText: "ຕົກລົງ",
+                            title: err.response.data.message
                         });
                         navigate("/HomeOrders", { state: { key: 1 } });
                     }
@@ -162,21 +178,39 @@ const InfoOrders = () => {
             if (result.isConfirmed) {
                 ApprovedOrders(users.token, id).then(res => {
                     if (res.data.data) {
-                        Swal.fire({
-                            title: "ສຳເລັດ",
-                            text: "ຢືນຢັນການອະນຸມັດ.",
+                        const Toast = Swal.mixin({
+                            toast: true,
+                            position: "top-end",
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                                toast.onmouseenter = Swal.stopTimer;
+                                toast.onmouseleave = Swal.resumeTimer;
+                            }
+                        });
+                        Toast.fire({
                             icon: "success",
-                            confirmButtonText: "ຕົກລົງ",
+                            title: "ຢືນຢັນການອະນຸມັດສຳເລັດ"
                         });
                         navigate("/HomeOrders", { state: { key: 3 } });
                     }
                 }).catch((err) => {
                     if (err.response.data.message) {
-                        Swal.fire({
-                            title: "ເກີດຂໍ້ຜິດພາດ",
-                            text: err.response.data.message,
+                        const Toast = Swal.mixin({
+                            toast: true,
+                            position: "top-end",
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                                toast.onmouseenter = Swal.stopTimer;
+                                toast.onmouseleave = Swal.resumeTimer;
+                            }
+                        });
+                        Toast.fire({
                             icon: "error",
-                            confirmButtonText: "ຕົກລົງ",
+                            title: err.response.data.message
                         });
                         navigate("/HomeOrders", { state: { key: 1 } });
                     }

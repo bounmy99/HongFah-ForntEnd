@@ -63,10 +63,10 @@ const EditProduct = () => {
         const files = e.target.files;
 
         console.log("newSelect", files)
-            let allFile = product.images;
-            let newallFile = [];
-            let allPreview = image;
-            let newPreview = []
+        let allFile = product.images;
+        let newallFile = [];
+        let allPreview = image;
+        let newPreview = []
         if (files) {
             for (let i = 0; i < files.length; i++) {
 
@@ -82,12 +82,12 @@ const EditProduct = () => {
 
             }
         }
-        
+
     }
 
-    console.log("newImage",newImage);
-    console.log("newPreviewimage",newPreviewimage)
-    console.log("oldimages",product.images)
+    console.log("newImage", newImage);
+    console.log("newPreviewimage", newPreviewimage)
+    console.log("oldimages", product.images)
 
     const handleSubmit = (e) => {
         setLoading(true);
@@ -116,7 +116,7 @@ const EditProduct = () => {
                 }
             });
         }
-        
+
         // console.log("product.images",product.images)
 
         for (const [key, value] of formData.entries()) {
@@ -126,12 +126,21 @@ const EditProduct = () => {
             console.log(res.data.data);
             if (res.status === 200) {
                 setLoading(false);
-                Swal.fire({
-                    position: "center",
-                    icon: "success",
-                    title: "ບັນທຶກສິນຄ້າສຳເລັດ",
+           
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
                     showConfirmButton: false,
-                    timer: 2500
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+                Toast.fire({
+                    icon: "success",
+                    title: "ອັບເດດສິນຄ້າສຳເລັດ"
                 });
                 navigate("/listProducts")
             }
@@ -160,11 +169,21 @@ const EditProduct = () => {
             if (result.isConfirmed) {
                 DeleteProduct(users.token, id).then(res => {
                     if (res.status === 200) {
-                        Swal.fire({
-                            title: "ສຳເລັດ",
-                            text: "ລົບສຳເລັດແລ້ວ.",
+
+                        const Toast = Swal.mixin({
+                            toast: true,
+                            position: "top-end",
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                                toast.onmouseenter = Swal.stopTimer;
+                                toast.onmouseleave = Swal.resumeTimer;
+                            }
+                        });
+                        Toast.fire({
                             icon: "success",
-                            confirmButtonText: "ຕົກລົງ",
+                            title: "ລົບສຳເລັດແລ້ວ"
                         });
                         navigate("/listProducts");
                     }
@@ -187,10 +206,10 @@ const EditProduct = () => {
                                 <p>ກຳລັງບັນທຶກຂໍ້ມູນ.......</p><CircularProgress style={{ color: '#008BCB' }} />
                             </Stack>
                             :
-                            <Link to={'/ListProducts'} className="text-link">
+                            <button onClick={() => navigate('/ListProducts')} className="text-link">
                                 <i className='bx bx-chevron-left'></i>
                                 ກັບໄປໜ້າກ່ອນ
-                            </Link>
+                            </button>
                         }
 
                     </div>
@@ -198,19 +217,19 @@ const EditProduct = () => {
                     {/* create delete button */}
 
                     <div className="btn-del">
-                        <button type="button" onClick={()=>handleDelete(product._id)}>
+                        <button type="button" onClick={() => handleDelete(product._id)}>
                             ລົບ
                             <i className='bx bxs-trash-alt'></i>
                         </button>
                     </div>
-                    
+
                 </div>
                 <form onSubmit={handleSubmit}>
                     <div className="card-edit-content">
                         <div className="content-left">
 
-                            <Carusel  images = {product.images} handleChangeImage={handleChangeImage}  image={newPreviewimage}/>
-                            
+                            <Carusel images={product.images} handleChangeImage={handleChangeImage} image={newPreviewimage} />
+
                             <div className="btn-button">
                                 <button type="button" className="btn-info-outline" onClick={handleReset}>ຍົກເລິກ</button>
                                 <button type="submit" className="btn-info btn" >ອັບເດດ</button>

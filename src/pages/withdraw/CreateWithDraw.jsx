@@ -48,12 +48,20 @@ const CreateWithDraw = () => {
         const values = [...formData.values()];
         const isEmpty = values.includes('');
         if (isEmpty) {
-            Swal.fire({
-                position: "center",
-                icon: "error",
-                title: "ກະລຸນາປ້ອນຂໍ້ມູນໃຫ້ຄົບຖ້ວນ",
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
                 showConfirmButton: false,
-                timer: 3500
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+            Toast.fire({
+                icon: "error",
+                title: "ກະລຸນາປ້ອນຂໍ້ມູນໃຫ້ຄົບຖ້ວນ"
             });
             return;
         }
@@ -62,12 +70,20 @@ const CreateWithDraw = () => {
         console.log("Data In form", Data)
         WithDrawAdmin(users.token, Data).then(res => {
             if (res.data.message === 'success') {
-                Swal.fire({
-                    position: "center",
-                    icon: "success",
-                    title: "ຖອນເງິນສຳເລັດ",
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
                     showConfirmButton: false,
-                    timer: 3500
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+                Toast.fire({
+                    icon: "success",
+                    title: "ຖອນເງິນສຳເລັດແລ້ວ"
                 });
                 setStatus(false);
                 setValue([])

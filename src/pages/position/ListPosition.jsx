@@ -82,13 +82,22 @@ const ListPosition = () => {
         const isEmpty = values.includes('');
         if (isEmpty) {
             setOpenModal(false);
-            Swal.fire({
-                position: "center",
-                icon: "error",
-                title: "ກະລຸນາປ້ອນຂໍ້ມູນໃຫ້ຄົບຖ້ວນ",
+         
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
                 showConfirmButton: false,
-                timer: 3500
-            });
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                  toast.onmouseenter = Swal.stopTimer;
+                  toast.onmouseleave = Swal.resumeTimer;
+                }
+              });
+              Toast.fire({
+                icon: "error",
+                title: "ກະລຸນາປ້ອນຂໍ້ມູນໃຫ້ຄົບຖ້ວນ"
+              });
             return;
         }
         const Data = Object.fromEntries(formData);
@@ -101,13 +110,22 @@ const ListPosition = () => {
             ?
             UpdatePosition(users.token, Data, positionEdit._id).then(res => {
                 if (res.status === 200) {
-                    Swal.fire({
-                        position: "center",
-                        icon: "success",
-                        title: "ອັບເດດແໜ່ງສຳເລັດ",
+                
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: "top-end",
                         showConfirmButton: false,
-                        timer: 2500
-                    });
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                          toast.onmouseenter = Swal.stopTimer;
+                          toast.onmouseleave = Swal.resumeTimer;
+                        }
+                      });
+                      Toast.fire({
+                        icon: "success",
+                        title: "ອັບເດດແໜ່ງສຳເລັດ"
+                      });
                     loadPosition();
                     setLoadSave(false);
                     setOpenModal(false);
@@ -123,13 +141,21 @@ const ListPosition = () => {
 
             CreatePosition(users.token, Data).then(res => {
                 if (res.status === 200) {
-                    Swal.fire({
-                        position: "center",
-                        icon: "success",
-                        title: "ເພີ່ມຕຳແໜ່ງສຳເລັດ",
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: "top-end",
                         showConfirmButton: false,
-                        timer: 2500
-                    });
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                          toast.onmouseenter = Swal.stopTimer;
+                          toast.onmouseleave = Swal.resumeTimer;
+                        }
+                      });
+                      Toast.fire({
+                        icon: "success",
+                        title: "ສ້າງຕຳແໜ່ງສຳເລັດ"
+                      });
                     loadPosition();
                     setOpenModal(false);
                     setLoadSave(false);

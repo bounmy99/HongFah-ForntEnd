@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
 import imagePreview from '../../assets/avatar/image-avatar.jpeg'
-import { GetAllEmployee } from '../../functions/Employee';
+import { GetAllEmployee,GetRootLineWork } from '../../functions/Employee';
 const DiagramEm = () => {
   const { users } = useSelector((state) => ({ ...state }));
   const dispatch = useDispatch();
@@ -13,13 +13,13 @@ const DiagramEm = () => {
   const [levelTwo, setLavelTwo] = useState([]);
   const [levelThree, setLavelThree] = useState([]);
   const [levelFour, setLavelFour] = useState([]);
-  // const [linework, setLinework] = useState([])
+  const [linework, setLinework] = useState([])
 
   useEffect(() => {
     GetAllEmployee(users.token).then(res => {
       // setLinework(res.data.data)
       setLavelZero(res.data.data.level_0);
-      setLavelOne(res.data.data.level_1);
+      // setLavelOne(res.data.data.level_1);
       setLavelTwo(res.data.data.level_2);
       setLavelThree(res.data.data.level_3);
       setLavelFour(res.data.data.level_4);
@@ -34,7 +34,19 @@ const DiagramEm = () => {
       }
     })
 
+    loadingGetRoot();
+
   }, []);
+
+  const loadingGetRoot = ()=>{
+    GetRootLineWork(users.token).then(res=>{
+      setLinework(res.data.data);
+      setLavelOne(res.data.data.children);
+    })
+  }
+
+  console.log("LineWork",linework.children);
+
 
   console.log("Level 0 is", levelZero);
   console.log("Level 1 is", levelOne);
@@ -69,14 +81,13 @@ const DiagramEm = () => {
           <TransformComponent>
             <div className="genealogy-tree">
               <ul>
-                {levelZero && levelZero.map((level_0, index) => (
-                  <li key={index}>
-                    <Link to={`/listEmployee/DetailsEmp/${level_0._id}`}>
+                  <li>
+                    <Link to={`/listEmployee/DetailsEmp/${linework._id}`}>
                       <div className="member-view-box">
                         <div className="member-image">
                           <img src={imagePreview} alt="Member" />
                           <div className="member-details">
-                            <h3>Level is {level_0.level}</h3>
+                            <h3>Level is {linework.level}</h3>
                           </div>
                         </div>
                       </div>
@@ -84,7 +95,7 @@ const DiagramEm = () => {
                     <ul className="active">
                       <li >
                         <ul>
-                          {levelOne && levelOne.slice(0, 2).map((level_1, index) => (
+                          {levelOne && levelOne.map((level_1, index) => (
                             <>
                               <li key={index}>
                                 <Link to={`/listEmployee/DetailsEmp/${level_1._id}`}>
@@ -98,7 +109,7 @@ const DiagramEm = () => {
                                   </div>
                                 </Link>
                                 <ul>
-                                  {levelTwo && levelTwo.slice(0, 2).map((level_2, index) => (
+                                  {level_1 && level_1.children.map((level_2, index) => (
                                     <>
                                       <li key={index}>
                                         <Link to={`/listEmployee/DetailsEmp/${level_2._id}`}>
@@ -112,7 +123,7 @@ const DiagramEm = () => {
                                           </div>
                                         </Link>
                                         <ul>
-                                          {levelThree && levelThree.slice(0,2).map((level_3, index) => (
+                                          {level_2 && level_2.children.map((level_3, index) => (
                                             <>
                                               <li key={index}>
                                                 <Link to={`/listEmployee/DetailsEmp/${level_3._id}`}>
@@ -140,7 +151,7 @@ const DiagramEm = () => {
                       </li>
                     </ul>
                   </li>
-                ))}
+               
               </ul>
             </div>
           </TransformComponent>

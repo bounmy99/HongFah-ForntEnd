@@ -1,4 +1,7 @@
-import React,{useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { MoreOutlined, ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
 import imageWallet from "../assets/image/wallet.png"
 import imageBonus from "../assets/image/bonus.png"
 import imageHistory from "../assets/image/history.png"
@@ -9,16 +12,23 @@ import imageTrip from "../assets/image/trip.png"
 import imageSaleOff from "../assets/image/sale-off.png"
 import imageTransfer from "../assets/image/trasfer.png"
 import imageWorkLine from "../assets/image/work-line.png"
+import Progress from "../assets/image/Progress.png"
+import Track from "../assets/image/Track.png"
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import DataTable from "react-data-table-component";
-import Profile from '../assets/image/profile-1.jpg'
-import Product from '../assets/image/product-2.png'
-import axios from 'axios'
+import { BestSeller } from '../functions/Products';
+import { SalesPrices } from '../functions/Orders';
+import { CountUsers } from '../functions/Authentication';
+
 const Dashboard = () => {
-    const [resault, setResault] = useState([]);
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const { users } = useSelector((state) => ({ ...state }))
+    const [salsePrices, setSalesPrices] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [totalRows, setTotalRows] = useState(0);
-    const [perPage, setPerPage] = useState(10);
+    const [counterUsers, setCounterUsers] = useState([]);
+    const [bestSell, setBestSell] = useState([]);
+
     const data = [
         {
             name: 'Jan',
@@ -73,58 +83,16 @@ const Dashboard = () => {
             uv: 1490,
         }
     ];
-    const product = [
-        {
-            id: 1,
-            name: 'Handmade',
-            sell: 1900,
-            price: '84.000.000',
-            store: 50,
-            status: "ໃກ້ໝົດ"
-        },
-        {
-            id: 2,
-            name: 'SmartWatch',
-            sell: 2900,
-            price: '80.000.000',
-            store: 30,
-            status: "ໃກ້ໝົດ"
-        },
-        {
-            id: 3,
-            name: 'EarPhone',
-            sell: 3900,
-            price: '50.000.000',
-            store: 40,
-            status: "ໃກ້ໝົດ"
-        },
-        {
-            id: 4,
-            name: 'Computer',
-            sell: 5900,
-            price: '74.000.000',
-            store: 10,
-            status: "ໃກ້ໝົດ"
-        },
-        {
-            id: 5,
-            name: 'Mobile',
-            sell: 7900,
-            price: '184.000.000',
-            store: 30,
-            status: "ໃກ້ໝົດ"
-        }
-    ]
     const columns = [
         {
             name: "ສິນຄ້າ",
             selector: (row) => (row.name),
             cell: row => (
                 <div className="name-product">
-                    <img src={Product} alt={row.name} width={40} height={40} />
+                    <img src={row.images[0]} alt={row.name} width={40} height={40} />
                     <div className="flex-name">
                         <p>{row.name}</p>
-                        <span> ລະຫັດ : 123456</span>
+                        <span> ລະຫັດ : {row.productCode}</span>
                     </div>
                 </div>
             ),
@@ -132,28 +100,33 @@ const Dashboard = () => {
             width: '250px'
         },
         {
-            name: "ຂາຍໄດ້",
-            selector: (row) => row.sell,
+            name: "ຈຳນວນ",
+            selector: (row) => row.amount,
             sortable: true,
             width: '190px'
         },
         {
-            name: "ມູນຄ່າ",
+            name: "ລາຄາ",
             sortable: true,
             selector: (row) => row.price,
             width: '190px'
         },
         {
-            name: "ເຫຼືອໃນຄັງ",
+            name: "ລາຄາຂາຍ",
             sortable: true,
-            selector: (row) => row.store,
+            selector: (row) => row.salsePrice,
             width: '190px'
         },
         {
-            name: "ສະຖານະ",
+            name: "ຂາຍໄດ້",
             sortable: true,
-            selector: (row) => row.status,
-            cell: row => (<p className="status">{row.status}</p>),
+            selector: (row) => row.salseAmount,
+            width: '190px'
+        },
+        {
+            name: "ຫົວໜ່ວຍ",
+            sortable: true,
+            cell: row => (<p className="status">{row.unit}</p>),
             width: '190px'
         }
     ];
@@ -182,34 +155,34 @@ const Dashboard = () => {
         },
     };
 
-    const fetchUsers = async page => {
-        setLoading(true);
-    
-        const response = await axios.get(`https://reqres.in/api/users?page=${page}&per_page=${perPage}&delay=1`);
-    
-        setResault(response.data.data);
-        setTotalRows(response.data.total);
-        setLoading(false);
-      };
-    
-      const handlePageChange = page => {
-        fetchUsers(page);
-      };
-    
-      const handlePerRowsChange = async (newPerPage, page) => {
-        setLoading(true);
-    
-        const response = await axios.get(`https://reqres.in/api/users?page=${page}&per_page=${newPerPage}&delay=1`);
-    
-        setResault(response.data.data);
-        setPerPage(newPerPage);
-        setLoading(false);
-      };
-    
-      useEffect(() => {
-        fetchUsers(1); // fetch page 1 of users
-    
-      }, []);
+
+    useEffect(() => {
+        LoadCounterUser();
+        LoadBestSeller();
+        LoadSalesPrices();
+    }, []);
+
+    const LoadCounterUser = () => {
+        CountUsers(users.token, "", "").then(res => {
+            setCounterUsers(res.data.data);
+        }).catch(err => {
+            console.log(err);
+        })
+    }
+    const LoadBestSeller = () => {
+        BestSeller(users.token, "", "").then(res => {
+            setBestSell(res.data.data);
+        }).catch(err => {
+            console.log(err);
+        })
+    }
+    const LoadSalesPrices = () => {
+        SalesPrices(users.token, "", "").then(res => {
+            setSalesPrices(res.data.data);
+        }).catch(err => {
+            console.log(err);
+        })
+    }
     return (
         <div className="container mt-3">
             <div className="boxes">
@@ -299,42 +272,38 @@ const Dashboard = () => {
             <div className="overview">
                 <div className="overview-left">
                     <div className="boxes-card">
-                        <div className="card card-boxes">
-                            <div className="title-top">
-                                <div className="title-top-left">
-                                    <div className="bg-icons">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="20" viewBox="0 0 22 20" fill="none">
-                                            <path d="M1.47283 19.012C1.0689 19.012 0.692151 18.7772 0.411338 18.3513C-0.152229 17.4938 -0.134363 16.1258 0.450567 15.3013L5.04766 8.8237C5.66755 7.91962 6.55853 7.40104 7.49264 7.40104C8.42674 7.40104 9.22684 7.86389 9.84944 8.706C11.0558 9.96376 11.0912 10.0144 11.1226 10.0587L11.1273 10.0655C11.2201 10.2014 11.3568 10.2793 11.5029 10.2793C11.6489 10.2793 11.786 10.2014 11.8784 10.0655L15.9225 4.32829H13.5093C13.0704 4.32545 12.6836 4.07754 12.4175 3.63118C12.1841 3.23941 12.0556 2.72141 12.0556 2.17157C12.0556 1.62173 12.1841 1.10372 12.4172 0.711954C12.684 0.265598 13.0708 0.017685 13.5074 0.014842H16.7571L19.5 0.0118162C22 0.0118697 22 -0.488159 22 5.01194V8.01194V9.51194C21.9981 10.1545 21.8049 10.6219 21.5 11.0119C21.2324 11.3537 20.8756 11.5119 20.5 11.5119C20.1244 11.5119 19.2676 11.8531 19 11.5119C18.6951 11.1224 18.0555 10.6978 18.0536 10.0587V7.30893L13.9486 13.1337C13.3276 14.0424 12.4354 14.5632 11.5009 14.5632C10.5664 14.5632 9.76749 14.0998 9.14411 13.2566C7.93774 11.9988 7.9024 11.9482 7.87094 11.9038L7.86628 11.897C7.77345 11.7611 7.63673 11.6832 7.49069 11.6832C7.34466 11.6832 7.20755 11.7611 7.11511 11.897L2.49432 18.4093C2.21817 18.7982 1.85541 19.012 1.47283 19.012Z" fill="#00B488" />
-                                        </svg>
-                                    </div>
-                                    <span>ຍອດຂາຍ</span>
+                        <div className="card card-boxes-users">
+                            <div className="text-top">
+                                <div className="left">
+                                    <h4>ຜູ້ໃຊ້ທັງໝົດ</h4>
+                                    <p>ເດືອນນີ້</p>
                                 </div>
-                                <div className="title-top-right">
-                                    <span>+ 6.75%</span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
-                                        <path d="M12.562 2C7.04201 2 2.56201 6.48 2.56201 12C2.56201 17.52 7.04201 22 12.562 22C18.082 22 22.562 17.52 22.562 12C22.562 6.48 18.082 2 12.562 2ZM17.812 12.33C17.812 12.74 17.472 13.08 17.062 13.08C16.652 13.08 16.312 12.74 16.312 12.33V9.31L8.59201 17.03C8.44201 17.18 8.25201 17.25 8.06201 17.25C7.87201 17.25 7.68201 17.18 7.53201 17.03C7.24201 16.74 7.24201 16.26 7.53201 15.97L15.252 8.25H12.232C11.822 8.25 11.482 7.91 11.482 7.5C11.482 7.09 11.822 6.75 12.232 6.75H17.062C17.472 6.75 17.812 7.09 17.812 7.5V12.33Z" fill="#44A56B" />
-                                    </svg>
+                                <div className="right">
+                                    <MoreOutlined />
                                 </div>
                             </div>
-                            <div className="line-chart">
-                                <ResponsiveContainer width="100%" height="100%">
-                                    <AreaChart
-                                        width={200}
-                                        height={60}
-                                        data={data}
-                                        margin={{
-                                            top: 5,
-                                            right: 0,
-                                            left: 0,
-                                            bottom: 0,
-                                        }}
-                                    >
-                                        <Area type="monotone" dataKey="uv" stroke="#579A8A" fill="#579A8A" />
-                                    </AreaChart>
-                                </ResponsiveContainer>
+                            <div className="content">
+                                <img src={Track} alt="" className="Track" />
+                                <img src={Progress} alt="" className="Progress" />
+                                <div className="text">
+                                    <p className="number">4000</p>
+                                    <p className="percent">+40%</p>
+                                </div>
                             </div>
-                            <div className="title">
-                                <h3 className="text-success">200.000.000 ກີບ</h3>
+                            <div className="text-bottom">
+                                <div className="top-bottom">
+                                    <p>ຜູ້ໃຊ້ເດືອນນີ້ <span>4000 ຄົນ</span>, ສູງກວ່າເດືອນກ່ອນ 10%</p>
+                                </div>
+                                <div className="middle">
+                                    <p className="middle-1">ມື້ນີ້</p>
+                                    <p className="middle-2">ເດືອນນີ້</p>
+                                    <p className="middle-3">ສະສົມ</p>
+                                </div>
+                                <div className="bottom">
+                                    <p className="bottom-1">500<ArrowDownOutlined className="text-red" /></p>
+                                    <p className="bottom-2">4000<ArrowUpOutlined className="text-green" /></p>
+                                    <p className="bottom-3">7800<ArrowUpOutlined className="text-green" /></p>
+                                </div>
                             </div>
                         </div>
                         <div className="card card-boxes">
@@ -372,7 +341,7 @@ const Dashboard = () => {
                                 </ResponsiveContainer>
                             </div>
                             <div className="title">
-                                <h3 className="text-purple">200.000.000 ກີບ</h3>
+                                <h3 className="text-purple">{salsePrices.salsePrice} ກີບ</h3>
                             </div>
                         </div>
                     </div>
@@ -402,16 +371,16 @@ const Dashboard = () => {
                     <div className="table">
                         <DataTable
                             columns={columns}
-                            data={product}
+                            data={bestSell}
                             progressPending={loading}
                             customStyles={customStyles}
                             pagination
-                            paginationServer
-                            paginationTotalRows={totalRows}
-                            onChangeRowsPerPage={handlePerRowsChange}
-                            onChangePage={handlePageChange}
-                            fixedHeader
-                            fixedHeaderScrollHeight="300px"
+                        // paginationServer
+                        // paginationTotalRows={totalRows}
+                        // onChangeRowsPerPage={handlePerRowsChange}
+                        // onChangePage={handlePageChange}
+                        // fixedHeader
+                        // fixedHeaderScrollHeight="300px"
                         />
                     </div>
                 </div>

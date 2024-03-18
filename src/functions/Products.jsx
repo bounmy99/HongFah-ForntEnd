@@ -38,3 +38,11 @@ export const DeleteProduct = async (token,id,) => {
         }
     });
 }
+
+export const BestSeller = async(token,startDate,endDate) =>{
+    return await axios.get(`${import.meta.env.VITE_HONGFHA_API}/product/bestseller?startDate=${startDate}&endDate=${endDate}`,{
+        headers : {
+            'Authorization' : `Bearer ${token}`
+        }
+    });
+}

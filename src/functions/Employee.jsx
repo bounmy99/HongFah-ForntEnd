@@ -1,10 +1,15 @@
 import axios from "axios";
 
-// export const GetAllEmployee = async(token)=>{
-//     return await axios.get(`${import.meta.env.VITE_HONGFHA_API}/linework/getroot`,{
-//         headers:{Authorization: `Bearer ${token}`}
-//     })
-// }
+export const GetRootLineWork = async(token)=>{
+    return await axios.get(`${import.meta.env.VITE_HONGFHA_API}/linework/getroot`,{
+        headers:{Authorization: `Bearer ${token}`}
+    })
+}
+export const GetLineWorkTable = async(token)=>{
+    return await axios.get(`${import.meta.env.VITE_HONGFHA_API}/linework/getall`,{
+        headers:{Authorization: `Bearer ${token}`}
+    })
+}
 
 export const GetAllEmployee = async(token)=>{
     return await axios.get(`${import.meta.env.VITE_HONGFHA_API}/linework/getwithlevel?level=0&toLevel=4`,{

@@ -2,13 +2,11 @@ import React, { useState, useEffect } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
-import DataTable from 'react-data-table-component';
+import PaginationComponent from '../../components/PaginationComponent';
 import { Empty, Button, Drawer, Pagination } from 'antd';
 import { GetWalletWithUserCode } from '../../functions/WithDraw';
-import { GetOneTrip, UpdateTrip,AddmemberTrip } from '../../functions/Trip';
+import { GetOneTrip, UpdateTrip, AddmemberTrip } from '../../functions/Trip';
 import ImageTravel from '../../assets/image/no-image.png'
-import Profile3 from '../../assets/image/profile-3.jpg'
-
 const DetailTravels = () => {
   const { id } = useParams();
   const { users } = useSelector((state) => ({ ...state }));
@@ -22,20 +20,37 @@ const DetailTravels = () => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [member, setMember] = useState([]);
+  const [count, setCount] = useState("");
+  const [allPages, setAllPages] = useState("");
+  const [pageSize, setPageSize] = useState(4);
+  const [pages, setPages] = useState("");
+
 
   useEffect(() => {
     loadData();
   }, []);
 
-  const loadData = ()=>{
+  const loadData = () => {
     GetOneTrip(users.token, id).then(res => {
       setValue(res.data.data)
+      setMember(res.data.data.members)
+      setCount(res.data.data.members.length)
     }).catch(err => {
       console.log(err.response.data.message)
     })
   }
 
-  console.log("GetOneTrip",value)
+  console.log("member", member)
+  console.log("length", count)
+
+  // ===========pagination antd =============
+  const indexOfLastPages = pages + pageSize;
+  const indexOfFirstPages = indexOfLastPages - pageSize;
+  const currentPages = member.slice(indexOfFirstPages, indexOfLastPages)
+
+  console.log("currentPages", currentPages);
+  // ================ end pagination antd ===========
+
 
   const showDrawer = () => {
     setOpen(true);
@@ -101,16 +116,17 @@ const DetailTravels = () => {
     const Data = Object.fromEntries(formData);
     e.currentTarget.reset();
     console.log("Data from Input", Data);
-    AddmemberTrip(users.token,Data).then(res=>{
-      setMember(res.data.data)
+    AddmemberTrip(users.token, Data).then(res => {
       setOpen(false);
       loadData();
-    }).catch(err=>{
+    }).catch(err => {
       console.log(err)
     })
 
   }
+
   const handleSubmit = (e) => {
+    setLoading(true);
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const values = [...formData.values()];
@@ -141,11 +157,13 @@ const DetailTravels = () => {
         navigate("/travels");
         setImage("");
         setFileName("");
+        setLoading(false);
       }
     }).catch(err => {
       console.log(err.response.data);
       setImage("");
       setFileName("");
+      setLoading(false);
       return;
     })
   }
@@ -187,7 +205,7 @@ const DetailTravels = () => {
 
                   {image
                     ? <img src={image} alt={fileName} className="img-fluid" />
-                    : <img src={value.images && value.images ? value.images : ImageTravel}  alt="" />}
+                    : <img src={value.images && value.images ? value.images : ImageTravel} alt="" />}
 
                   <input type="file" name="images" className="input-file" hidden
                     onChange={({ target: { files } }) => {
@@ -225,68 +243,6 @@ const DetailTravels = () => {
               <Button type="primary" onClick={showDrawer}>
                 ເພີ່ມສະມາຊິກ
               </Button>
-              <div className="form-add-member">
-                <Drawer title="ເພີ່ມສະມາຊິກ" onClose={onClose} open={open}>
-                  <div className="add-member-form-group">
-                    <div className="input-group-add-member">
-                      <div>
-                        <label htmlFor="">ຄົ້ນຫາສະມາຊິກ</label>
-                      </div>
-                      <input type="text" value={useCode} style={styleInput} className="form-modal-control-add-member" onChange={handleSeach} />
-                      <i class='bx bx-search member' style={{fontSize:20,cursor:"pointer"}} onClick={handleSeachData}></i>
-                    </div>
-                    {status ?
-                      <form onSubmit={handleMember}>
-                        <div className="input-group-add-member">
-                          <input type="text" name="trip_id" value={value._id} hidden />
-                          <input type="text" name="user_id" value={`${valueSearch.user_id && valueSearch.user_id._id}`} hidden />
-                          <div>
-                            <label htmlFor="">ຊື່</label>
-                          </div>
-                          <input type="text" name="" style={styleInput} value={`${valueSearch.user_id && valueSearch.user_id.firstName}`} className="form-modal-control-add-member" />
-                        </div>
-                        <div className="input-group-add-member">
-                          <div>
-                            <label htmlFor="">ນາມສະກຸນ</label>
-                          </div>
-                          <input type="text" name="" style={styleInput} value={`${valueSearch.user_id && valueSearch.user_id.lastName}`} className="form-modal-control-add-member" />
-                        </div>
-                        <div className="input-group-add-member">
-                          <div>
-                            <label htmlFor="">ເບີໂທ</label>
-                          </div>
-                          <input type="text" name="" style={styleInput} value={`${valueSearch.user_id && valueSearch.user_id.phoneNumber}`} className="form-modal-control-add-member" />
-                        </div>
-                        <div className="add-member-btn" style={{justifyContent: "center"}}>
-                          <button type="button" onClick={()=>{
-                            setOpen(false);
-                            setStatus(false);
-                            setValueSearch([])
-                          }
-                            } style={{ width: 50, padding: 3, marginTop: 5 , marginLeft: 100}} className="add-member-btn btn-secondary" >ຍົກເລີກ</button>
-                          <button type="submit" style={{ width: 50, padding: 3, marginTop: 5 , marginLeft: 10}} className="add-member-btn btn-info" >ເພີ່ມ</button>
-                        </div>
-                      </form>
-                      :
-                      <div className="empty-card">
-                        <Empty
-                          image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
-                          imageStyle={{
-                            height: 60,
-                          }}
-                          description={
-                            <span>
-                              <a>ບໍ່ມີຂໍ້ມູນ</a>
-                            </span>
-                          }
-                        >
-                        </Empty>
-                      </div>
-                    }
-                  </div>
-                </Drawer>
-
-              </div>
               <div className="card-table">
                 <div className="table-show-member">
                   <table cellPadding={0} cellSpacing={0}>
@@ -296,25 +252,29 @@ const DetailTravels = () => {
                         <th>ຊື່ສະມາຊິກ</th>
                         <th>ລະຫັດສະມາຊິກ</th>
                         <th>ຕຳແໜ່ງ</th>
-                        <th>ແກ້ໄຂ</th>
+                        <th>ເພີ່ມເຕີມ</th>
                       </tr>
                     </thead>
                     <tbody>
-                      { value.members && value.members.map((item,i)=>(
-                        <tr>
-                        <td>ຊື່ສະຖານທີ່</td>
-                        <td>ມື້ເດ</td>
-                        <td>dd</td>
-                        <td>{item.p}</td>
-                        <td>level</td>
-                      </tr>
+                      {currentPages && currentPages.map((item, i) => (
+                        <tr key={i}>
+                          <td>
+                            <img style={{ width: 50, height: 50 }} src={item.profile} alt="" />
+                          </td>
+                          <td>
+                            {`${item.firstName} ${item.lastName}`}
+                          </td>
+                          <td>{item.userCode}</td>
+                          <td>{item.position && item.position.title}</td>
+                          <td>....</td>
+                        </tr>
                       ))
                       }
-                      
+
                     </tbody>
                   </table>
                   <div className="pagination-member">
-                    <Pagination defaultCurrent={1} total={50} />
+                    <PaginationComponent count={count} setPageSize={setPageSize} pageSize={pageSize} setPages={setPages} pages={pages} />
                   </div>
                 </div>
               </div>
@@ -330,6 +290,68 @@ const DetailTravels = () => {
             <button type="submit" className="btn-info"> ບັນທຶກ </button>
           </div>
         </form>
+
+        <div className="form-add-member">
+          <Drawer title="ເພີ່ມສະມາຊິກ" onClose={onClose} open={open}>
+            <div className="add-member-form-group">
+              <div className="input-group-add-member">
+                <div>
+                  <label htmlFor="">ຄົ້ນຫາສະມາຊິກ</label>
+                </div>
+                <input type="text" value={useCode} style={styleInput} className="form-modal-control-add-member" onChange={handleSeach} />
+                <i class='bx bx-search member' style={{ fontSize: 20, cursor: "pointer" }} onClick={handleSeachData}></i>
+              </div>
+              {status ?
+                <form onSubmit={handleMember}>
+                  <div className="input-group-add-member">
+                    <input type="text" name="trip_id" value={value._id} hidden />
+                    <input type="text" name="user_id" value={`${valueSearch.user_id && valueSearch.user_id._id}`} hidden />
+                    <div>
+                      <label htmlFor="">ຊື່</label>
+                    </div>
+                    <input type="text" name="" style={styleInput} value={`${valueSearch.user_id && valueSearch.user_id.firstName}`} className="form-modal-control-add-member" />
+                  </div>
+                  <div className="input-group-add-member">
+                    <div>
+                      <label htmlFor="">ນາມສະກຸນ</label>
+                    </div>
+                    <input type="text" name="" style={styleInput} value={`${valueSearch.user_id && valueSearch.user_id.lastName}`} className="form-modal-control-add-member" />
+                  </div>
+                  <div className="input-group-add-member">
+                    <div>
+                      <label htmlFor="">ເບີໂທ</label>
+                    </div>
+                    <input type="text" name="" style={styleInput} value={`${valueSearch.user_id && valueSearch.user_id.phoneNumber}`} className="form-modal-control-add-member" />
+                  </div>
+                  <div className="add-member-btn" style={{ justifyContent: "center" }}>
+                    <button type="button" onClick={() => {
+                      setOpen(false);
+                      setStatus(false);
+                      setValueSearch([])
+                    }
+                    } style={{ width: 50, padding: 3, marginTop: 5, marginLeft: 100 }} className="add-member-btn btn-secondary" >ຍົກເລີກ</button>
+                    <button type="submit" style={{ width: 50, padding: 3, marginTop: 5, marginLeft: 10 }} className="add-member-btn btn-info" >ເພີ່ມ</button>
+                  </div>
+                </form>
+                :
+                <div className="empty-card">
+                  <Empty
+                    image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
+                    imageStyle={{
+                      height: 60,
+                    }}
+                    description={
+                      <span>
+                        <a>ບໍ່ມີຂໍ້ມູນ</a>
+                      </span>
+                    }
+                  >
+                  </Empty>
+                </div>
+              }
+            </div>
+          </Drawer>
+        </div>
       </div>
     </div>
   )

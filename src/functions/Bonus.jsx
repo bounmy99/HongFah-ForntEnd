@@ -14,20 +14,6 @@ export const GetAllMaintain = async(token,isMaintainSales)=>{
         }
     })
 }
-export const Maintainsales = async(token)=>{
-    return await axios.post(`${import.meta.env.VITE_HONGFHA_API}/bonus/maintainsales`,{},{
-        headers :{
-            'Authorization' : `Bearer ${token}`
-        }
-    })
-}
-export const CalculateBonus = async(token)=>{
-    return await axios.post(`${import.meta.env.VITE_HONGFHA_API}/bonus/calcalatebonus`,{},{
-        headers :{
-            'Authorization' : `Bearer ${token}`
-        }
-    })
-}
 export const Paybonus = async(token,bonusListID)=>{
     return await axios.post(`${import.meta.env.VITE_HONGFHA_API}/bonus/paybonus`,{bonusListID},{
         headers :{

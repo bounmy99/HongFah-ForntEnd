@@ -91,7 +91,7 @@ const ListWithdrawAwait = () => {
         console.log("Data In form", Data)
         setOpenModal(false);
         ApprovedWithDraw(users.token, Data, infoWithDraw._id).then(res => {
-            if (res.data) {
+            if (res.data.message === "success") {
                 Swal.fire({
                     position: "center",
                     icon: "success",

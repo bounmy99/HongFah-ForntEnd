@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import DataTable from "react-data-table-component";
 import { Empty } from 'antd'
-import { useSelector } from 'react-redux';
+import { useSelector,useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { GetAllMaintain } from '../../functions/Bonus';
 
 
@@ -110,7 +111,8 @@ const columns = [
 ];
 
 const MaintainFalse = ({setStatusClick,setSelectableRow}) => {
-
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
     const { users } = useSelector((state) => ({ ...state }));
     const [maintain, setMainTain] = useState([]);
     const [emptyData, setEmptyData] = useState('');
@@ -124,15 +126,21 @@ const MaintainFalse = ({setStatusClick,setSelectableRow}) => {
             setMainTain(res.data.data)
         }).catch(err => {
             console.log(err)
-            setEmptyData(err.response.data.message)
+            setEmptyData(err.response.data.message);
+            if(err.response.data.message === 'unauthorized'){
+                dispatch({
+                  type: 'USER_LOGOUT',
+                  payload: null
+                })
+                navigate('/')
+              }
         })
     }
 
   
 
     return (
-        <div className="card-main">
-            <div className="employee-table">
+            <div className="maintain-table">
                 {emptyData ?
                     <div className="empty-card">
                         <Empty
@@ -165,7 +173,6 @@ const MaintainFalse = ({setStatusClick,setSelectableRow}) => {
                     
                 } 
             </div>
-        </div>
     )
 }
 

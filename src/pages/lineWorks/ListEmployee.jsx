@@ -8,7 +8,7 @@ import L from '../../assets/image/L.png'
 import M from '../../assets/image/M.png'
 import S from '../../assets/image/S.png'
 import O from '../../assets/image/O.png'
-import { GetAllEmployee } from '../../functions/Employee';
+import { GetLineWorkTable } from '../../functions/Employee';
 import Loading from '../../components/Loadding';
 
 const customStyles = {
@@ -39,15 +39,15 @@ const customStyles = {
 const columns = [
   {
     name: "ຊື່ຜູ້ໃຊ້",
-    selector: (row) => (row.image),
+    selector: (row) => (row.user_id.profile),
     cell: row => (
       <div className="user-image">
         <div className="image">
-          <img src={row.image} alt={row.image} width={50} height={50} />
+          <img src={row.user_id.profile} alt={row.image} width={50} height={50} />
         </div>
         <div className="user">
-          <h5>{row.username}</h5>
-          <p>22011</p>
+          <h5>{`${row.user_id.firstName} ${row.user_id.lastName}`}</h5>
+          <p>{row.user_id.userCode}</p>
         </div>
       </div>
     ),
@@ -67,18 +67,17 @@ const columns = [
   },
   {
     name: "ສະມາຊິກທິມ",
-    selector: (row) => (row.member),
+    selector: (row) => (row.children_count),
     sortable: true,
     width: '110px'
   },
   {
-    name: "ຕິດຕໍ່",
-    selector: (row) => row.contact,
+    name: "level",
+    selector: (row) => row.level,
     cell: row => (
       <div className="name-product">
         <div className="flex-name">
-          <p>{row.contact}</p>
-          <span>vongthong@gmail.com</span>
+          <p>{row.level}</p>
         </div>
       </div>
     ),
@@ -86,48 +85,47 @@ const columns = [
     width: '150px'
   },
   {
-    name: "ທີ່ຢູ່",
+    name: "lineUp",
     sortable: true,
-    selector: (row) => row.address,
+    selector: (row) => row.lineUp,
     cell: row => (
       <div className="name-product">
         <div className="flex-name">
-          <p>{row.address}</p>
-          <span>{row.sub_address}</span>
+          <p>{row.lineUp}</p>
         </div>
       </div>
     ),
     width: '162px'
   },
   {
-    name: "ວັນທີເຂົ້າຮ່ວມ",
+    name: "ລາຄາລວມ",
     sortable: true,
-    selector: (row) => row.date_join,
+    selector: (row) => row.priceTotal,
     cell: row => (
       <div className="name-product">
         <div className="flex-name">
-          <p>{row.date_join}</p>
-          <span>1ປີກ່ອນ</span>
+          <p>{row.priceTotal}</p>
         </div>
       </div>
     ),
     width: '118px'
   },
   {
-    name: "ຜູ້ແນະນຳ",
+    name: "ຄະແນນລວມ",
     sortable: true,
-    selector: (row) => row.guider,
+    selector: (row) => row.pvTotal,
     cell: row => (
       <div className="name-product">
         <div className="flex-name">
-          <p>{row.guider}</p>
-          <span>Daimonds</span>
+          <p>{row.pvTotal}</p>
         </div>
       </div>
     ),
     width: '180px'
   }
 ];
+
+
 const ListEmployee = () => {
   const { users } = useSelector((state) => ({ ...state }))
   const dispatch = useDispatch();
@@ -141,7 +139,7 @@ const ListEmployee = () => {
 
   useEffect(() => {
     setLoading(true)
-    GetAllEmployee(users.token).then(res => {
+    GetLineWorkTable(users.token).then(res => {
       setLoading(false)
       setEmployee(res.data.data)
     }).catch(err => {
@@ -321,16 +319,13 @@ const ListEmployee = () => {
 
                       <DataTable
                         columns={columns}
-                        data={""}
+                        data={employee}
                         pagination
                         // fixedHeader
                         customStyles={customStyles}
                       />
                     }
                     {change === 2 &&
-
-
-
                       <>
                         <DiagramEm />
                         {/* <Test /> */}

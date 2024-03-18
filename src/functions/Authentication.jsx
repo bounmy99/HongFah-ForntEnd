@@ -48,3 +48,11 @@ export const Permission = async(token,role,id)=>{
         }
     })
 }
+
+export const CountUsers = async(token,startDate,endDate) => {
+    return await axios.get(`${import.meta.env.VITE_HONGFHA_API}/user/countuser?startDate=2024-03-11&endDate=2024-03-12`,{
+        headers :{
+            'Authorization' : `Bearer ${token}`
+        }
+    })
+}

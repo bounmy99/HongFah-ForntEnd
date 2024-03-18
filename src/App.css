@@ -1100,13 +1100,149 @@ body {
   display: flex;
 }
 
+.dashboard .dash-content .overview .overview-left .boxes-card .card-boxes-users {
+  width: 18rem;
+  height: 18rem;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  && .text-top{
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    h4{
+      font-size: 15px;
+      font-weight: bolder;
+    }
+    p{
+      font-size: 14px;
+    }
+  }
+  && .content{
+    position: relative;
+
+    && .Track{
+      position: absolute;
+      margin: 5px;
+      width: 16rem;
+      left: 12px;
+    }
+    && .Progress{
+      position: absolute;
+      margin: 5px;
+      width: 14rem;
+      left: 12px;
+    }
+    && .text{
+      position: absolute;
+      display: block;
+      margin: 5px;
+      left: 7.5rem;
+      top:3rem;
+      && .number {
+        position: absolute;
+        font-size: 18px;
+        font-weight: bolder;
+        left: 4px;
+      }
+      && .percent{
+        position: absolute;
+        font-size: 12px;
+        color: #00B488;
+        background-color: #eeeeee;
+        width: 45px;
+        text-align: center;
+        border-radius: 10px;
+        top : 30px
+      }
+    }
+  }
+  .text-bottom{
+    position : relative;
+    margin-top: 4rem;
+    width: 18rem;
+
+    && .top-bottom{
+      position: absolute;
+      top: 70px;
+      left : 20px;
+      margin: 10px;
+      p{
+        font-size: 13px;
+        font-weight: bolder;
+        color :#00628A;
+        span{
+          color :#000
+        }
+      }
+    }
+    && .middle{
+      display: flex;
+      margin-top: 100px;
+      font-size: 12px;
+      position: absolute;
+      width: 500px;
+      top: 5px;
+      color : #00A5E8;
+
+      && .middle-1{
+        position: absolute;
+        left : 35px
+      }
+      && .middle-2{
+        position: absolute;
+        left : 125px
+      }
+      && .middle-3{
+        position: absolute;
+        left : 230px
+      }
+    }
+    && .bottom{
+      display: flex;
+      position: absolute;
+      top: 125px;
+      left : 20px;
+      font-size: 15px;
+      && .bottom-1{
+        position: absolute;
+        left : 5px;
+        width: 100px;
+
+        && .text-red{
+          color :red
+        }
+      }
+      && .bottom-2{
+        position: absolute;
+        left : 100px;
+        width: 100px;
+        && .text-green{
+          color :#00B488;
+        }
+      }
+      && .bottom-3{
+        position: absolute;
+        left : 200px;
+        width: 100px;
+        && .text-green{
+          color :#00B488;
+        }
+      }
+    }
+  }
+}
+
+
 .dashboard .dash-content .overview .overview-left .boxes-card .card-boxes {
-  width: 32.5rem;
-  height: 15rem;
+  width: 47.1rem;
+  height: 18rem;
   display: flex;
   flex-direction: column;
   position: relative;
 }
+
+
 
 .dashboard .dash-content .overview .overview-left .boxes-card .card-boxes .title-top {
   display: flex;
@@ -1326,7 +1462,7 @@ body {
 .best-seller .table-card {
   padding: 15px;
   width: 67.5rem;
-  height: 26rem;
+  height: 100%;
   background-color: var(--panel-color);
   border-radius: 0.5rem;
   border: 1px solid #E0E2E7;
@@ -2314,8 +2450,7 @@ body {
 
 .employee-table {
   width: 100%;
-  margin: 15px 0;
-
+  margin: 10px 0;
 }
 
 .employee-table .employee-card-header {

@@ -34,3 +34,11 @@ export const RejectOrders = async (token, id) => {
     })
 
 }
+
+export const SalesPrices = async(token,startDate,endDate) => {
+    return await axios.get(`${import.meta.env.VITE_HONGFHA_API}/order/salseprices?startDate=2024-03-01&endDate=2024-03-11`,{
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    })
+}

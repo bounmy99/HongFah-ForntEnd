@@ -21,7 +21,7 @@ const PaginationComponent = ({count,pageSize,setPages,pages,setPageSize}) => {
                 current={pages}
                 total={count}
                 pageSize={pageSize}
-                showSizeChanger
+                // showSizeChanger
                 // showQuickJumper
                 onShowSizeChange={onShowSizeChange}
                 itemRender={itemRender}
